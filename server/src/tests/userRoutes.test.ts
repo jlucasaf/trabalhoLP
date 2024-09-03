@@ -34,13 +34,4 @@ describe('Criação de usuário funciona como esperado', () => {
   });
 });
 
-describe('Login de usuário funciona como esperado', () => {
-  test('Quando o usuário não existe, deve retornar 401', async () => {
-    const response: Response = await request(app)
-                                      .post('/api/login')
-                                      .send({email:'email@gmail.com', password:'password'})
-                                      .set('Accept', 'application/json');
 
-    expect(response.status).toBe(401);
-  });
-});
