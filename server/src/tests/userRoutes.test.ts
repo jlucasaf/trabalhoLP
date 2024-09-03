@@ -3,12 +3,13 @@ import app from "../app";
 
 const validUser = {
   username:'Username',
-  email: 'user@gmail.com',
+  email: 'newuser@gmail.com',
   password: 'senha123',
   birthDate: '2000-01-01'
 };
 
-
+// Apagar quando o modelo e User for criado
+jest.mock('../models/userModel');
 
 describe('Criação de usuário funciona como esperado', () => {
   // Teste de exemplo
@@ -41,5 +42,5 @@ describe('Login de usuário funciona como esperado', () => {
                                       .set('Accept', 'application/json');
 
     expect(response.status).toBe(401);
-  }); 
+  });
 });

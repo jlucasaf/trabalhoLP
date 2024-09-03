@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import userValidation from "../utils/userValidation";
+// import User from "../models/userModel";
+// import * as jwt from "jsonwebtoken"
 
-
-export async function create(req: Request, res: Response) {
+export async function register(req: Request, res: Response) {
   const user = req.body;
   
-  const {error, value} = userValidation.validate(user);
+  const {error} = userValidation.validate(user);
 
   if (error) {
     return res.status(400).json({success:false, 
@@ -13,8 +14,10 @@ export async function create(req: Request, res: Response) {
       data:error.details});
   }
 
-  // Verificações de banco de dados
-
   return res.status(200).json({success:true, 
     message:'Usuário criado com sucesso.'});
+}
+
+export async function login(_req: Request, res: Response) {
+  res.end();
 }
