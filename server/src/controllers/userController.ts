@@ -12,4 +12,9 @@ export async function create(req: Request, res: Response) {
       message:'Dados de usuário inválidos', 
       data:error.details});
   }
+
+  // Verificações de banco de dados
+
+  return res.status(200).json({success:true, 
+    message:'Usuário criado com sucesso.'});
 }
