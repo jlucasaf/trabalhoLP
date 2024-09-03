@@ -9,7 +9,7 @@ describe('Rotas de usuario funcionam corretamente', () => {
                                       .send({})
                                       .set('Accept', 'application/json');
 
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('message', 'Dados de usuário inválido');
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('message', 'Dados de usuário inválidos');
   });
 }) 
