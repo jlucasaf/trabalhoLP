@@ -1,19 +1,37 @@
-import request from "supertest";
+import request, { Response } from "supertest";
 import app from "../app";
 
-describe('Rotas de usuario funcionam corretamente', () => {
+const validUser = {
+  username:'Username',
+  email: 'newuser@gmail.com',
+  password: 'senha123',
+  birthDate: '2000-01-01'
+};
+
+// Apagar quando o modelo e User for criado
+jest.mock('../models/userModel');
+
+describe('Criação de usuário funciona como esperado', () => {
   // Teste de exemplo
-  test('Criação de novo usuário tem resposta esperada', async () => {
+  test('Usuário no formato inválido é rejeitado pelo servidor.', async () => {
+    const response: Response = await request(app)
+                                      .post('/api/register')
+                                      .send({})
+                                      .set('Accept', 'application/json');
 
-    const newUser = {username:'Nome de Usuário',
-                    email:'email@email.com',
-                    password:'senha3454321'};
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('message', 'Dados de usuário inválidos');
+  });
 
-    const response = await request(app)
-                        .post('/api/register')
-                        .send(newUser)
-                        .set('Accept', 'application/json');
+  test('Usuário com formato válido não é rejeitado pelo servidor.', async () => {
+    const response: Response = await request(app)
+                                      .post('/api/register')
+                                      .send(validUser)
+                                      .set('Accept', 'application/json');
 
     expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('message', 'Usuário criado com sucesso.');
   });
-}) 
+});
+
+

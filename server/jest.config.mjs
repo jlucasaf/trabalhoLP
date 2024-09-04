@@ -10,4 +10,4 @@ export default {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js'],
-};
+ };
