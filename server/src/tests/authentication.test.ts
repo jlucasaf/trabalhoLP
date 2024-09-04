@@ -13,7 +13,7 @@ describe('Autenticação de usuário funciona corretamente', () => {
   let next: NextFunction;
   
   beforeEach(() => {
-    req = {};
+    req = {params:{}};
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
@@ -42,7 +42,6 @@ describe('Autenticação de usuário funciona corretamente', () => {
   });
 
   test('Autenticar aceita requisiçaõ com token válido', async () => {
-
     const validToken: string = sign({email:'existing@email.com'}, access_token_secret);
 
     req.headers = { authorization: `Bearer ${validToken}` };
