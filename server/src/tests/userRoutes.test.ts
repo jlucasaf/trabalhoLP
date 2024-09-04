@@ -86,4 +86,20 @@ describe('Login de usuário funciona como esperado', () => {
     expect(response.body).toHaveProperty('message', 'Senha incorreta.');
   });
 
+ test('Login aceita usuário com senha correta, e retorna token', async () => {
+    // Enviando usuario valido, mas com senha errada
+    const response: Response = await request(app)
+                                      .post('/login')
+                                      .send({email:validUser.email, senha:validUser.senha})
+                                      .set('Accept', 'application/json');
+    
+    expect(response.status).toBe(401); // Unauthorized
+    expect(response.body).toHaveProperty('message', 'Usuário autenticado com sucesso.');
+    expect(response.body).toHaveProperty('token');
+    expect(response.body).toHaveProperty('user');
+    expect(response.body.user).toHaveProperty('nome', validUser.nome);
+    expect(response.body.user).toHaveProperty('email', validUser.email);
+  });
+
+
 });

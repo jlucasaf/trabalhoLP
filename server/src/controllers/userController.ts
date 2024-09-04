@@ -3,6 +3,7 @@ import userValidation from "../utils/userValidation";
 import User from "../models/userModel";
 import { sign } from "jsonwebtoken";
 import dotenv from "dotenv";
+import { compareSync } from "bcryptjs";
 
 dotenv.config();
 
@@ -58,11 +59,18 @@ export async function login(req: Request, res: Response) {
   const foundUSer = await User.findOne({email});
 
   if (!foundUSer) {
+
+    const responseBody = {success:false,
+                          message:'Endereço de email não cadastrado.'
+                         };
+
     return res.status(401)
-                .send({
-                  success:false,
-                  message:'Endereço de email não cadastrado.'
-                })
+                .send(responseBody);
+  }
+
+  if (!compareSync(senha, foundUSer.senha)) {
+    const responseBody = {success:false, message:'Senha incorreta.'};
+    return res.status(401).send(responseBody);
   }
 
   res.end();
