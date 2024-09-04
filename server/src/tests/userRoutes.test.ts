@@ -93,7 +93,7 @@ describe('Login de usuário funciona como esperado', () => {
                                       .send({email:validUser.email, senha:validUser.senha})
                                       .set('Accept', 'application/json');
     
-    expect(response.status).toBe(401); // Unauthorized
+    expect(response.status).toBe(200); // Sucesso
     expect(response.body).toHaveProperty('message', 'Usuário autenticado com sucesso.');
     expect(response.body).toHaveProperty('token');
     expect(response.body).toHaveProperty('user');

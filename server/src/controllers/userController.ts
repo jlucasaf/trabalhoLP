@@ -18,9 +18,9 @@ export async function register(req: Request, res: Response) {
 
   if (error) {
     return res.status(400).json({
-      success:false, 
-      message:'Dados de usuário inválidos', 
-      data:error.details
+      success: false, 
+      message: 'Dados de usuário inválidos', 
+      data: error.details
     });
   }
 
@@ -30,8 +30,8 @@ export async function register(req: Request, res: Response) {
   try {
     const savedUser = await newUser.save();
     
-    const newUserToken = sign({id:savedUser.id, 
-                              email:userData.email}, 
+    const newUserToken = sign({id: savedUser.id, 
+                              email: userData.email}, 
                               access_token_secret);
     
     return res.status(200).json({
@@ -49,29 +49,40 @@ export async function register(req: Request, res: Response) {
       success:false,
       message:'Endereço de email já cadastrado.'
     });
-    return res.status(400).json({success:false, message:'Um erro inesperado aconteceu'});
+    return res.status(400).json({success: false, message: 'Um erro inesperado aconteceu'});
   } 
 }
 
 export async function login(req: Request, res: Response) {
   const {email, senha} = req.body;
   
-  const foundUSer = await User.findOne({email});
+  const foundUser = await User.findOne({email});
 
-  if (!foundUSer) {
+  if (!foundUser) {
 
-    const responseBody = {success:false,
-                          message:'Endereço de email não cadastrado.'
+    const responseBody = {success: false,
+                          message: 'Endereço de email não cadastrado.'
                          };
 
     return res.status(401)
                 .send(responseBody);
   }
 
-  if (!compareSync(senha, foundUSer.senha)) {
-    const responseBody = {success:false, message:'Senha incorreta.'};
+  if (!compareSync(senha, foundUser.senha)) {
+    const responseBody = {success: false, message: 'Senha incorreta.'};
     return res.status(401).send(responseBody);
   }
 
-  res.end();
+  console.log(foundUser.id)
+
+  const accesToken: string = sign({id: foundUser.id, 
+                                  email: email}, access_token_secret);
+
+  const responseBody = {
+    success: true,
+    token: accesToken,
+    user: {id: foundUser.id, email: email, nome: foundUser.nome}, 
+    message: 'Usuário autenticado com sucesso.'
+  }
+  return res.status(200).json(responseBody);
 }
