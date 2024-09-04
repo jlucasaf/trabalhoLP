@@ -49,7 +49,6 @@ describe('Autenticação de usuário funciona corretamente', () => {
     
     await authenticate(req as Request, res as Response, next);
     
-    expect(res.status).toHaveBeenCalledWith(200);
     expect(next).toHaveBeenCalled();
   });
 });

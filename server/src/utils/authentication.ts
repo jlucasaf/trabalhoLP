@@ -13,7 +13,8 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
   // Request veio sem token nenhum
   if (!token) return res.status(401).json({message:'Usuário não autorizado'});
 
-  verify(token, access_token_secret, (error, user) => {
+  verify(token, access_token_secret, (error) => {
     if (error) return res.status(401).json({message:'Token inválido'});
+    next();
   });
 }
