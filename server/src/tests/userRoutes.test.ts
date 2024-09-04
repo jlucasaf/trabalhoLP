@@ -68,10 +68,22 @@ describe('Login de usuário funciona como esperado', () => {
   test('Login rejeita usuário não cadastrado', async () => {
     const response: Response = await request(app)
                                       .post('/login')
-                                      .send({email:'inexistant@gmail.com', password:'senha123'})
+                                      .send({email:'inexistant@gmail.com', senha:'senha123'})
                                       .set('Accept', 'application/json');
     
     expect(response.status).toBe(401); // Unauthorized
     expect(response.body).toHaveProperty('message', 'Endereço de email não cadastrado.');
   });
+
+ test('Login rejeita usuário com senha errada', async () => {
+    // Enviando usuario valido, mas com senha errada
+    const response: Response = await request(app)
+                                      .post('/login')
+                                      .send({email:validUser.email, senha:'senhaerrada'})
+                                      .set('Accept', 'application/json');
+    
+    expect(response.status).toBe(401); // Unauthorized
+    expect(response.body).toHaveProperty('message', 'Senha incorreta.');
+  });
+
 });

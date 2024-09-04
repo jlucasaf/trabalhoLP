@@ -52,6 +52,18 @@ export async function register(req: Request, res: Response) {
   } 
 }
 
-export async function login(_req: Request, res: Response) {
+export async function login(req: Request, res: Response) {
+  const {email, senha} = req.body;
+  
+  const foundUSer = await User.findOne({email});
+
+  if (!foundUSer) {
+    return res.status(401)
+                .send({
+                  success:false,
+                  message:'Endereço de email não cadastrado.'
+                })
+  }
+
   res.end();
 }
