@@ -2,10 +2,10 @@ import request, { Response } from "supertest";
 import app from "../app";
 
 const validUser = {
-  username:'Username',
+  nome:'Username',
   email: 'newuser@gmail.com',
-  password: 'senha123',
-  birthDate: '2000-01-01'
+  senha: 'senha123',
+  dataNascimento: '2000-01-01'
 };
 
 describe('Criação de usuário funciona como esperado', () => {
@@ -28,6 +28,7 @@ describe('Criação de usuário funciona como esperado', () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('message', 'Usuário criado com sucesso.');
+    expect(response.body).toHaveProperty('token');
   });
 });
 
