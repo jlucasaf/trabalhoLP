@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 const userValidation = Joi.object({
-  username: Joi.string()
+  nome: Joi.string()
     .min(3)
     .max(30)
     .required()
@@ -23,7 +23,7 @@ const userValidation = Joi.object({
       'any.required': 'O email é obrigatório'
     }),
   
-  password: Joi.string()
+  senha: Joi.string()
     .min(6)
     .required()
     .messages({
@@ -33,7 +33,7 @@ const userValidation = Joi.object({
       'any.required': 'A senha é obrigatória'
     }),
 
-  birthDate: Joi.date()
+  dataNascimento: Joi.date()
     .min('1900-01-01')
     .less('now')
     .required()
@@ -41,6 +41,12 @@ const userValidation = Joi.object({
       'date.base': 'A data de nascimento deve ser válida',
       'date.less': 'A data de nascimento não pode ser no futuro',
       'any.required': 'A data de nascimento é obrigatória'
+    }),
+
+  local: Joi.string()
+    .messages({
+      'string.base': 'A localização deve ser uma string',
+      'string.empty': 'A localização não pode estar vazia',
     })
 });
 
