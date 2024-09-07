@@ -45,7 +45,7 @@ describe('Dados de doador são corretamente validados', () => {
       CPF: '12345',
       local: {
         cidade: '',
-        endereco: 2,
+        endereco: '',
         CEP: 'aa'
       }
     }
@@ -60,11 +60,11 @@ describe('Dados de doador são corretamente validados', () => {
       mensagem: 'Dados inválidos',
       detalhes: expect.arrayContaining([
         'O nome não pode estar vazio',
-        'O email deve estar no formato __@_._',
-        'A senha é obrigatória',
+        'O email deve estar no formato válido',
+        'A senha deve ter no mínimo 6 caracteres',
         'O CPF deve estar no formato 000.000.000-00',
-        'A cidade não pode ser vazia',
-        'O endereço deve ser uma string',
+        'A cidade não pode estar vazia',
+        'O endereço não pode estar vazio',
         'O CEP deve estar no formato 00000-000'
       ])
     }));
