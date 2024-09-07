@@ -86,4 +86,21 @@ describe('Login de usuários ocorre como esperado', () => {
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('mensagem', 'Senha incorreta');
   });
+
+  test('Tentar entrar com doador existente resulta em resposta adequada', async () => {
+    const response: Response = await supertest(app)
+                                .post('/api/login')
+                                .send({email: doadorValido.email, senha:doadorValido.senha})
+                                .set('Accept', 'application/json');
+    
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('mensagem', 'Doador autenticado com sucesso');
+    expect(response.body).toHaveProperty('dados');
+    expect(response.body.dados).toHaveProperty('token');
+    expect(response.body.dados).toHaveProperty('usuario');
+    expect(response.body.dados.usuario).toHaveProperty('tipo', 'Doador');
+    expect(response.body.dados.usuario).toHaveProperty('id');
+    expect(response.body.dados.usuario).toHaveProperty('email', doadorValido.email);
+  });
+
 });

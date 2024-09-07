@@ -3,6 +3,7 @@ import { sign } from 'jsonwebtoken';
 import { segredoToken } from '../config/config';
 import Doador from '../models/doadorModel';
 import Voluntario from '../models/voluntarioModel';
+import { compareSync } from 'bcryptjs';
 
 /**
  * ControladoraContas é uma classe responsável por gerenciar as operações de contas,
@@ -114,24 +115,34 @@ export default class ControladoraContas {
   static async login(req: Request, res: Response): Promise<void> {
     const dadosLogin = req.body;
 
-    const doadorEncontrado = await Doador.findOne(dadosLogin);
+    const doadorEncontrado = await Doador.findOne({email:dadosLogin.email});
     const voluntarioEncontrado = await Voluntario.findOne(dadosLogin);
 
     let token: string;
     let corpoResposta: object;
 
     if (doadorEncontrado) {
-      token = ControladoraContas.novoToken(doadorEncontrado, 'Doador')
-    } else if (voluntarioEncontrado) {
-      token = ControladoraContas.novoToken(voluntarioEncontrado, 'Voluntario')
-    }
 
+      const senhaCorreta: boolean = compareSync(dadosLogin.senha, doadorEncontrado.senha);
+      
+      if (!senhaCorreta) {
+        res.status(400).json({sucesso:false, mensagem:'Senha incorreta'});
+        return;
+      }
+
+    } else if (voluntarioEncontrado) {
+
+      // ...
+
+      token = ControladoraContas.novoToken(voluntarioEncontrado, 'Voluntario')
+    } 
+    
     corpoResposta = {
       sucesso: false,
       mensagem: 'Endereço de email não cadastrado'
     }
 
     res.status(400).json(corpoResposta);
-
+    return;
   }
 }
