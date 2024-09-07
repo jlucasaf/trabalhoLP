@@ -12,8 +12,6 @@ import { compareSync } from 'bcryptjs';
  * @class
  */
 export default class ControladoraContas {
-  private DUPLICATE_KEY_ERR = 11000;
-
   static novoToken(usuario: any, tipo: string) {
     const dadosUsuario = {
       tipo: tipo,
@@ -26,8 +24,9 @@ export default class ControladoraContas {
   /**
    * Método para cadastrar uma nova conta (Usuário ou Doador)
    * @param {Request} req - Objeto de requisição do express. O corpo
-   * da requisição conterá um objeto correspondente aos atributos do 
-   * novo usuário, os quais preenchidos e validados
+   * da requisição conterá as propriedades 'tipo' e 'dados', sendo que tipo
+   * deve especificar se o usuario é um 'doador' ou 'voluntario', e dados contém
+   * todos os dados exigidos para criar um novo usuário, já validados em questão de formato
    * @param {Response} res = Objeto de resposta do Express. Chamado após a conclusão
    * da operação, pode ter campos {sucesso: bool, mensagem: string, dados?:}, além 
    * @returns {Promise<void>} promise que representa a conclusão ou não do cadastro
@@ -55,6 +54,17 @@ export default class ControladoraContas {
 
     let corpoResposta: object;
 
+    const emailExistente = await Doador.findOne({ email: dadosUsuario.email }) || 
+      await Voluntario.findOne({ email: dadosUsuario.email });
+
+    if (emailExistente) {
+      res.status(400).json({
+        sucesso: false,
+        mensagem: 'Endereço de email já cadastrado',
+      });
+      return;
+    }
+
     try {
       const usuarioSalvo = await novoUsuario.save()
 
@@ -73,20 +83,8 @@ export default class ControladoraContas {
 
       res.status(200).json(corpoResposta);
       return;
-    } catch (error: any) {
-      if (error.code === this.DUPLICATE_KEY_ERR) {
-
-        corpoResposta = {
-          sucesso: false,
-          mensagem: 'Endereço de email já cadastrado',
-        };
-
-        res.status(200).json(corpoResposta);
-        return;
-      }
-
-      corpoResposta = {sucesso: false, mensagem:'Um erro inesperado ocorreu'};
-      
+    } catch (error) {
+      corpoResposta = {sucesso: false, mensagem:'Um erro inesperado ocorreu'}; 
       res.status(500).json(corpoResposta);
     }
     return;

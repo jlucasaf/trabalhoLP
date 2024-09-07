@@ -58,7 +58,7 @@ describe('Criação de usuários ocorre como esperado', () => {
                                 .send({tipo:'doador', dados:doadorValido})
                                 .set('Accept', 'application/json');
     
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(400);
     expect(response.body).toMatchObject({
       sucesso: false,
       mensagem: 'Endereço de email já cadastrado',
