@@ -1,5 +1,3 @@
-// Teste para criação e deleção de contas
-
 import app from "../app";
 import supertest, {Response} from "supertest";
 import { conectar, desconectar } from "../config/db";
@@ -76,5 +74,16 @@ describe('Login de usuários ocorre como esperado', () => {
                                 .set('Accept', 'application/json');
     
     expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('mensagem', 'Endereço de email não cadastrado');
+  });
+
+  test('Tentar entrar com senha inválida resulta em erro', async () => {
+    const response: Response = await supertest(app)
+                                .post('/api/login')
+                                .send({email: doadorValido.email, senha:'senhaerrada'})
+                                .set('Accept', 'application/json');
+    
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('mensagem', 'Senha incorreta');
   });
 });

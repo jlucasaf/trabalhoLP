@@ -1,6 +1,8 @@
 import {Request, Response} from 'express'
 import { sign } from 'jsonwebtoken';
 import { segredoToken } from '../config/config';
+import Doador from '../models/doadorModel';
+import Voluntario from '../models/voluntarioModel';
 
 /**
  * ControladoraContas é uma classe responsável por gerenciar as operações de contas,
@@ -27,9 +29,9 @@ export default class ControladoraContas {
   }
   
 
-  private novoToken(usuario: any) {
+  static novoToken(usuario: any, tipo: string) {
     const dadosUsuario = {
-      tipo: this.nomeModelo,
+      tipo: tipo,
       id: usuario.id,
       email: usuario.email,
     }
@@ -65,7 +67,7 @@ export default class ControladoraContas {
         sucesso: true,
         mensagem: 'Doador cadastrado com sucesso',
         dados: {
-          token: this.novoToken(usuarioSalvo),
+          token: ControladoraContas.novoToken(usuarioSalvo, this.nomeModelo),
           usuario: {
             id: usuarioSalvo.id,
             tipo: this.nomeModelo, 
@@ -90,7 +92,7 @@ export default class ControladoraContas {
 
       corpoResposta = {sucesso: false, mensagem:'Um erro inesperado ocorreu'};
       
-      res.status(200).json(corpoResposta);
+      res.status(500).json(corpoResposta);
     }
     return;
   }
@@ -102,13 +104,34 @@ export default class ControladoraContas {
    * @param {Response} res = Objeto de resposta do Express. Chamado após a conclusão
    * da operação, pode ter campos {sucesso: bool, mensagem: string, dados?:}, além 
    * @returns {Promise<void>} promise que representa a conclusão ou não do login
-   * > Em caso de email ou senha incorretos, 'mensagem' é 'Credenciais inválidas para <Tipo Usuario>'
+   * > Em caso de email incorreto, 'mensagem' será 'Endereço de email não cadastrado'
+   * > Em caso de senha incorreta, 'mensagem' será 'Senha incorreta'
    * > Em caso de erros diversos (ex: bd), mensagem é 'Um erro inesperado aconteceu'
    * > Em caso de sucesso, 'mensagem' é '<Tipo Usuário> autenticado com sucesso', e o
    * 'dados' deve conter 'token' e 'usuario' ({com 'tipo', 'id' e 'email'})
    * > Status da resposta deve ser 200 mesmo em caso de login não completo
    */
-  async login(req: Request, res: Response): Promise<void> {
-    // ...
+  static async login(req: Request, res: Response): Promise<void> {
+    const dadosLogin = req.body;
+
+    const doadorEncontrado = await Doador.findOne(dadosLogin);
+    const voluntarioEncontrado = await Voluntario.findOne(dadosLogin);
+
+    let token: string;
+    let corpoResposta: object;
+
+    if (doadorEncontrado) {
+      token = ControladoraContas.novoToken(doadorEncontrado, 'Doador')
+    } else if (voluntarioEncontrado) {
+      token = ControladoraContas.novoToken(voluntarioEncontrado, 'Voluntario')
+    }
+
+    corpoResposta = {
+      sucesso: false,
+      mensagem: 'Endereço de email não cadastrado'
+    }
+
+    res.status(400).json(corpoResposta);
+
   }
 }
