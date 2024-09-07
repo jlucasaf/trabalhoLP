@@ -5,10 +5,10 @@ import Voluntario from '../models/voluntarioModel';
 let mongoServer: MongoMemoryServer;
 
 beforeAll(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    const mongoUri = mongoServer.getUri();
-    await mongoose.connect(mongoUri);
-  });
+  mongoServer = await MongoMemoryServer.create();
+  const mongoUri = mongoServer.getUri();
+  await mongoose.connect(mongoUri);
+}, 20000);
 
 describe('Voluntário', () => {
     it('salva os dados não únicos', async () => {

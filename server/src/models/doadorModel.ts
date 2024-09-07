@@ -1,6 +1,5 @@
 import mongoose, {Schema, Document} from 'mongoose';
 
-// Extende interface de Documento padrão do mongoose, herdando atributos e metodos uteis
 interface IDoador extends Document {
     nome: string;
     email: string;
