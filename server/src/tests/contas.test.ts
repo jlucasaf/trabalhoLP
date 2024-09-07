@@ -31,7 +31,7 @@ const doadorValido = {
 describe('Criação de usuários ocorre como esperado', () => {
   test('Tentar criar doador com dados inválidos resulta em erro', async () => {
     const response: Response = await supertest(app)
-                                .post('/api/doador/cadastro')
+                                .post('/api/cadastrarDoador')
                                 .send({})
                                 .set('Accept', 'application/json');
     
@@ -40,7 +40,7 @@ describe('Criação de usuários ocorre como esperado', () => {
 
   test('Tentar criar um doador com dados válidos resulta em sucesso', async () => {
     const response: Response = await supertest(app)
-                                .post('/api/doador/cadastro')
+                                .post('/api/cadastrarDoador')
                                 .send(doadorValido)
                                 .set('Accept', 'application/json');
     
@@ -56,7 +56,7 @@ describe('Criação de usuários ocorre como esperado', () => {
 
  test('Tentar criar um doador com email já cadastrado resulta em fracasso', async () => {
     const response: Response = await supertest(app)
-                                .post('/api/doador/cadastro')
+                                .post('/api/cadastrardoador')
                                 .send(doadorValido)
                                 .set('Accept', 'application/json');
     
@@ -71,7 +71,7 @@ describe('Criação de usuários ocorre como esperado', () => {
 describe('Login de usuários ocorre como esperado', () => {
   test('Tentar entrar com doador não cadastrado resulta em erro', async () => {
     const response: Response = await supertest(app)
-                                .post('/api/doador/login')
+                                .post('/api/login')
                                 .send({email:'naocadastrado@email.com', senha:'senha123'})
                                 .set('Accept', 'application/json');
     
