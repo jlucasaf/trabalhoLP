@@ -5,10 +5,10 @@ import Doador from '../models/doadorModel';
 let mongoServer: MongoMemoryServer;
 
 beforeAll(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    const mongoUri = mongoServer.getUri();
-    await mongoose.connect(mongoUri);
-  });
+  mongoServer = await MongoMemoryServer.create();
+  const mongoUri = mongoServer.getUri();
+  await mongoose.connect(mongoUri);
+}, 20000);
 
 describe('Doador', () => {
     it('salva os dados não únicos', async () => {

@@ -1,6 +1,6 @@
+import { hash } from 'bcryptjs';
 import mongoose, {Schema, Document} from 'mongoose';
 
-// Extende interface de Documento padrão do mongoose, herdando atributos e metodos uteis
 interface IDoador extends Document {
     nome: string;
     email: string;
@@ -28,7 +28,19 @@ const DoadorSchema: Schema = new Schema({
     doacoesFeitas: {type: Number, default: 0}
 });
 
+<<<<<<< HEAD
 // middleware
+=======
+// hashing de senha
+DoadorSchema.pre('save', async function(next) {
+  if (this.isModified('senha')) {
+    const senhaHasheada = await hash(this.senha as string, 10);
+    this.senha = senhaHasheada;
+  }
+  next()
+});
+>>>>>>> 146aaf9a25d535ea9db42e5f435b37c5869b6699
 
 const Doador = mongoose.model<IDoador>('Doador', DoadorSchema);
+
 export default Doador;

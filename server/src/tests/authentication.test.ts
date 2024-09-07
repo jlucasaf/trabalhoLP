@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { authenticate } from '../utils/authentication';
 import { sign } from 'jsonwebtoken';
-import dotenv from 'dotenv'
+import { segredoToken } from '../config/config';
 
-dotenv.config()
-
-const access_token_secret = process.env.ACCESS_TOKEN_SECRET || "default"
+const access_token_secret = segredoToken 
 
 describe('Autenticação de usuário funciona corretamente', () => {
   // Simular requisições HTTP
