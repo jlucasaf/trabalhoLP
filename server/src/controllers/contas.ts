@@ -115,47 +115,38 @@ export default class ControladoraContas {
   static async login(req: Request, res: Response): Promise<void> {
     const dadosLogin = req.body;
 
-    const doadorEncontrado = await Doador.findOne({email:dadosLogin.email});
-    const voluntarioEncontrado = await Voluntario.findOne(dadosLogin);
+    const processarLogin = (usuario: any, tipo: string) => {
+      const senhaCorreta: boolean = compareSync(dadosLogin.senha, usuario.senha);
 
-    let corpoResposta: object;
-
-    if (doadorEncontrado) {
-
-      const senhaCorreta: boolean = compareSync(dadosLogin.senha, doadorEncontrado.senha);
-      
       if (!senhaCorreta) {
-        res.status(400).json({sucesso:false, mensagem:'Senha incorreta'});
+        res.status(400).json({sucesso: false, mensagem: 'Senha incorreta'});
         return;
       }
 
-     corpoResposta = {
+      const corpoResposta = {
         sucesso: true,
-        mensagem: 'Doador autenticado com sucesso',
+        mensagem: `${tipo} autenticado com sucesso`,
         dados: {
           token: ControladoraContas.novoToken(doadorEncontrado, 'Doador'),
           usuario: {
-            id: doadorEncontrado.id,
-            tipo: 'Doador', 
-            email: doadorEncontrado.email,
+            id: usuario.id,
+            tipo: tipo, 
+            email: usuario.email,
           }
         },
       };
 
       res.status(200).json(corpoResposta);
       return;
-
-    } else if (voluntarioEncontrado) {
-
-      // ...
-    } 
-    
-    corpoResposta = {
-      sucesso: false,
-      mensagem: 'Endereço de email não cadastrado'
     }
 
-    res.status(400).json(corpoResposta);
+    const doadorEncontrado = await Doador.findOne({email:dadosLogin.email});
+    if (doadorEncontrado) return processarLogin(doadorEncontrado, 'Doador');
+
+    const voluntarioEncontrado = await Voluntario.findOne(dadosLogin);
+    if (voluntarioEncontrado) return processarLogin(voluntarioEncontrado, 'Voluntario');
+
+    res.status(400).json({sucesso: false, mensagem:'Endereço de email não cadastrado'});
     return;
   }
 }
