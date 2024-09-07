@@ -118,7 +118,6 @@ export default class ControladoraContas {
     const doadorEncontrado = await Doador.findOne({email:dadosLogin.email});
     const voluntarioEncontrado = await Voluntario.findOne(dadosLogin);
 
-    let token: string;
     let corpoResposta: object;
 
     if (doadorEncontrado) {
@@ -130,11 +129,25 @@ export default class ControladoraContas {
         return;
       }
 
+     corpoResposta = {
+        sucesso: true,
+        mensagem: 'Doador autenticado com sucesso',
+        dados: {
+          token: ControladoraContas.novoToken(doadorEncontrado, 'Doador'),
+          usuario: {
+            id: doadorEncontrado.id,
+            tipo: 'Doador', 
+            email: doadorEncontrado.email,
+          }
+        },
+      };
+
+      res.status(200).json(corpoResposta);
+      return;
+
     } else if (voluntarioEncontrado) {
 
       // ...
-
-      token = ControladoraContas.novoToken(voluntarioEncontrado, 'Voluntario')
     } 
     
     corpoResposta = {

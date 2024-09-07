@@ -102,5 +102,4 @@ describe('Login de usuários ocorre como esperado', () => {
     expect(response.body.dados.usuario).toHaveProperty('id');
     expect(response.body.dados.usuario).toHaveProperty('email', doadorValido.email);
   });
-
 });
