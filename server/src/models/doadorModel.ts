@@ -28,6 +28,7 @@ const DoadorSchema: Schema = new Schema({
     doacoesFeitas: {type: Number, default: 0}
 });
 
+// middleware
 
 const Doador = mongoose.model<IDoador>('Doador', DoadorSchema);
 export default Doador;

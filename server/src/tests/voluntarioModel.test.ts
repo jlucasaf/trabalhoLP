@@ -34,6 +34,23 @@ describe('Voluntário', () => {
         expect(voluntario1.doacoesEntregues).toBe(15);
     });
 
+    it('retorna erro para campos obrigatorio nao preenchidos', async () => {
+        const voluntario2 = new Voluntario({
+            email: 'voluntario2@gmail.com',
+            senha: 'v123',
+            CNPJ: '12.345.678/0001-92',
+            local: {
+                cidade: 'Brasília',
+                endereco: 'quadra 01 conj 02 casa 03 - Algum lugar',
+                CEP: '12345678'
+            },
+            doacoesEntregues: 15
+        });
+        await expect(voluntario2.save()).rejects.toThrow(mongoose.Error.ValidationError);
+
+        
+    });
+
 });
 
 afterAll(async () => {

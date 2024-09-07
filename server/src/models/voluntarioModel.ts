@@ -26,6 +26,7 @@ const VoluntarioSchema: Schema = new Schema({
     doacoesEntregues: {type: Number, default: 0}
 });
 
+// middleware
 
 const Voluntario = mongoose.model<IVoluntario>('Voluntario', VoluntarioSchema);
 export default Voluntario;
