@@ -39,7 +39,7 @@ describe('Criação de usuários ocorre como esperado', () => {
   test('Tentar criar um doador com dados válidos resulta em sucesso', async () => {
     const response: Response = await supertest(app)
                                 .post('/api/cadastrarDoador')
-                                .send(doadorValido)
+                                .send({tipo:'doador', dados:doadorValido})
                                 .set('Accept', 'application/json');
     
     expect(response.status).toBe(200);
@@ -47,7 +47,7 @@ describe('Criação de usuários ocorre como esperado', () => {
     expect(response.body).toHaveProperty('dados');
     expect(response.body.dados).toHaveProperty('token');
     expect(response.body.dados).toHaveProperty('usuario');
-    expect(response.body.dados.usuario).toHaveProperty('tipo', 'Doador');
+    expect(response.body.dados.usuario).toHaveProperty('tipo', 'doador');
     expect(response.body.dados.usuario).toHaveProperty('id');
     expect(response.body.dados.usuario).toHaveProperty('email', doadorValido.email);
   });
@@ -55,7 +55,7 @@ describe('Criação de usuários ocorre como esperado', () => {
  test('Tentar criar um doador com email já cadastrado resulta em fracasso', async () => {
     const response: Response = await supertest(app)
                                 .post('/api/cadastrardoador')
-                                .send(doadorValido)
+                                .send({tipo:'doador', dados:doadorValido})
                                 .set('Accept', 'application/json');
     
     expect(response.status).toBe(200);
@@ -94,11 +94,11 @@ describe('Login de usuários ocorre como esperado', () => {
                                 .set('Accept', 'application/json');
     
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('mensagem', 'Doador autenticado com sucesso');
+    expect(response.body).toHaveProperty('mensagem', 'doador autenticado com sucesso');
     expect(response.body).toHaveProperty('dados');
     expect(response.body.dados).toHaveProperty('token');
     expect(response.body.dados).toHaveProperty('usuario');
-    expect(response.body.dados.usuario).toHaveProperty('tipo', 'Doador');
+    expect(response.body.dados.usuario).toHaveProperty('tipo', 'doador');
     expect(response.body.dados.usuario).toHaveProperty('id');
     expect(response.body.dados.usuario).toHaveProperty('email', doadorValido.email);
   });

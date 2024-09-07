@@ -12,23 +12,7 @@ import { compareSync } from 'bcryptjs';
  * @class
  */
 export default class ControladoraContas {
-  private modelo: any;
-  private nomeModelo: string;
   private DUPLICATE_KEY_ERR = 11000;
-
-  /**
-   * Cria uma nova instância da controladora de contas.
-   * 
-   * @constructor
-   * @param {any} modelo - O modelo de dados para a controladora (Doador ou Voluntario)
-   * @param {string} nomeModelo - O nome do modelo para a controladora. Para ser impresso
-   * nas mensagens customizadas
-   */  
-  constructor(modelo: any, nomeModelo: string) {
-    this.modelo = modelo;
-    this.nomeModelo = nomeModelo;
-  }
-  
 
   static novoToken(usuario: any, tipo: string) {
     const dadosUsuario = {
@@ -55,9 +39,19 @@ export default class ControladoraContas {
    */
   async cadastrar(req: Request, res: Response): Promise<void> {
     // ...
-    const dadosUsuario = req.body;
+    const dadosUsuario = req.body.dados;
+    const tipoUsuario = req.body.tipo;
 
-    const novoUsuario = new this.modelo(dadosUsuario);
+    let novoUsuario: any; 
+
+    if (tipoUsuario === 'doador') {
+      novoUsuario = new Doador(dadosUsuario);
+    } else if (tipoUsuario === 'voluntario') {
+      novoUsuario = new Voluntario(dadosUsuario)
+    } else {
+      res.status(400).json({sucesso: false, mensagem:'Tipo de usuário inválido'});
+      return;
+    }
 
     let corpoResposta: object;
 
@@ -68,10 +62,10 @@ export default class ControladoraContas {
         sucesso: true,
         mensagem: 'Doador cadastrado com sucesso',
         dados: {
-          token: ControladoraContas.novoToken(usuarioSalvo, this.nomeModelo),
+          token: ControladoraContas.novoToken(usuarioSalvo, tipoUsuario),
           usuario: {
             id: usuarioSalvo.id,
-            tipo: this.nomeModelo, 
+            tipo: tipoUsuario, 
             email: usuarioSalvo.email,
           }
         },
@@ -141,10 +135,10 @@ export default class ControladoraContas {
     }
 
     const doadorEncontrado = await Doador.findOne({email:dadosLogin.email});
-    if (doadorEncontrado) return processarLogin(doadorEncontrado, 'Doador');
+    if (doadorEncontrado) return processarLogin(doadorEncontrado, 'doador');
 
     const voluntarioEncontrado = await Voluntario.findOne(dadosLogin);
-    if (voluntarioEncontrado) return processarLogin(voluntarioEncontrado, 'Voluntario');
+    if (voluntarioEncontrado) return processarLogin(voluntarioEncontrado, 'voluntario');
 
     res.status(400).json({sucesso: false, mensagem:'Endereço de email não cadastrado'});
     return;

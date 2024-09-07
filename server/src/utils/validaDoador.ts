@@ -42,7 +42,7 @@ const esquemaVoluntario = Joi.object({
 });
 
 const validaDoador = function (req: Request, res: Response, next: NextFunction) {
-  const novoDoador = req.body;
+  const novoDoador = req.body.dados;
 
   const { error } = esquemaVoluntario.validate(novoDoador, { abortEarly: false });
 
