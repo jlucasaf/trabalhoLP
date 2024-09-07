@@ -4,6 +4,7 @@ import app from "../app";
 import supertest, {Response} from "supertest";
 import { conectar, desconectar } from "../config/db";
 import Doador from "../models/doadorModel";
+import Voluntario from "../models/voluntarioModel";
 
 beforeAll(async ()=> {
   await conectar();
@@ -11,6 +12,7 @@ beforeAll(async ()=> {
 
 afterAll(async ()=>{
   await Doador.deleteMany({});
+  await Voluntario.deleteMany({});
   await desconectar();
 });
     
@@ -47,6 +49,7 @@ describe('Criação de usuários ocorre como esperado', () => {
     expect(response.body).toHaveProperty('dados');
     expect(response.body.dados).toHaveProperty('token');
     expect(response.body.dados).toHaveProperty('usuario');
+    expect(response.body.dados.usuario).toHaveProperty('tipo', 'Doador');
     expect(response.body.dados.usuario).toHaveProperty('id');
     expect(response.body.dados.usuario).toHaveProperty('email', doadorValido.email);
   });
@@ -62,5 +65,16 @@ describe('Criação de usuários ocorre como esperado', () => {
       sucesso: false,
       mensagem: 'Endereço de email já cadastrado',
     });
+  });
+});
+
+describe('Login de usuários ocorre como esperado', () => {
+  test('Tentar entrar com doador não cadastrado resulta em erro', async () => {
+    const response: Response = await supertest(app)
+                                .post('/api/doador/login')
+                                .send({email:'naocadastrado@email.com', senha:'senha123'})
+                                .set('Accept', 'application/json');
+    
+    expect(response.status).toBe(400);
   });
 });

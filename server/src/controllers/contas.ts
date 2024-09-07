@@ -68,7 +68,7 @@ export default class ControladoraContas {
           token: this.novoToken(usuarioSalvo),
           usuario: {
             id: usuarioSalvo.id,
-            tipo: usuarioSalvo.tipo, 
+            tipo: this.nomeModelo, 
             email: usuarioSalvo.email,
           }
         },
@@ -102,7 +102,7 @@ export default class ControladoraContas {
    * @param {Response} res = Objeto de resposta do Express. Chamado após a conclusão
    * da operação, pode ter campos {sucesso: bool, mensagem: string, dados?:}, além 
    * @returns {Promise<void>} promise que representa a conclusão ou não do login
-   * > Em caso de email ou senha incorretos, 'mensagem' é 'Credenciais inválidas'
+   * > Em caso de email ou senha incorretos, 'mensagem' é 'Credenciais inválidas para <Tipo Usuario>'
    * > Em caso de erros diversos (ex: bd), mensagem é 'Um erro inesperado aconteceu'
    * > Em caso de sucesso, 'mensagem' é '<Tipo Usuário> autenticado com sucesso', e o
    * 'dados' deve conter 'token' e 'usuario' ({com 'tipo', 'id' e 'email'})
