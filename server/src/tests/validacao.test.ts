@@ -8,7 +8,7 @@ describe('Dados de doador são corretamente validados', () => {
   let next: NextFunction;
   
   beforeEach(() => {
-    req = {body:{}};
+    req = {body:{tipo:'doador', dados:{}}};
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
@@ -38,7 +38,7 @@ describe('Dados de doador são corretamente validados', () => {
   });
 
   test('Atributos com formato inválido são rejeitados', () => {
-    req.body = {
+    req.body.dados = {
       nome: '',
       email: 'formatoinv',
       senha: 'a1',
