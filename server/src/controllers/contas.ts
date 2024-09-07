@@ -11,6 +11,7 @@ import { segredoToken } from '../config/config';
 export default class ControladoraContas {
   private modelo: any;
   private nomeModelo: string;
+  private DUPLICATE_KEY_ERR = 11000;
 
   /**
    * Cria uma nova instância da controladora de contas.
@@ -55,28 +56,43 @@ export default class ControladoraContas {
 
     const novoUsuario = new this.modelo(dadosUsuario);
 
-    const usuarioSalvo = await novoUsuario.save()
+    let corpoResposta: object;
 
-    const corpoResposta = {
-      sucesso: true,
-      mensagem: 'Doador cadastrado com sucesso',
-      dados: {
-        token: this.novoToken(usuarioSalvo),
-        usuario: {
-          id: usuarioSalvo.id,
-          tipo: usuarioSalvo.tipo, 
-          email: usuarioSalvo.email,
-        }
-      },
-    };
+    try {
+      const usuarioSalvo = await novoUsuario.save()
 
-    res.status(200).json(corpoResposta);
+      corpoResposta = {
+        sucesso: true,
+        mensagem: 'Doador cadastrado com sucesso',
+        dados: {
+          token: this.novoToken(usuarioSalvo),
+          usuario: {
+            id: usuarioSalvo.id,
+            tipo: usuarioSalvo.tipo, 
+            email: usuarioSalvo.email,
+          }
+        },
+      };
+
+      res.status(200).json(corpoResposta);
+      return;
+    } catch (error: any) {
+      if (error.code === this.DUPLICATE_KEY_ERR) {
+
+        corpoResposta = {
+          sucesso: false,
+          mensagem: 'Endereço de email já cadastrado',
+        };
+
+        res.status(200).json(corpoResposta);
+        return;
+      }
+
+      corpoResposta = {sucesso: false, mensagem:'Um erro inesperado ocorreu'};
+      
+      res.status(200).json(corpoResposta);
+    }
     return;
-    
-    // tenta: salvar novo usuario
-    // se erro: se for 110000 (chave duplicada) retornar fracasso
-    //          se for diverso, logar, retornar fracasso
-    // se sucesso: retornar como descrito
   }
 
   /**

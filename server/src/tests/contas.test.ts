@@ -63,5 +63,4 @@ describe('Criação de usuários ocorre como esperado', () => {
       mensagem: 'Endereço de email já cadastrado',
     });
   });
-
 });
