@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const dbPath = "mongodb://localhost:27017/trabalhodb";
 
-export const connectDB = async () => {
+export const conectar = async () => {
   try {
     await mongoose.connect(dbPath);
     console.log('Conectado ao MongoDB');
@@ -12,7 +12,7 @@ export const connectDB = async () => {
   }
 }
 
-export const disconnectDB = async () => {
+export const desconectar = async () => {
   try {
     await mongoose.disconnect();
     console.log('Desconectado do MongoDB');
