@@ -1,6 +1,6 @@
 // Testa validaçaõ de dados (middlewares que usam esquemas de validação do Joi)
 import { Request, Response, NextFunction } from 'express';
-import validaDoador from '../utils/validaDoador';
+import validaDoador from '../middlewares/validaDoador';
 
 describe('Dados de doador são corretamente validados', () => {
   let req: Partial<Request>;

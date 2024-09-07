@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { authenticate } from '../utils/authentication';
+import { authenticate } from '../middlewares/authentication';
 import { sign } from 'jsonwebtoken';
 import { segredoToken } from '../config/config';
 

@@ -46,7 +46,7 @@ export default class ControladoraContas {
    * 'dados' deve conter 'token' e 'usuario' ({com 'tipo', 'id' e 'email'})
    * > Status da resposta deve ser 200 mesmo em caso de cadastro não completo
    */
-  async cadastrar(req: Request, res: Response): Promise<void> {
+  static async cadastrar(req: Request, res: Response): Promise<void> {
     // ...
     const dadosUsuario = req.body.dados;
     const tipoUsuario = req.body.tipo;

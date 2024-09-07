@@ -6,8 +6,23 @@ import { conectar, desconectar } from '../config/db';
 import app from '../app';
 
 let idCampanha: string;
+let credenciaisDoador = {email: 'doador@valido.com', senha: 'do@dor123'}; 
 
 const preparar = async () => {
+  const doadorValido = new Doador({
+    nome: 'Doador Válido',
+    email: 'doador@valido.com',
+    senha: 'do@dor123',
+    CPF: '000.788.610-12',
+      local: {
+      cidade: 'Cidade Válida',
+      endereco: 'Endereço válido',
+      CEP: '29046-095'
+    }
+  });
+  
+  await doadorValido.save();
+
   const voluntarioValido = new Voluntario({
     nome: 'Voluntario da Silva',
     email: 'voluntario1@gmail.com',
@@ -58,6 +73,34 @@ describe('Doador consegue doar como esperado', () => {
                                 .post(`/api/doar/${idCampanha}`);
     
     expect(response.statusCode).toBe(401);
-    expect(response.body).toHaveProperty('mensagem', 'Credenciais ausentes');
+    expect(response.body).toHaveProperty('mensagem', 'Usuário não autorizado');
   });
+
+  test('Doador autenticado não consegue doar para campanha não existente', async () => {
+    const doacao = {
+      foto: false,
+      data: new Date('2022-02-11'),
+    }
+    
+    const login: Response = await supertest(app)
+                              .post('/api/login')
+                              .send(credenciaisDoador)
+                              .set('Accept', 'application/json')
+
+
+    console.log(login.body)
+
+    const token: string = login.body.dados.token;
+
+    const doar: Response = await supertest(app)
+                                  .post('/api/doar/1234')
+                                  .send(doacao)
+                                  .set('Accept', 'application/json')
+                                  .set('Authorization', `Bearer ${token}`);
+
+    console.log(doar.body);
+    expect(doar.statusCode).toBe(400);
+    expect(doar.body).toHaveProperty('mensagem', 'Campanha não existe ou está inativa');
+    
+  })
 });

@@ -1,17 +1,11 @@
 import express, { Router } from "express";
-import validaDoador from "../utils/validaDoador";
+import validaDoador from "../middlewares/validaDoador";
 import ControladoraContas from "../controllers/contas";
 
 const contasRouter: Router = express.Router();
 
-const contrContasDoador = new ControladoraContas
-const contrContasVoluntario = new ControladoraContas
-
 contasRouter.route('/cadastrarDoador')
-  .post([validaDoador, contrContasDoador.cadastrar.bind(contrContasDoador)]);
-
-contasRouter.route('/cadastrarVoluntario')
-  .post([contrContasVoluntario.cadastrar.bind(contrContasVoluntario)]);
+  .post([validaDoador, ControladoraContas.cadastrar]);
 
 contasRouter.route('/login')
   .post(ControladoraContas.login)
