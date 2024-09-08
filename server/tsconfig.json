@@ -16,7 +16,7 @@
 
     /* Type Checking */
     "strict": true,                                      /* Enable all strict type-checking options. */
-
+    "typeRoots": ["./node_modules/@types", "./src/types"],
     /* Completeness */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },

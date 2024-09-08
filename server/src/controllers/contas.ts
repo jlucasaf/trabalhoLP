@@ -12,10 +12,20 @@ import { compareSync } from 'bcryptjs';
  * @class
  */
 export default class ControladoraContas {
-  static novoToken(usuario: any, tipo: string) {
+
+  /**
+   * Método para gerar o token de acesso do usuário
+   * @param {any} usuario - é o usuário que está acessando,
+   * o objeto terá todos os atributos de um Doador ou Voluntario
+   * @param {string} tipo - é o tipo do usuário (doador | voluntario)
+   * @returns {string} token - é o json web token de acesso do usuário
+   * > Deve conter as informações de tipo, id, nome e email
+   */
+  static novoToken(usuario: any, tipo: "doador" | "voluntario"): string {
     const dadosUsuario = {
       tipo: tipo,
       id: usuario.id,
+      nome: usuario.nome,
       email: usuario.email,
     }
     return sign(dadosUsuario, segredoToken);
@@ -36,7 +46,7 @@ export default class ControladoraContas {
    * 'dados' deve conter 'token' e 'usuario' ({com 'tipo', 'id' e 'email'})
    * > Status da resposta deve ser 200 mesmo em caso de cadastro não completo
    */
-  async cadastrar(req: Request, res: Response): Promise<void> {
+  static async cadastrar(req: Request, res: Response): Promise<void> {
     // ...
     const dadosUsuario = req.body.dados;
     const tipoUsuario = req.body.tipo;
@@ -119,7 +129,7 @@ export default class ControladoraContas {
         sucesso: true,
         mensagem: `${tipo} autenticado com sucesso`,
         dados: {
-          token: ControladoraContas.novoToken(doadorEncontrado, 'Doador'),
+          token: ControladoraContas.novoToken(doadorEncontrado, 'doador'),
           usuario: {
             id: usuario.id,
             tipo: tipo, 
