@@ -3,7 +3,9 @@ import { sign } from 'jsonwebtoken';
 import { segredoToken } from '../config/config';
 import Doador from '../models/doadorModel';
 import Voluntario from '../models/voluntarioModel';
+import Doacao from '../models/doacaoModel';
 import { compareSync } from 'bcryptjs';
+import mongoose from 'mongoose';
 
 /**
  * ControladoraContas é uma classe responsável por gerenciar as operações de contas,
@@ -162,5 +164,29 @@ export default class ControladoraContas {
   /* > Deve exibir as doações recentes do usuário
    * > ...
   */
-  static async home(req: Request, res: Response) {}
+  static async home(req: Request, res: Response) {
+    const usuario = req.usuario;
+    let corpoResposta: object;
+
+    if (usuario?.tipo == 'doador') {
+      const doacoesRecentes = await Doacao.find({
+        id_doador: new mongoose.Types.ObjectId(usuario.id)
+      }).sort({data: -1});
+
+      const recentes = doacoesRecentes.map(doacao => ({
+        id: doacao._id,
+        local: doacao.local
+      }))
+
+      corpoResposta = {
+        sucesso: true,
+        dados: {
+          recentes: recentes
+        }
+      }
+
+      return res.status(200).json(corpoResposta);
+    }
+    res.end();
+  }
 }
