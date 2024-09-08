@@ -4,6 +4,7 @@ import Campanha from '../models/campanhaModel';
 import Voluntario from '../models/voluntarioModel';
 import { conectar, desconectar } from '../config/db';
 import app from '../app';
+import mongoose from 'mongoose';
 
 let idCampanha: string;
 let credenciaisDoador = {email: 'doador@valido.com', senha: 'do@dor123'}; 
@@ -67,6 +68,12 @@ afterAll(async () => {
 })
 
 describe('Doador consegue doar como esperado', () => {
+
+  const doacao = {
+    foto: false,
+    data: new Date('2022-02-11'),
+  }
+
   test('Usuário precisa estar cadastrado para doar', async () => {
     // Deve ser rejeitado pelo middleware de autenticação
     const response: Response = await supertest(app)
@@ -77,30 +84,25 @@ describe('Doador consegue doar como esperado', () => {
   });
 
   test('Doador autenticado não consegue doar para campanha não existente', async () => {
-    const doacao = {
-      foto: false,
-      data: new Date('2022-02-11'),
-    }
+
     
     const login: Response = await supertest(app)
                               .post('/api/login')
                               .send(credenciaisDoador)
                               .set('Accept', 'application/json')
 
-
-    console.log(login.body)
-
     const token: string = login.body.dados.token;
 
+    const idUnicoInexistente = new mongoose.Types.ObjectId
+
     const doar: Response = await supertest(app)
-                                  .post('/api/doar/1234')
+                                  .post(`/api/doar/${idUnicoInexistente.toString()}`)
                                   .send(doacao)
                                   .set('Accept', 'application/json')
                                   .set('Authorization', `Bearer ${token}`);
 
-    console.log(doar.body);
-    expect(doar.statusCode).toBe(400);
-    expect(doar.body).toHaveProperty('mensagem', 'Campanha não existe ou está inativa');
+    expect(doar.statusCode).toBe(404);
+    expect(doar.body).toHaveProperty('mensagem', 'Campanha inexistente ou encerrada');
     
-  })
+  });
 });
