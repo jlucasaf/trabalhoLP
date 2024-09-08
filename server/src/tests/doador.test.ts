@@ -35,7 +35,6 @@ afterAll(async () => {
 })
 
 describe('Doador consegue doar como esperado', () => {
-
   const doacao = {
     foto: false,
     // Preencher com dados de doação quando forem definidos
@@ -83,6 +82,16 @@ describe('Doador consegue doar como esperado', () => {
     expect(doar.statusCode).toBe(201); // Recurso criado
     expect(doar.body).toHaveProperty('mensagem', 'Doação iniciada com sucesso');
     expect(doar.body).toHaveProperty('dados');
-    expect(doar.body.dados).toHaveProperty('idDoacao'); // Usado para gerar qrcode no frontend 
+    expect(doar.body.dados).toHaveProperty('id'); // Usado para gerar qrcode no frontend 
   });
+});
+
+describe('Doador consegue ver suas doações recentes na tela de inicio', () => {
+  test('Doador não autenticado não tem acesso à rota', async () => {
+    const verRecentes: Response = await supertest(app)  
+                                         .get('/api/home')
+                                         .set('Accept', 'application/json')
+
+    expect(verRecentes.statusCode).toBe(401);
+  });  
 });
