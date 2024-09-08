@@ -151,4 +151,16 @@ export default class ControladoraContas {
     res.status(400).json({sucesso: false, mensagem:'Endereço de email não cadastrado'});
     return;
   }
+
+  /**
+   * Método para obter dados que serão exibidos na tela inicial de um usuario doador
+   * @param {Request} req - Objeto de requisição do express. O objeto terá um um parâmetro
+   * 'usuario', fornecido pelo middleware de autenticação
+   * @param {Response} res = Objeto de resposta do Express. Chamado após a conclusão
+   * da operação, pode ter campos {sucesso: bool, mensagem: string, dados?:}
+   */
+  /* > Deve exibir as doações recentes do usuário
+   * > ...
+  */
+  static async home(req: Request, res: Response) {}
 }

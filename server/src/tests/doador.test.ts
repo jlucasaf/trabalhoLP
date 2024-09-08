@@ -9,6 +9,7 @@ import { criarCampanha, criarDoador, criarVoluntario } from './fabricas';
 
 let idCampanha: string;
 let credenciaisDoador = {email: 'doador0@email.com', senha: 'do@dor123'}; 
+let token: string;
 
 const preparar = async () => {
   const doadorValido = new Doador(criarDoador('doador0@email.com')); 
@@ -34,13 +35,13 @@ afterAll(async () => {
   await desconectar();
 })
 
+
 describe('Doador consegue doar como esperado', () => {
   const doacao = {
     foto: false,
     // Preencher com dados de doação quando forem definidos
   }
 
-  let token: string;
 
   test('Usuário precisa estar cadastrado para doar', async () => {
     // Deve ser rejeitado pelo middleware de autenticação
@@ -86,12 +87,23 @@ describe('Doador consegue doar como esperado', () => {
   });
 });
 
-describe('Doador consegue ver suas doações recentes na tela de inicio', () => {
+describe('Tela de início de doador', () => {
   test('Doador não autenticado não tem acesso à rota', async () => {
     const verRecentes: Response = await supertest(app)  
                                          .get('/api/home')
                                          .set('Accept', 'application/json')
 
     expect(verRecentes.statusCode).toBe(401);
-  });  
+  });
+
+  test('Doador autenticado tem acesso ao seu histórico de doações recentes', async () => {
+    const home: Response = await supertest(app)
+                                         .get('/api/home')
+                                         .set('Accept', 'application/json')
+                                         .set('Authorization', `Bearer ${token}`);
+
+    expect(home.statusCode).toBe(200);
+    expect(home.body).toHaveProperty('dados');
+    expect(home.body.dados).toHaveProperty('recentes');
+  });
 });
