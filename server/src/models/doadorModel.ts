@@ -1,4 +1,4 @@
-import { hash } from 'bcryptjs';
+import {hash} from 'bcryptjs';
 import mongoose, {Schema, Document} from 'mongoose';
 
 interface IDoador extends Document {
@@ -28,9 +28,7 @@ const DoadorSchema: Schema = new Schema({
     doacoesFeitas: {type: Number, default: 0}
 });
 
-<<<<<<< HEAD
 // middleware
-=======
 // hashing de senha
 DoadorSchema.pre('save', async function(next) {
   if (this.isModified('senha')) {
@@ -39,7 +37,6 @@ DoadorSchema.pre('save', async function(next) {
   }
   next()
 });
->>>>>>> 146aaf9a25d535ea9db42e5f435b37c5869b6699
 
 const Doador = mongoose.model<IDoador>('Doador', DoadorSchema);
 
