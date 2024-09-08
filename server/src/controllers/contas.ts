@@ -3,7 +3,9 @@ import { sign } from 'jsonwebtoken';
 import { segredoToken } from '../config/config';
 import Doador from '../models/doadorModel';
 import Voluntario from '../models/voluntarioModel';
+import Doacao from '../models/doacaoModel';
 import { compareSync } from 'bcryptjs';
+import mongoose from 'mongoose';
 
 /**
  * ControladoraContas é uma classe responsável por gerenciar as operações de contas,
@@ -150,5 +152,41 @@ export default class ControladoraContas {
 
     res.status(400).json({sucesso: false, mensagem:'Endereço de email não cadastrado'});
     return;
+  }
+
+  /**
+   * Método para obter dados que serão exibidos na tela inicial de um usuario doador
+   * @param {Request} req - Objeto de requisição do express. O objeto terá um um parâmetro
+   * 'usuario', fornecido pelo middleware de autenticação
+   * @param {Response} res = Objeto de resposta do Express. Chamado após a conclusão
+   * da operação, pode ter campos {sucesso: bool, mensagem: string, dados?:}
+   */
+  /* > Deve exibir as doações recentes do usuário
+   * > ...
+  */
+  static async home(req: Request, res: Response) {
+    const usuario = req.usuario;
+    let corpoResposta: object;
+
+    if (usuario?.tipo == 'doador') {
+      const doacoesRecentes = await Doacao.find({
+        id_doador: new mongoose.Types.ObjectId(usuario.id)
+      }).sort({data: -1});
+
+      const recentes = doacoesRecentes.map(doacao => ({
+        id: doacao._id,
+        local: doacao.local
+      }))
+
+      corpoResposta = {
+        sucesso: true,
+        dados: {
+          recentes: recentes
+        }
+      }
+
+      return res.status(200).json(corpoResposta);
+    }
+    res.end();
   }
 }
