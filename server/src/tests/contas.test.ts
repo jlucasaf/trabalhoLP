@@ -3,6 +3,7 @@ import supertest, {Response} from "supertest";
 import { conectar, desconectar } from "../config/db";
 import Doador from "../models/doadorModel";
 import Voluntario from "../models/voluntarioModel";
+import { criarDoador } from "./fabricas";
 
 beforeAll(async ()=> {
   await conectar();
@@ -14,17 +15,7 @@ afterAll(async ()=>{
   await desconectar();
 });
     
-const doadorValido = {
-  nome: 'Doador Válido',
-  email: 'doador@valido.com',
-  senha: 'do@dor123',
-  CPF: '000.788.610-12',
-    local: {
-    cidade: 'Cidade Válida',
-    endereco: 'Endereço válido',
-    CEP: '29046-095'
-  }
-}
+const doadorValido = criarDoador('doador1@email.com'); 
 
 describe('Criação de usuários ocorre como esperado', () => {
   test('Tentar criar doador com dados inválidos resulta em erro', async () => {

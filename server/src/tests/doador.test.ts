@@ -5,52 +5,19 @@ import Voluntario from '../models/voluntarioModel';
 import { conectar, desconectar } from '../config/db';
 import app from '../app';
 import mongoose from 'mongoose';
+import { criarCampanha, criarDoador, criarVoluntario } from './fabricas';
 
 let idCampanha: string;
-let credenciaisDoador = {email: 'doador@valido.com', senha: 'do@dor123'}; 
+let credenciaisDoador = {email: 'doador0@email.com', senha: 'do@dor123'}; 
 
 const preparar = async () => {
-  const doadorValido = new Doador({
-    nome: 'Doador Válido',
-    email: 'doador@valido.com',
-    senha: 'do@dor123',
-    CPF: '000.788.610-12',
-      local: {
-      cidade: 'Cidade Válida',
-      endereco: 'Endereço válido',
-      CEP: '29046-095'
-    }
-  });
-  
+  const doadorValido = new Doador(criarDoador('doador0@email.com')); 
   await doadorValido.save();
 
-  const voluntarioValido = new Voluntario({
-    nome: 'Voluntario da Silva',
-    email: 'voluntario1@gmail.com',
-    senha: 'v123',
-    CNPJ: '12.345.678/0001-91',
-    local: {
-      cidade: 'Brasília',
-      endereco: 'quadra 01 conj 02 casa 03 - Algum lugar',
-      CEP: '12345678'
-    },
-    doacoesEntregues: 15
-  });
-
+  const voluntarioValido = new Voluntario(criarVoluntario('volunt@rio@email.com'));
   const voluntarioSalvo = await voluntarioValido.save();
 
-  const campanhaValida = new Campanha({
-    titulo: 'Título',
-    descricao: 'Descrição',
-    local: {
-      cidade: 'Cidade',
-      endereco: 'Endereço',
-      CEP: 'CEP',
-    },
-    dataFinal: new Date('2030-01-01'),
-    id_voluntario: voluntarioSalvo._id,
-  });
-
+  const campanhaValida = new Campanha(criarCampanha(voluntarioSalvo._id));
   const campanhaSalva = await campanhaValida.save();
   idCampanha = campanhaSalva.id;
 }
@@ -71,8 +38,10 @@ describe('Doador consegue doar como esperado', () => {
 
   const doacao = {
     foto: false,
-    data: new Date('2022-02-11'),
+    // Preencher com dados de doação quando forem definidos
   }
+
+  let token: string;
 
   test('Usuário precisa estar cadastrado para doar', async () => {
     // Deve ser rejeitado pelo middleware de autenticação
@@ -84,14 +53,13 @@ describe('Doador consegue doar como esperado', () => {
   });
 
   test('Doador autenticado não consegue doar para campanha não existente', async () => {
-
-    
+    // Fazendo login 
     const login: Response = await supertest(app)
                               .post('/api/login')
                               .send(credenciaisDoador)
                               .set('Accept', 'application/json')
 
-    const token: string = login.body.dados.token;
+    token = login.body.dados.token;
 
     const idUnicoInexistente = new mongoose.Types.ObjectId
 
@@ -102,7 +70,19 @@ describe('Doador consegue doar como esperado', () => {
                                   .set('Authorization', `Bearer ${token}`);
 
     expect(doar.statusCode).toBe(404);
-    expect(doar.body).toHaveProperty('mensagem', 'Campanha inexistente ou encerrada');
-    
+    expect(doar.body).toHaveProperty('mensagem', 'Campanha inexistente ou encerrada');   
+  });
+
+  test('Doador autenticado consegue doar para campanha existente e recebe mensagem adequada', async () => {
+    const doar: Response = await supertest(app)
+                                  .post(`/api/doar/${idCampanha}`) // id válido
+                                  .send(doacao)
+                                  .set('Accept', 'application/json')
+                                  .set('Authorization', `Bearer ${token}`);
+
+    expect(doar.statusCode).toBe(201); // Recurso criado
+    expect(doar.body).toHaveProperty('mensagem', 'Doação iniciada com sucesso');
+    expect(doar.body).toHaveProperty('dados');
+    expect(doar.body.dados).toHaveProperty('idDoacao'); // Usado para gerar qrcode no frontend 
   });
 });
