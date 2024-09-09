@@ -45,6 +45,14 @@ const esquemaDoador = Joi.object({
 
 const esquemaVoluntario = Joi.object({
   ...esquemaUsuario,
+  CNPJ: Joi.string().pattern(/^\d{14}$|^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/)
+                      .required().messages({
+    'any.required': 'O CNPJ é obrigatório',
+    'string.pattern.base': 'O CNPJ deve estar no formato 00.000.000/0000-00',
+  }),
+  doacoesEntregues: Joi.number().min(0).messages({
+    'number.min':'Doações entregues deve ser um número maior ou igual a 0'
+  }),
 });
 
 export { esquemaDoador, esquemaVoluntario };

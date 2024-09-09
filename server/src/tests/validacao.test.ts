@@ -114,7 +114,7 @@ describe('Dados de voluntario são corretamente validados', () => {
     // Acessar o argumento passado para o mock de `res.json`
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
       sucesso: false,
-      mensagem: 'Dados inválidos para novo doador',
+      mensagem: 'Dados inválidos para novo voluntario',
       detalhes: expect.arrayContaining([
         'O CNPJ deve estar no formato 00.000.000/0000-00',
         'Doações entregues deve ser um número maior ou igual a 0',
