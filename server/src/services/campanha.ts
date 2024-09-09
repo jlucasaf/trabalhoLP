@@ -11,7 +11,7 @@ interface IResultado {
  * às campanhas. É uma classe que deve ser usada pelas controladoras
  * @class
 */
-export default class ServicoDoacao {
+export default class ServicoCampanha {
   /**
   * Método para criar uma nova campanha.
   * @param {any} conteudo - objeto que contém todas as informações

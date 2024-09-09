@@ -17,8 +17,8 @@ afterAll(async ()=>{
     
 const doadorValido = criarDoador('doador1@email.com'); 
 
-describe('Criação de doadores ocorre como esperado', () => {
-  test('Tentar criar doador com dados inválidos resulta em erro', async () => {
+describe('Criação de Doadores funciona corretamente', () => {
+  test('Tentar cadastrar Doador com dados inválidos resulta em fracasso', async () => {
     const response: Response = await supertest(app)
                                 .post('/api/cadastrar')
                                 .send({})
@@ -27,7 +27,7 @@ describe('Criação de doadores ocorre como esperado', () => {
     expect(response.status).toBe(400);
   });
 
-  test('Tentar criar um doador com dados válidos resulta em sucesso', async () => {
+  test('Tentar cadastrar Doador com dados válidos resulta em sucesso', async () => {
     const response: Response = await supertest(app)
                                 .post('/api/cadastrar')
                                 .send({tipo:'doador', dados:doadorValido})
@@ -43,7 +43,7 @@ describe('Criação de doadores ocorre como esperado', () => {
     expect(response.body.dados.usuario).toHaveProperty('email', doadorValido.email);
   });
 
- test('Tentar criar um doador com email já cadastrado resulta em fracasso', async () => {
+ test('Tentar cadastrar Doador com email já cadastrado resulta em fracasso', async () => {
     const response: Response = await supertest(app)
                                 .post('/api/cadastrar')
                                 .send({tipo:'doador', dados:doadorValido})
@@ -57,8 +57,8 @@ describe('Criação de doadores ocorre como esperado', () => {
   });
 });
 
-describe('Login de doadores ocorre como esperado', () => {
-  test('Tentar entrar com doador não cadastrado resulta em erro', async () => {
+describe('Login de Doadores funciona corretamente', () => {
+  test('Login com doador não cadastrado resulta em fracasso', async () => {
     const response: Response = await supertest(app)
                                 .post('/api/login')
                                 .send({email:'naocadastrado@email.com', senha:'senha123'})
@@ -68,7 +68,7 @@ describe('Login de doadores ocorre como esperado', () => {
     expect(response.body).toHaveProperty('mensagem', 'Endereço de email não cadastrado');
   });
 
-  test('Tentar entrar com senha inválida resulta em erro', async () => {
+  test('Login com senha incorreta resulta em fracasso', async () => {
     const response: Response = await supertest(app)
                                 .post('/api/login')
                                 .send({email: doadorValido.email, senha:'senhaerrada'})
@@ -78,7 +78,7 @@ describe('Login de doadores ocorre como esperado', () => {
     expect(response.body).toHaveProperty('mensagem', 'Senha incorreta');
   });
 
-  test('Tentar entrar com doador existente resulta em resposta adequada', async () => {
+  test('Login com dados corretos resulta em sucesso', async () => {
     const response: Response = await supertest(app)
                                 .post('/api/login')
                                 .send({email: doadorValido.email, senha:doadorValido.senha})

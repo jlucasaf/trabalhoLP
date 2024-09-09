@@ -23,12 +23,21 @@ afterAll(async ()=>{
   await desconectar();
 });
     
-
-describe('Criação de campanha por voluntários ocorre como esperado', () => {
+describe('Criação de campanha por Voluntário funciona corretamente', () => {
   test('Usuário precisa estar autenticado para criar uma campanha', async () => {
     const response: Response = await supertest(app)
                                       .post('/api/campanhas')
     expect(response.statusCode).toBe(401); // Não autorizado
-  }); 
+  });
+
+  test('Tentar criar campanha com dados inválidos resulta em fracasso', async () => {
+    const response: Response = await supertest(app)
+                                      .post('/api/campanhas')
+                                      .send({})
+                                      .set('Accept', 'application/json')
+                                      .set('Authorization', `Bearer ${token}`);
+
+    expect(response.statusCode).toBe(400); // Bad request
+  });
 });
 
