@@ -50,7 +50,23 @@ async function criar(req: Request, res: Response) {
  * {sucesso:boolean, mensagem?:string, dados?:object}
  */
 async function listar(req: Request, res: Response) {
-  // Implementação necessária
+  const user = req.usuario!;
+  
+  try {
+    if (user.tipo === 'doador') {
+      const resultadoBusca = await ServicoCampanha.listarRecentes();
+      const corpoResposta = {
+        sucesso: true,
+        mensagem: `Listando doações recentes: ${resultadoBusca.dados.lenght}`,
+        dados: resultadoBusca.dados, 
+      }
+      return res.status(200).json(corpoResposta);
+    }
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({sucesso: false,
+                                  mensagem: 'Um erro inesperado aconteceu'});
+  } 
 }
 
 /**

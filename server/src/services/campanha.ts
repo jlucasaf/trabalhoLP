@@ -6,12 +6,12 @@ import Campanha from "../models/campanhaModel";
 interface IResultado {
   sucesso: boolean,
   mensagem?: string,
-  dados?: object,
+  dados?: any,
 }
 
 
 /**
- * Método para criar uma nova campanha.
+ * Função para criar uma nova campanha.
  * @param {any} dadosCriacao - objeto que contém informações
  * necessárias para criar uma nova Campanha, já nos seus respectivos
  * formatos validados. (titulo, descrição, local, datafinal)
@@ -37,8 +37,34 @@ async function criar(dadosCriacao: any, idUsuario: string): Promise<IResultado> 
   };
 }
 
+
+
+/**
+ * Função para listar campanhas recentes para o Doador
+ * @returns {Promise<IResultado>} - lista com campanhas recentes 
+ * para o usuário poder ver detalhes e escolher ou não doar
+ * @throws erro - erro em caso de exceção inesperada (erro interno do servidor)
+ */
+async function listarRecentes(): Promise<IResultado> {
+  const campanhasRecentes = await Campanha.find()
+                                          .sort({ _id: -1 })
+                                          .limit(10)
+                                          .populate('id_voluntario', 'nome');
+
+  const dados = campanhasRecentes.map((campanha) => ({
+    id: campanha.id,
+    titulo: campanha.titulo,
+    local: campanha.local,
+    voluntario: (campanha.id_voluntario as any).nome,
+    dataFinal: campanha.dataFinal.toISOString(),
+  }));
+
+  return { sucesso: true, dados }; 
+}
+
 const ServicoCampanha = {
   criar,
+  listarRecentes,
 }
 
 export default ServicoCampanha

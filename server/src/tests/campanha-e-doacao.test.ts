@@ -75,16 +75,16 @@ describe('Leitura de campanha funciona corretamente [GET api/campanhas]', () => 
                                       .set('authorization', `Bearer ${tokenDoador}`)
                                       .set('Accept', 'application/json');
     expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty('dados');
     const listaEsperada = [
       {
         id: idCampanha,
         titulo: campanhaValida.titulo,
         local: campanhaValida.local,
         voluntario: voluntarioValido.nome,
-        dataFinal: campanhaValida.dataFinal.toString,
+        dataFinal: campanhaValida.dataFinal.toISOString(),
       }
-    ]
-    expect(response.body.dados).toHaveProperty('doacoesRecentes', listaEsperada);
+    ];
+
+    expect(response.body).toHaveProperty('dados', listaEsperada);
   });
 });
