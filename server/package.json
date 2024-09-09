@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "test": "jest",
+    "test": "jest --maxWorkers=1 --verbose",
     "lint": "eslint ./src/**/*.ts",
     "server": "node ./dir/index.js",
     "doc": "ts-node ./swagger/swaggerConfg.ts"

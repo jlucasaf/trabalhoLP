@@ -1,9 +1,5 @@
 import {Request, Response} from 'express'
-import { sign } from 'jsonwebtoken';
-import { segredoToken } from '../config/config';
-import Doador from '../models/doadorModel';
-import Voluntario from '../models/voluntarioModel';
-import { compareSync } from 'bcryptjs';
+import ServicoContas from '../services/contas';
 
 /**
  * ControladoraContas é uma classe responsável por gerenciar as operações de contas,
@@ -12,25 +8,6 @@ import { compareSync } from 'bcryptjs';
  * @class
  */
 export default class ControladoraContas {
-
-  /**
-   * Método para gerar o token de acesso do usuário
-   * @param {any} usuario - é o usuário que está acessando,
-   * o objeto terá todos os atributos de um Doador ou Voluntario
-   * @param {string} tipo - é o tipo do usuário (doador | voluntario)
-   * @returns {string} token - é o json web token de acesso do usuário
-   * > Deve conter as informações de tipo, id, nome e email
-   */
-  static novoToken(usuario: any, tipo: "doador" | "voluntario"): string {
-    const dadosUsuario = {
-      tipo: tipo,
-      id: usuario.id,
-      nome: usuario.nome,
-      email: usuario.email,
-    }
-    return sign(dadosUsuario, segredoToken);
-  }
-
   /**
    * Método para cadastrar uma nova conta (Usuário ou Doador)
    * @param {Request} req - Objeto de requisição do express. O corpo
@@ -39,65 +16,37 @@ export default class ControladoraContas {
    * todos os dados exigidos para criar um novo usuário, já validados em questão de formato
    * @param {Response} res = Objeto de resposta do Express. Chamado após a conclusão
    * da operação, pode ter campos {sucesso: bool, mensagem: string, dados?:}, além 
-   * @returns {Promise<void>} promise que representa a conclusão ou não do cadastro
    * > Em caso de email já cadastrado, 'mensagem' é 'Endereço de email já cadastrado'
    * > Em caso de erros diversos (ex: bd), mensagem é 'Um erro inesperado aconteceu'
    * > Em caso de sucesso, 'mensagem' é '<Tipo Usuário> cadastrado com sucesso', e o
    * 'dados' deve conter 'token' e 'usuario' ({com 'tipo', 'id' e 'email'})
    * > Status da resposta deve ser 200 mesmo em caso de cadastro não completo
    */
-  static async cadastrar(req: Request, res: Response): Promise<void> {
-    // ...
+  static async cadastrar(req: Request, res: Response) {
     const dadosUsuario = req.body.dados;
     const tipoUsuario = req.body.tipo;
-
-    let novoUsuario: any; 
-
-    if (tipoUsuario === 'doador') {
-      novoUsuario = new Doador(dadosUsuario);
-    } else if (tipoUsuario === 'voluntario') {
-      novoUsuario = new Voluntario(dadosUsuario)
-    } else {
-      res.status(400).json({sucesso: false, mensagem:'Tipo de usuário inválido'});
-      return;
-    }
-
-    let corpoResposta: object;
-
-    const emailExistente = await Doador.findOne({ email: dadosUsuario.email }) || 
-      await Voluntario.findOne({ email: dadosUsuario.email });
-
-    if (emailExistente) {
-      res.status(400).json({
-        sucesso: false,
-        mensagem: 'Endereço de email já cadastrado',
-      });
-      return;
-    }
+    let corpoResposta: any = {};
 
     try {
-      const usuarioSalvo = await novoUsuario.save()
+      if (dadosUsuario === undefined) console.log("req.body.dados é indefinido, como?");
+      const cadastro = await ServicoContas.cadastrar(tipoUsuario, dadosUsuario); 
+      corpoResposta.sucesso = cadastro.sucesso;
+    
+      if (!cadastro.sucesso) {
+        corpoResposta.mensagem = cadastro.mensagem;
+        return res.status(200).json(corpoResposta)
+      }
 
-      corpoResposta = {
-        sucesso: true,
-        mensagem: 'Doador cadastrado com sucesso',
-        dados: {
-          token: ControladoraContas.novoToken(usuarioSalvo, tipoUsuario),
-          usuario: {
-            id: usuarioSalvo.id,
-            tipo: tipoUsuario, 
-            email: usuarioSalvo.email,
-          }
-        },
-      };
+      corpoResposta.mensagem = 'Usuário cadastrado com sucesso';
 
-      res.status(200).json(corpoResposta);
-      return;
+      const tokenAcesso = ServicoContas.gerarToken(cadastro.dados);
+
+      corpoResposta.dados = {token:tokenAcesso, usuario: cadastro.dados};
     } catch (error) {
-      corpoResposta = {sucesso: false, mensagem:'Um erro inesperado ocorreu'}; 
-      res.status(500).json(corpoResposta);
+      return res.status(500).json({sucesso: false, mensagem: 'Um erro inesperado aconteceu'});
     }
-    return;
+
+    return res.status(201).json(corpoResposta);
   }
 
   /**
@@ -106,49 +55,46 @@ export default class ControladoraContas {
    * da requisição conterá um objeto contendo o email e a senha do usuario
    * @param {Response} res = Objeto de resposta do Express. Chamado após a conclusão
    * da operação, pode ter campos {sucesso: bool, mensagem: string, dados?:}, além 
-   * @returns {Promise<void>} promise que representa a conclusão ou não do login
    * > Em caso de email incorreto, 'mensagem' será 'Endereço de email não cadastrado'
    * > Em caso de senha incorreta, 'mensagem' será 'Senha incorreta'
    * > Em caso de erros diversos (ex: bd), mensagem é 'Um erro inesperado aconteceu'
    * > Em caso de sucesso, 'mensagem' é '<Tipo Usuário> autenticado com sucesso', e o
-   * 'dados' deve conter 'token' e 'usuario' ({com 'tipo', 'id' e 'email'})
+   * 'dados' deve conter 'token'
    * > Status da resposta deve ser 200 mesmo em caso de login não completo
    */
-  static async login(req: Request, res: Response): Promise<void> {
-    const dadosLogin = req.body;
+  static async login(req: Request, res: Response) {
+    const {email, senha} = req.body;
+    
+    let corpoResposta: object;
 
-    const processarLogin = (usuario: any, tipo: string) => {
-      const senhaCorreta: boolean = compareSync(dadosLogin.senha, usuario.senha);
-
-      if (!senhaCorreta) {
-        res.status(400).json({sucesso: false, mensagem: 'Senha incorreta'});
-        return;
-      }
-
-      const corpoResposta = {
-        sucesso: true,
-        mensagem: `${tipo} autenticado com sucesso`,
-        dados: {
-          token: ControladoraContas.novoToken(doadorEncontrado, 'doador'),
-          usuario: {
-            id: usuario.id,
-            tipo: tipo, 
-            email: usuario.email,
-          }
-        },
+    if (!email || !senha) {
+      corpoResposta = {
+        sucesso: false,
+        mensagem: 'Endereço de email e senha são necessários para o login',
       };
-
-      res.status(200).json(corpoResposta);
-      return;
+      return res.status(400).json(corpoResposta);
+    }
+    
+    const resultadoLogin = await ServicoContas.login(email, senha);
+  
+    if (!resultadoLogin.sucesso) {
+      corpoResposta = {
+        sucesso: false,
+        mensagem: resultadoLogin.mensagem,
+      };
+      return res.status(400).json(corpoResposta);
     }
 
-    const doadorEncontrado = await Doador.findOne({email:dadosLogin.email});
-    if (doadorEncontrado) return processarLogin(doadorEncontrado, 'doador');
+    const token: string = ServicoContas.gerarToken(resultadoLogin.dados)
 
-    const voluntarioEncontrado = await Voluntario.findOne(dadosLogin);
-    if (voluntarioEncontrado) return processarLogin(voluntarioEncontrado, 'voluntario');
-
-    res.status(400).json({sucesso: false, mensagem:'Endereço de email não cadastrado'});
-    return;
+    corpoResposta = {
+      sucesso: true,
+      mensagem: 'Usuário autenticado com sucesso',
+      dados: {
+        token,
+      }
+    }
+    
+    return res.status(200).json(corpoResposta);
   }
 }

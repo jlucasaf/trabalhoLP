@@ -1,8 +1,6 @@
+import Joi from "joi";
 
-import { NextFunction, Request, Response } from 'express';
-import Joi from 'joi';
-
-const esquemaVoluntario = Joi.object({
+const esquemaUsuario = {
   nome: Joi.string().required().messages({
     'any.required': 'O nome é obrigatório',
     'string.empty': 'O nome não pode estar vazio',
@@ -16,11 +14,6 @@ const esquemaVoluntario = Joi.object({
     'any.required': 'A senha é obrigatória',
     'string.min': 'A senha deve ter no mínimo 6 caracteres',
     'string.empty': 'A senha não pode estar vazia',
-  }),
-  CPF: Joi.string().pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/).required().messages({
-    'any.required': 'O CPF é obrigatório',
-    'string.pattern.base': 'O CPF deve estar no formato 000.000.000-00',
-    'string.empty': 'O CPF não pode estar vazio',
   }),
   local: Joi.object({
     cidade: Joi.string().required().messages({
@@ -39,24 +32,27 @@ const esquemaVoluntario = Joi.object({
   }).required().messages({
     'any.required': 'O campo local é obrigatório',
   }),
+}
+
+const esquemaDoador = Joi.object({
+  ...esquemaUsuario,
+  CPF: Joi.string().pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/).required().messages({
+    'any.required': 'O CPF é obrigatório',
+    'string.pattern.base': 'O CPF deve estar no formato 000.000.000-00',
+    'string.empty': 'O CPF não pode estar vazio',
+  }),
 });
 
-const validaDoador = function (req: Request, res: Response, next: NextFunction) {
-  const novoDoador = req.body.dados;
+const esquemaVoluntario = Joi.object({
+  ...esquemaUsuario,
+  CNPJ: Joi.string().pattern(/^\d{14}$|^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/)
+                      .required().messages({
+    'any.required': 'O CNPJ é obrigatório',
+    'string.pattern.base': 'O CNPJ deve estar no formato 00.000.000/0000-00',
+  }),
+  doacoesEntregues: Joi.number().min(0).messages({
+    'number.min':'Doações entregues deve ser um número maior ou igual a 0'
+  }),
+});
 
-  const { error } = esquemaVoluntario.validate(novoDoador, { abortEarly: false });
-
-  if (error) {
-    const corpoResposta = {
-      sucesso: false,
-      mensagem: 'Dados inválidos',
-      detalhes: error.details.map(detalhe => detalhe.message),
-    };
-    return res.status(400).json(corpoResposta);
-  }
-
-  next();
-};
-
-export default validaDoador;
-
+export { esquemaDoador, esquemaVoluntario };

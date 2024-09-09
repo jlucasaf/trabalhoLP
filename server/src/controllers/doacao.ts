@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Campanha from "../models/campanhaModel";
 import mongoose from "mongoose";
+import Doacao from "../models/doacaoModel";
 
 /**
  * ControladoraDoacoes é responsável por implementar os serviços relacionados
@@ -26,7 +27,8 @@ export default class ControladoraDoacao {
   *   e deverá ser retornado o id da doação no corpo de resposta (em dados)
   */
   static async doar(req: Request, res: Response): Promise<void> {
-    const idCampanha: string = req.params.idCampanha
+    const idCampanha: string = req.params.idCampanha;
+    const dadosDoacao = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(idCampanha)) {
       res.status(400).json({sucesso: false, mensagem: 'Campanha inexistente'})
@@ -39,6 +41,35 @@ export default class ControladoraDoacao {
       return;
     }
 
-    res.end(); 
+    const novaDoacao = new Doacao({
+      foto: dadosDoacao.foto,
+      local: campanhaBuscada.local,
+      data: Date.now(),
+      id_doador: new mongoose.Types.ObjectId(req.usuario?.id),
+      id_voluntario: campanhaBuscada.id_voluntario,
+      id_campanha: campanhaBuscada._id,
+      status: 'em andamento'
+    });
+
+    try {
+      const doacaoSalva = await novaDoacao.save();
+      
+      const corpoResposta = {
+        sucesso: true,
+        mensagem: 'Doação iniciada com sucesso',
+        dados: {
+          id: doacaoSalva.id,
+        }
+      };
+
+      res.status(201).json(corpoResposta);
+      return;
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({sucesso: false,
+                            mensagem: 'Um erro inesperado ocorreu ao tentar iniciar uma nova doação'
+                          });
+      return;
+    }
   }
 }
