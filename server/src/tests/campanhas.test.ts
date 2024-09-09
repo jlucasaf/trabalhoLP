@@ -3,7 +3,7 @@ import supertest, {Response} from "supertest";
 import { conectar, desconectar } from "../config/db";
 import Doador from "../models/doadorModel";
 import Voluntario from "../models/voluntarioModel";
-import { criarVoluntario } from "./fabricas";
+import { criarVoluntario, dadosCampanhaValida } from "./fabricas";
 
 let token: string;
 
@@ -24,6 +24,8 @@ afterAll(async ()=>{
 });
     
 describe('Criação de campanha por Voluntário funciona corretamente', () => {
+  let idCampanha: string;
+
   test('Usuário precisa estar autenticado para criar uma campanha', async () => {
     const response: Response = await supertest(app)
                                       .post('/api/campanhas')
@@ -35,9 +37,20 @@ describe('Criação de campanha por Voluntário funciona corretamente', () => {
                                       .post('/api/campanhas')
                                       .send({})
                                       .set('Accept', 'application/json')
-                                      .set('Authorization', `Bearer ${token}`);
+                                      .set('authorization', `Bearer ${token}`);
 
     expect(response.statusCode).toBe(400); // Bad request
+  });
+
+  test('Tentar criar campanha com dados válidos resulta em sucesso', async () => {
+    const response: Response = await supertest(app)
+                                      .post('/api/campanhas')
+                                      .send(dadosCampanhaValida())
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${token}`);
+    
+    expect(response.statusCode).toBe(201); // Resource created
+    idCampanha = response.body.dados.id;
   });
 });
 

@@ -9,7 +9,7 @@ app.use(express.json())
 
 app.use('/api', contasRouter);
 
-app.use('/api', campanhasRouter)
+app.use('/api/campanhas', campanhasRouter)
 
 app.use('/api', doadorRouter);
 
