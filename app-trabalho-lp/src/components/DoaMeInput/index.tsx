@@ -5,12 +5,14 @@ import { styles } from './styles'
 
 export default function DoaMeInput({ iconeVisibilidade, cor, ...rest }: DoaMeInputProps & TextInputProps) {
     const [visibilidadeInput, setVisibilidadeInput] = useState<boolean>(false);
+
+    const styled = styles(cor);
     return (
-        <View style={styles.container}>
-            <View style={styles.borda}>
+        <View style={styled.container}>
+            <View style={styled.borda}>
 
                 <TextInput 
-                    style={styles.input}
+                    style={styled.input}
                     {...rest}
                     secureTextEntry={visibilidadeInput} />
             </View>
