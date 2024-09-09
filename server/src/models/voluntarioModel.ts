@@ -1,3 +1,4 @@
+import { hash } from 'bcryptjs';
 import mongoose, {Schema, Document} from 'mongoose';
 
 interface IVoluntario extends Document {
@@ -24,6 +25,15 @@ const VoluntarioSchema: Schema = new Schema({
         CEP: {type: String, required: true},
     },
     doacoesEntregues: {type: Number, default: 0}
+});
+
+// hasheando senha
+VoluntarioSchema.pre('save', async function(next) {
+  if (this.isModified('senha')) {
+    const senhaHasheada = await hash(this.senha as string, 10);
+    this.senha = senhaHasheada;
+  }
+  next()
 });
 
 const Voluntario = mongoose.model<IVoluntario>('Voluntario', VoluntarioSchema);
