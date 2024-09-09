@@ -1,6 +1,4 @@
-
-import { NextFunction, Request, Response } from 'express';
-import Joi from 'joi';
+import Joi from "joi";
 
 const esquemaDoador = Joi.object({
   nome: Joi.string().required().messages({
@@ -41,25 +39,4 @@ const esquemaDoador = Joi.object({
   }),
 });
 
-const validaDoador = function (req: Request, res: Response, next: NextFunction) {
-
-  const novoDoador = req.body.dados;
-
-  if (!novoDoador) return res.status(400).json({sucesso: false, mensagem: 'Dados ausentes'});
-
-  const { error } = esquemaDoador.validate(novoDoador, { abortEarly: false });
-
-  if (error) {
-    const corpoResposta = {
-      sucesso: false,
-      mensagem: 'Dados inválidos',
-      detalhes: error.details.map(detalhe => detalhe.message),
-    };
-    return res.status(400).json(corpoResposta);
-  }
-
-  next();
-};
-
-export default validaDoador;
-
+export default esquemaDoador;
