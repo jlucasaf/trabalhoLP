@@ -27,7 +27,28 @@ export default class ControladoraCampanha {
   * > deve-se passar dados da campanha para res
   */
   static async criar(req: Request, res: Response) {
-    // ** 
+    const idUsuario = req.usuario!.id;
+    const dadosCampanha = req.body;
+
+    try {
+      const campanhaCriada = await ServicoCampanha.criar(dadosCampanha, idUsuario);
+      
+      if (!campanhaCriada.sucesso) {
+        return res.status(200).json({sucesso: false, 
+                                      mensagem:campanhaCriada.mensagem});
+      }
+      
+      const corpoResposta = {
+        sucesso: true, 
+        mensagem: 'Campanha iniciada com sucesso',
+        dados: campanhaCriada.dados,
+      }
+      
+      return res.status(201).json(corpoResposta);
+    } catch (error) {
+      return res.status(500).json({sucesso: false,
+                                    mensagem: 'Um erro inesperado aconteceu'});
+    }
   }
 
   /**
