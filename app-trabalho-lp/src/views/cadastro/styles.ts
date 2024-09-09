@@ -7,23 +7,36 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     paddingVertical: 80,
-    marginHorizontal: 24,
-    alignItems: 'center', // Centraliza horizontalmente
+    padding: 24,
+    alignItems: 'center', 
   },
   voltarBotaoContainer: {
     marginBottom: 24,
-    alignSelf: 'flex-start', // Mantém o botão de voltar no canto superior esquerdo
+    alignSelf: 'flex-start', 
   },
   tituloContainer: {
     flexDirection:"row",
-
     width: "100%",
-    alignItems: 'center', // Centraliza o texto horizontalmente
-    justifyContent: 'space-around', // Centraliza o texto verticalmente
+    alignItems: 'center', 
+    justifyContent: 'space-around', 
+    marginBottom: 40,
   },
   titulo: {
     fontSize: 38,
     color: tema.cores.rosa[500],
     fontWeight: "bold",
   },
+  dadosUsuarioContainer:{
+    marginTop: 40,
+    alignContent: "flex-start",
+    justifyContent: "center",
+    gap: (32),
+    marginBottom: 40,
+  },
+  botaoCadastrarContainer:{
+    marginTop: 40,
+    width: "100%",
+    
+    
+  }
 });

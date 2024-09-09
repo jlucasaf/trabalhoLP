@@ -5,6 +5,7 @@ import { Image, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import Logo from "@/assets/logo/Logo"
 import DoaMeBotao from '@/components/DoaMeBotao';
+import DoaMeInput from '@/components/DoaMeInput';
 
 export function TelaDeEntrada() {
   return (
