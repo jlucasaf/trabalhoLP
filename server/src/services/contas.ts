@@ -72,7 +72,7 @@ export default class ServicoContas {
 
   /**
   * Cadastra Voluntario ou retorna mensagem de porque não foi cadastrado
-  * @param {any} _dados - objeto com todos os dados exigidos para a
+  * @param {any} dados - objeto com todos os dados exigidos para a
   * criação de novo Voluntario, já no validados de acordo com o respectivo
   * formato exigido.
   * @returns {IResultado} - objeto que contém os dados gerados pela
@@ -81,10 +81,23 @@ export default class ServicoContas {
   * @throws {any} - exceção que representa qualquer erro inesperado
   * (erros que resultariam em código 500).
   */
-  private static cadastrarVoluntario(_dados: any): IResultado {
-    return {sucesso: false}; 
-  }
+  private static async cadastrarVoluntario(dados: any): Promise<IResultado> {
+    const novoVoluntario = new Voluntario(dados);
 
+    const voluntarioCadastrado = await novoVoluntario.save();
+    
+    const resultado: IResultado = {
+      sucesso: true,
+      dados: {
+        tipo: 'voluntario',
+        id: voluntarioCadastrado.id,
+        nome: voluntarioCadastrado.nome,
+        email: voluntarioCadastrado.email,
+      },
+    };
+
+    return resultado; 
+  }
   /**
   * Cadastra usuário ou retorna mensagem de porque não foi cadastrado.
   * @param {'doador' | 'voluntario'} tipo - indica o tipo de usuário
@@ -125,7 +138,6 @@ export default class ServicoContas {
   * @throws {any} - exceção que representa qualquer erro inesperado
   * (erros que resultariam em código 500).
   */
-
   static async login(email: string, senha: string): Promise<IResultado> {
 
     let usuarioEncontrado: any;
