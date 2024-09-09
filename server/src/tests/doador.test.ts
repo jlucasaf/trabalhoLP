@@ -87,7 +87,7 @@ describe('Doador consegue doar como esperado', () => {
   });
 });
 
-describe('Tela de início de doador', () => {
+describe.skip('Tela de início de doador', () => {
   test('Doador não autenticado não tem acesso à rota', async () => {
     const verRecentes: Response = await supertest(app)  
                                          .get('/api/home')

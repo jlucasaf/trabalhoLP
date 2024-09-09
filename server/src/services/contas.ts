@@ -1,9 +1,15 @@
 // services/contas.ts 
 
+import { sign } from "jsonwebtoken";
+import { segredoToken } from "../config/config";
+// Importação de modelos
+import Doador from "../models/doadorModel";
+import Voluntario from "../models/voluntarioModel";
+
 interface IResultado {
   sucesso: boolean,
   mensagem?: string,
-  dados?: object,
+  dados?: any,
 }
 
 /**
@@ -16,28 +22,49 @@ export default class ServicoContas {
 
   /**
   * Gera um novo token de acesso, com o payload passado pelo parâmetro 
-  * @param {any} _usuario - objeto com todas as informações de usuário,
+  * @param {any} usuario - objeto com todas as informações de usuário,
   * incluindo email, tipo e id
   * @returns {string} - token assinado para garantir acesso à rotas
   * protegidas
   */
-  static gerarToken(_usuario: any): string {
-    return '';
+  static gerarToken(usuario: any): string {
+    const dadosUsuario = {
+      tipo: usuario.tipo,
+      id: usuario.id,
+      nome: usuario.nome,
+      email: usuario.email,
+    }
+
+    return sign(dadosUsuario, segredoToken);
   }
 
   /**
   * Cadastra Doador ou retorna mensagem de porque não foi cadastrado
-  * @param {any} _dados - objeto com todos os dados exigidos para a
+  * @param {any} dados - objeto com todos os dados exigidos para a
   * criação de novo Doador, já no validados de acordo com o respectivo
-  * formato exigido.
+  * formato exigido, cujo email é único
   * @returns {IResultado} - objeto que contém os dados gerados pela
   * criação de usuário, em caso de sucesso, ou apenas uma mensagem
   * explicando o impedimento, em caso de fracasso.
   * @throws {any} - exceção que representa qualquer erro inesperado
   * (erros que resultariam em código 500).
   */
-  private static cadastrarDoador(_dados: any): IResultado {
-    return {sucesso: false}; 
+  private static async cadastrarDoador(dados: any): Promise<IResultado> {
+    const novoDoador = new Doador(dados);
+
+    const doadorCadastrado = await novoDoador.save();
+    
+    const resultado: IResultado = {
+      sucesso: true,
+      dados: {
+        tipo: 'doador',
+        id: doadorCadastrado.id,
+        nome: doadorCadastrado.nome,
+        email: doadorCadastrado.email,
+      },
+    };
+
+    return resultado; 
   }
 
   /**
@@ -57,9 +84,9 @@ export default class ServicoContas {
 
   /**
   * Cadastra usuário ou retorna mensagem de porque não foi cadastrado.
-  * @param {'doador' | 'voluntario'} _tipo - indica o tipo de usuário
+  * @param {'doador' | 'voluntario'} tipo - indica o tipo de usuário
   * que será criado.
-  * @param {any} _dados - objeto com todos os dados exigidos para a
+  * @param {any} dados - objeto com todos os dados exigidos para a
   * criação de novo usuário especificado pelo tipo, já no validados
   * de acordo com o respectivo formato exigido.
   * @returns {IResultado} - objeto que contém os dados gerados pela
@@ -68,8 +95,19 @@ export default class ServicoContas {
   * @throws {any} - exceção que representa qualquer erro inesperado
   * (erros que resultariam em código 500).
   */
-  static cadastrar(_tipo: 'doador' | 'voluntario', _dados: any): IResultado {
-    return {sucesso: false} 
+  static async cadastrar(tipo: 'doador' | 'voluntario', dados: any): Promise<IResultado> {
+    // Verifica se email já está sendo usado
+    const usuarioConflito = await Doador.findOne({ email: dados.email }) || 
+      await Voluntario.findOne({ email: dados.email });
+
+    if (usuarioConflito) {
+      return {sucesso: false, mensagem: 'Endereço de email já cadastrado.'};
+    }
+
+    // Passa para o serviço específico do tipo
+    return (tipo === 'doador') ? 
+      this.cadastrarDoador(dados) :
+      this.cadastrarVoluntario(dados)
   }
 
 

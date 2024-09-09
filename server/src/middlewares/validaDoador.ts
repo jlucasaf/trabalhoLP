@@ -2,7 +2,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-const esquemaVoluntario = Joi.object({
+const esquemaDoador = Joi.object({
   nome: Joi.string().required().messages({
     'any.required': 'O nome é obrigatório',
     'string.empty': 'O nome não pode estar vazio',
@@ -42,9 +42,12 @@ const esquemaVoluntario = Joi.object({
 });
 
 const validaDoador = function (req: Request, res: Response, next: NextFunction) {
+
   const novoDoador = req.body.dados;
 
-  const { error } = esquemaVoluntario.validate(novoDoador, { abortEarly: false });
+  if (!novoDoador) return res.status(400).json({sucesso: false, mensagem: 'Dados ausentes'});
+
+  const { error } = esquemaDoador.validate(novoDoador, { abortEarly: false });
 
   if (error) {
     const corpoResposta = {

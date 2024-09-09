@@ -6,6 +6,7 @@ import Voluntario from '../models/voluntarioModel';
 import Doacao from '../models/doacaoModel';
 import { compareSync } from 'bcryptjs';
 import mongoose from 'mongoose';
+import ServicoContas from '../services/contas';
 
 /**
  * ControladoraContas é uma classe responsável por gerenciar as operações de contas,
@@ -14,7 +15,6 @@ import mongoose from 'mongoose';
  * @class
  */
 export default class ControladoraContas {
-
   /**
    * Método para gerar o token de acesso do usuário
    * @param {any} usuario - é o usuário que está acessando,
@@ -41,65 +41,37 @@ export default class ControladoraContas {
    * todos os dados exigidos para criar um novo usuário, já validados em questão de formato
    * @param {Response} res = Objeto de resposta do Express. Chamado após a conclusão
    * da operação, pode ter campos {sucesso: bool, mensagem: string, dados?:}, além 
-   * @returns {Promise<void>} promise que representa a conclusão ou não do cadastro
    * > Em caso de email já cadastrado, 'mensagem' é 'Endereço de email já cadastrado'
    * > Em caso de erros diversos (ex: bd), mensagem é 'Um erro inesperado aconteceu'
    * > Em caso de sucesso, 'mensagem' é '<Tipo Usuário> cadastrado com sucesso', e o
    * 'dados' deve conter 'token' e 'usuario' ({com 'tipo', 'id' e 'email'})
    * > Status da resposta deve ser 200 mesmo em caso de cadastro não completo
    */
-  static async cadastrar(req: Request, res: Response): Promise<void> {
-    // ...
+  static async cadastrar(req: Request, res: Response) {
     const dadosUsuario = req.body.dados;
     const tipoUsuario = req.body.tipo;
-
-    let novoUsuario: any; 
-
-    if (tipoUsuario === 'doador') {
-      novoUsuario = new Doador(dadosUsuario);
-    } else if (tipoUsuario === 'voluntario') {
-      novoUsuario = new Voluntario(dadosUsuario)
-    } else {
-      res.status(400).json({sucesso: false, mensagem:'Tipo de usuário inválido'});
-      return;
-    }
-
-    let corpoResposta: object;
-
-    const emailExistente = await Doador.findOne({ email: dadosUsuario.email }) || 
-      await Voluntario.findOne({ email: dadosUsuario.email });
-
-    if (emailExistente) {
-      res.status(400).json({
-        sucesso: false,
-        mensagem: 'Endereço de email já cadastrado',
-      });
-      return;
-    }
+    let corpoResposta: any = {};
 
     try {
-      const usuarioSalvo = await novoUsuario.save()
+      if (dadosUsuario === undefined) console.log("req.body.dados é indefinido, como?");
+      const cadastro = await ServicoContas.cadastrar(tipoUsuario, dadosUsuario); 
+      corpoResposta.sucesso = cadastro.sucesso;
+    
+      if (!cadastro.sucesso) {
+        corpoResposta.mensagem = cadastro.mensagem;
+        return res.status(200).json(corpoResposta)
+      }
 
-      corpoResposta = {
-        sucesso: true,
-        mensagem: 'Doador cadastrado com sucesso',
-        dados: {
-          token: ControladoraContas.novoToken(usuarioSalvo, tipoUsuario),
-          usuario: {
-            id: usuarioSalvo.id,
-            tipo: tipoUsuario, 
-            email: usuarioSalvo.email,
-          }
-        },
-      };
+      corpoResposta.mensagem = 'Usuário cadastrado com sucesso';
 
-      res.status(200).json(corpoResposta);
-      return;
+      const tokenAcesso = ServicoContas.gerarToken(cadastro.dados);
+
+      corpoResposta.dados = {token:tokenAcesso, usuario: cadastro.dados};
     } catch (error) {
-      corpoResposta = {sucesso: false, mensagem:'Um erro inesperado ocorreu'}; 
-      res.status(500).json(corpoResposta);
+      return res.status(500).json({sucesso: false, mensagem: 'Um erro inesperado aconteceu'});
     }
-    return;
+
+    return res.status(201).json(corpoResposta);
   }
 
   /**
