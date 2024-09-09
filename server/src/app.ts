@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import contasRouter from './routes/contas';
 import doadorRouter from './routes/doador';
 import campanhasRouter from './routes/campanhas';
+import {setupSwagger} from './config/swagger';
 
 const app: Express = express();
 
@@ -12,5 +13,7 @@ app.use('/api', contasRouter);
 app.use('/api/campanhas', campanhasRouter)
 
 app.use('/api', doadorRouter);
+
+setupSwagger(app);
 
 export default app;
