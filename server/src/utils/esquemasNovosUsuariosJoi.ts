@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const esquemaDoador = Joi.object({
+const esquemaUsuario = {
   nome: Joi.string().required().messages({
     'any.required': 'O nome é obrigatório',
     'string.empty': 'O nome não pode estar vazio',
@@ -14,11 +14,6 @@ const esquemaDoador = Joi.object({
     'any.required': 'A senha é obrigatória',
     'string.min': 'A senha deve ter no mínimo 6 caracteres',
     'string.empty': 'A senha não pode estar vazia',
-  }),
-  CPF: Joi.string().pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/).required().messages({
-    'any.required': 'O CPF é obrigatório',
-    'string.pattern.base': 'O CPF deve estar no formato 000.000.000-00',
-    'string.empty': 'O CPF não pode estar vazio',
   }),
   local: Joi.object({
     cidade: Joi.string().required().messages({
@@ -37,6 +32,19 @@ const esquemaDoador = Joi.object({
   }).required().messages({
     'any.required': 'O campo local é obrigatório',
   }),
+}
+
+const esquemaDoador = Joi.object({
+  ...esquemaUsuario,
+  CPF: Joi.string().pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/).required().messages({
+    'any.required': 'O CPF é obrigatório',
+    'string.pattern.base': 'O CPF deve estar no formato 000.000.000-00',
+    'string.empty': 'O CPF não pode estar vazio',
+  }),
 });
 
-export default esquemaDoador;
+const esquemaVoluntario = Joi.object({
+  ...esquemaUsuario,
+});
+
+export { esquemaDoador, esquemaVoluntario };
