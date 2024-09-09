@@ -1,7 +1,10 @@
 // services/contas.ts 
 
+// Importação de funções de bibliotecas externas
 import { sign } from "jsonwebtoken";
 import { segredoToken } from "../config/config";
+import { compareSync } from "bcryptjs";
+
 // Importação de modelos
 import Doador from "../models/doadorModel";
 import Voluntario from "../models/voluntarioModel";
@@ -101,7 +104,7 @@ export default class ServicoContas {
       await Voluntario.findOne({ email: dados.email });
 
     if (usuarioConflito) {
-      return {sucesso: false, mensagem: 'Endereço de email já cadastrado.'};
+      return {sucesso: false, mensagem: 'Endereço de email já cadastrado'};
     }
 
     // Passa para o serviço específico do tipo
@@ -122,7 +125,39 @@ export default class ServicoContas {
   * @throws {any} - exceção que representa qualquer erro inesperado
   * (erros que resultariam em código 500).
   */
-  static login(email: string, senha: string): IResultado {
-    return {sucesso: false}
+
+  static async login(email: string, senha: string): Promise<IResultado> {
+
+    let usuarioEncontrado: any;
+    let tipoUsuario: 'doador' | 'voluntario';
+    // Buscando nos dois tipos de usuario
+    const doadorEncontrado = await Doador.findOne({ email });
+    const voluntarioEncontrado = await Voluntario.findOne({ email });
+
+    // Verifica se é um dos dois ou nenhum
+    if (doadorEncontrado) {
+      usuarioEncontrado = doadorEncontrado;
+      tipoUsuario = 'doador'
+    } else if (voluntarioEncontrado) {
+      tipoUsuario = 'voluntario'
+      usuarioEncontrado = voluntarioEncontrado;
+    } else {
+      return { sucesso: false, mensagem: 'Endereço de email não cadastrado' };
+    }
+
+    const senhaCorreta: boolean = compareSync(senha, usuarioEncontrado.senha);
+
+    if (!senhaCorreta) {
+      return { sucesso: false, mensagem: 'Senha incorreta' };
+    }
+    
+    const usuario = {
+      id: usuarioEncontrado.id,
+      tipo: tipoUsuario,
+      nome: usuarioEncontrado.nome,
+      email: usuarioEncontrado.email
+    };
+
+    return { sucesso: true, dados: usuario };
   }
 }

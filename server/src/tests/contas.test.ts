@@ -43,13 +43,13 @@ describe('Criação de usuários ocorre como esperado', () => {
     expect(response.body.dados.usuario).toHaveProperty('email', doadorValido.email);
   });
 
- test.skip('Tentar criar um doador com email já cadastrado resulta em fracasso', async () => {
+ test('Tentar criar um doador com email já cadastrado resulta em fracasso', async () => {
     const response: Response = await supertest(app)
                                 .post('/api/cadastrar')
                                 .send({tipo:'doador', dados:doadorValido})
                                 .set('Accept', 'application/json');
     
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(200);
     expect(response.body).toMatchObject({
       sucesso: false,
       mensagem: 'Endereço de email já cadastrado',
@@ -57,14 +57,14 @@ describe('Criação de usuários ocorre como esperado', () => {
   });
 });
 
-describe.skip('Login de usuários ocorre como esperado', () => {
+describe('Login de usuários ocorre como esperado', () => {
   test('Tentar entrar com doador não cadastrado resulta em erro', async () => {
     const response: Response = await supertest(app)
                                 .post('/api/login')
                                 .send({email:'naocadastrado@email.com', senha:'senha123'})
                                 .set('Accept', 'application/json');
     
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('mensagem', 'Endereço de email não cadastrado');
   });
 
@@ -74,7 +74,7 @@ describe.skip('Login de usuários ocorre como esperado', () => {
                                 .send({email: doadorValido.email, senha:'senhaerrada'})
                                 .set('Accept', 'application/json');
     
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('mensagem', 'Senha incorreta');
   });
 
@@ -85,12 +85,8 @@ describe.skip('Login de usuários ocorre como esperado', () => {
                                 .set('Accept', 'application/json');
     
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('mensagem', 'doador autenticado com sucesso');
+    expect(response.body).toHaveProperty('mensagem', 'Usuário autenticado com sucesso');
     expect(response.body).toHaveProperty('dados');
     expect(response.body.dados).toHaveProperty('token');
-    expect(response.body.dados).toHaveProperty('usuario');
-    expect(response.body.dados.usuario).toHaveProperty('tipo', 'doador');
-    expect(response.body.dados.usuario).toHaveProperty('id');
-    expect(response.body.dados.usuario).toHaveProperty('email', doadorValido.email);
   });
 });

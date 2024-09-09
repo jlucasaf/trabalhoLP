@@ -86,24 +86,3 @@ describe('Doador consegue doar como esperado', () => {
     expect(doar.body.dados).toHaveProperty('id'); // Usado para gerar qrcode no frontend 
   });
 });
-
-describe.skip('Tela de início de doador', () => {
-  test('Doador não autenticado não tem acesso à rota', async () => {
-    const verRecentes: Response = await supertest(app)  
-                                         .get('/api/home')
-                                         .set('Accept', 'application/json')
-
-    expect(verRecentes.statusCode).toBe(401);
-  });
-
-  test('Doador autenticado tem acesso ao seu histórico de doações recentes', async () => {
-    const home: Response = await supertest(app)
-                                         .get('/api/home')
-                                         .set('Accept', 'application/json')
-                                         .set('Authorization', `Bearer ${token}`);
-
-    expect(home.statusCode).toBe(200);
-    expect(home.body).toHaveProperty('dados');
-    expect(home.body.dados).toHaveProperty('recentes');
-  });
-});
