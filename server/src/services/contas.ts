@@ -42,63 +42,6 @@ export default class ServicoContas {
   }
 
   /**
-  * Cadastra Doador ou retorna mensagem de porque não foi cadastrado
-  * @param {any} dados - objeto com todos os dados exigidos para a
-  * criação de novo Doador, já no validados de acordo com o respectivo
-  * formato exigido, cujo email é único
-  * @returns {IResultado} - objeto que contém os dados gerados pela
-  * criação de usuário, em caso de sucesso, ou apenas uma mensagem
-  * explicando o impedimento, em caso de fracasso.
-  * @throws {any} - exceção que representa qualquer erro inesperado
-  * (erros que resultariam em código 500).
-  */
-  private static async cadastrarDoador(dados: any): Promise<IResultado> {
-    const novoDoador = new Doador(dados);
-
-    const doadorCadastrado = await novoDoador.save();
-    
-    const resultado: IResultado = {
-      sucesso: true,
-      dados: {
-        tipo: 'doador',
-        id: doadorCadastrado.id,
-        nome: doadorCadastrado.nome,
-        email: doadorCadastrado.email,
-      },
-    };
-
-    return resultado; 
-  }
-
-  /**
-  * Cadastra Voluntario ou retorna mensagem de porque não foi cadastrado
-  * @param {any} dados - objeto com todos os dados exigidos para a
-  * criação de novo Voluntario, já no validados de acordo com o respectivo
-  * formato exigido.
-  * @returns {IResultado} - objeto que contém os dados gerados pela
-  * criação de usuário, em caso de sucesso, ou apenas uma mensagem
-  * explicando o impedimento, em caso de fracasso.
-  * @throws {any} - exceção que representa qualquer erro inesperado
-  * (erros que resultariam em código 500).
-  */
-  private static async cadastrarVoluntario(dados: any): Promise<IResultado> {
-    const novoVoluntario = new Voluntario(dados);
-
-    const voluntarioCadastrado = await novoVoluntario.save();
-    
-    const resultado: IResultado = {
-      sucesso: true,
-      dados: {
-        tipo: 'voluntario',
-        id: voluntarioCadastrado.id,
-        nome: voluntarioCadastrado.nome,
-        email: voluntarioCadastrado.email,
-      },
-    };
-
-    return resultado; 
-  }
-  /**
   * Cadastra usuário ou retorna mensagem de porque não foi cadastrado.
   * @param {'doador' | 'voluntario'} tipo - indica o tipo de usuário
   * que será criado.
@@ -120,10 +63,25 @@ export default class ServicoContas {
       return {sucesso: false, mensagem: 'Endereço de email já cadastrado'};
     }
 
-    // Passa para o serviço específico do tipo
-    return (tipo === 'doador') ? 
-      this.cadastrarDoador(dados) :
-      this.cadastrarVoluntario(dados)
+    const modelo = (tipo === 'doador') ? 
+      Doador :
+      Voluntario  
+
+    const novoUsuario = new modelo(dados);
+
+    const usuarioCadastrado = await novoUsuario.save();
+    
+    const resultado: IResultado = {
+      sucesso: true,
+      dados: {
+        tipo: tipo,
+        id: usuarioCadastrado.id,
+        nome: usuarioCadastrado.nome,
+        email: usuarioCadastrado.email,
+      },
+    };
+
+    return resultado;
   }
 
 
