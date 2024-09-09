@@ -6,7 +6,8 @@
     "build": "tsc",
     "test": "jest",
     "lint": "eslint ./src/**/*.ts",
-    "server": "node ./dir/index.js"
+    "server": "node ./dir/index.js",
+    "doc": "ts-node ./swagger/swaggerConfg.ts"
   },
   "keywords": [],
   "author": "",
