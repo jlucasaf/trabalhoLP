@@ -1,9 +1,12 @@
 import app from "../app";
+// Importando funções
 import supertest, {Response} from "supertest";
 import { conectar, desconectar } from "../config/db";
+import { criarVoluntario, dadosCampanhaValida } from "./fabricas";
+// Models
 import Doador from "../models/doadorModel";
 import Voluntario from "../models/voluntarioModel";
-import { criarVoluntario, dadosCampanhaValida } from "./fabricas";
+import Campanha from "../models/campanhaModel";
 
 let token: string;
 
@@ -20,6 +23,7 @@ beforeAll(async ()=> {
 afterAll(async ()=>{
   await Doador.deleteMany({});
   await Voluntario.deleteMany({});
+  await Campanha.deleteMany({});
   await desconectar();
 });
     
