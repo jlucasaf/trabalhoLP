@@ -1,6 +1,5 @@
-
 import { NextFunction, Request, Response } from 'express';
-import { esquemaDoador, esquemaVoluntario } from '../utils/esquemasNovosUsuariosJoi';
+import { esquemaDoador, esquemaVoluntario } from '../utils/esquemasJoi';
 
 
 const validaNovoUsuario = function (req: Request, res: Response, next: NextFunction) {

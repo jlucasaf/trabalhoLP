@@ -10,7 +10,7 @@ interface TokenPayload {
 }
 
 // Middleware de autenticação
-export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+export const autenticar = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers['authorization'] as string;
   const token = authHeader && authHeader.split(' ')[1]; // Pula o 'Bearer'
 
