@@ -50,18 +50,27 @@ async function criar(req: Request, res: Response) {
  * {sucesso:boolean, mensagem?:string, dados?:object}
  */
 async function listar(req: Request, res: Response) {
-  const user = req.usuario!;
+  const usuario = req.usuario!;
   
   try {
-    if (user.tipo === 'doador') {
+    if (usuario.tipo === 'doador') {
       const resultadoBusca = await ServicoCampanha.listarRecentes();
       const corpoResposta = {
         sucesso: true,
-        mensagem: `Listando doações recentes: ${resultadoBusca.dados.lenght}`,
+        mensagem: `Listando campanhas recentes: ${resultadoBusca.dados.lenght}`,
         dados: resultadoBusca.dados, 
       }
       return res.status(200).json(corpoResposta);
     }
+    
+    const resultadoBusca = await ServicoCampanha.listarPorVoluntario(usuario.id);
+
+    const corpoResposta = {
+      sucesso:true,
+      mensagem: `Listando campanhas: ${resultadoBusca.dados.lenght}`,
+      dados: resultadoBusca.dados,
+    }
+    return res.status(200).json(corpoResposta);
   } catch (error) {
     console.log(error)
     return res.status(500).json({sucesso: false,

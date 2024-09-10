@@ -80,6 +80,7 @@ describe('Leitura de campanha funciona corretamente [GET api/campanhas]', () => 
         id: idCampanha,
         titulo: campanhaValida.titulo,
         local: campanhaValida.local,
+        descricao: campanhaValida.descricao,
         voluntario: voluntarioValido.nome,
         dataFinal: campanhaValida.dataFinal.toISOString(),
       }
