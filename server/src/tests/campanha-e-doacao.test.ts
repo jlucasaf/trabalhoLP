@@ -2,13 +2,8 @@ import app from "../app";
 /** Importando funções */
 import supertest, {Response} from "supertest";
 import { conectar, desconectar } from "../config/db";
-<<<<<<< HEAD
-import { criarVoluntario, dadosCampanhaValida, criarDoador } from "./fabricas";
-/** Models */
-=======
 import { criarVoluntario, dadosCampanhaValida, criarDoador, dadosDoacaoValida } from "./fabricas";
 // Models
->>>>>>> a2fae3cc59869a4c7777a4d42a336b2db2a5a142
 import Doador from "../models/doadorModel";
 import Voluntario from "../models/voluntarioModel";
 import Campanha from "../models/campanhaModel";
@@ -140,7 +135,7 @@ describe('Criação de doação funciona como esperado', () => {
 
     expect(response.statusCode).toBe(201); // Resource created
     expect(response.body).toHaveProperty('dados');
-    idDoacao = response.body.dados;
+    idDoacao = response.body.dados.id;
   });
 });
 
@@ -171,15 +166,42 @@ describe('Acompanhamento de doação funciona corretamente', () => {
                                       .get(`/api/doacoes`)
                                       .set('Accept', 'application/json')
                                       .set('authorization', `Bearer ${tokenDoador}`);
-
     expect(response.statusCode).toBe(200); // OK
     expect(response.body).toHaveProperty('dados');
   });
 
+  test('Doador consegue acompanhar doação existente', async () => {
+    const response: Response = await supertest(app)
+                                      .get(`/api/doacoes/${idDoacao}`)
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenDoador}`);
+
+    expect(response.statusCode).toBe(200); // OK
+  });
+
+  test('Voluntário consegue acompanhar doação existente', async () => {
+    const response: Response = await supertest(app)
+                                      .get(`/api/doacoes/${idDoacao}`)
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenVoluntario}`);
+    
+    expect(response.statusCode).toBe(200); // OK
+  });
 });
 
 
 describe('Confirmação de doação funciona corretamente', () => {
+  test('Doadores não podem atualizar o status da doação', async () => {
+    const response: Response = await supertest(app)
+                                      .patch(`/api/doacoes/${idDoacao}`)
+                                      .send({status: 'concluído'})
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenDoador}`);
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toHaveProperty('mensagem', 'Não autorizado');
+  });
+
   test('Voluntário consegue confirmar doação que não exige foto', async () => {
     const response: Response = await supertest(app)
                                       .patch(`/api/doacoes/${idDoacao}`)
@@ -188,7 +210,7 @@ describe('Confirmação de doação funciona corretamente', () => {
                                       .set('authorization', `Bearer ${tokenVoluntario}`);
 
     expect(response.statusCode).toBe(200); // OK
-    expect(response.body).toHaveProperty('mensagem', 'Recebimento da doação confirmado com sucesso');
+    expect(response.body).toHaveProperty('mensagem', 'Status da doação atualizado');
   });
 });
 

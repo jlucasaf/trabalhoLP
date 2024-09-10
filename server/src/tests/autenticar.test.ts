@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { autenticar } from '../middlewares/autenticar';
+import autenticar from '../middlewares/autenticar';
 import { sign } from 'jsonwebtoken';
 import { segredoToken } from '../config/config';
 
