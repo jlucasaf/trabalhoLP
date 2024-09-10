@@ -18,7 +18,5 @@ const DoacaoSchema: Schema = new Schema({
     status: {type: String, enum: ['pendente', 'em andamento', 'concluído', 'falha'], default: 'pendente'}
 });
 
-// middleware
-
 const Doacao = mongoose.model<IDoacao>('Doacao', DoacaoSchema);
 export default Doacao;

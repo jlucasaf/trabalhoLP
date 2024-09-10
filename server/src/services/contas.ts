@@ -42,7 +42,7 @@ function gerarToken(usuario: any): string {
  * (erros que resultariam em código 500).
  */
 async function cadastrar(tipo: 'doador' | 'voluntario', dados: any): Promise<IResultado> {
-  // Verifica se email já está sendo usado
+  /** Verifica se email já está sendo usado */
   const usuarioConflito = await Doador.findOne({ email: dados.email }) || 
     await Voluntario.findOne({ email: dados.email });
 
@@ -84,11 +84,11 @@ async function login(email: string, senha: string): Promise<IResultado> {
   let usuarioEncontrado: any;
   let tipoUsuario: 'doador' | 'voluntario';
 
-  // Buscando nos dois tipos de usuário
+  /** Buscando nos dois tipos de usuário */
   const doadorEncontrado = await Doador.findOne({ email });
   const voluntarioEncontrado = await Voluntario.findOne({ email });
 
-  // Verifica se é um dos dois ou nenhum
+  /** Verifica se é um dos dois ou nenhum */
   if (doadorEncontrado) {
     usuarioEncontrado = doadorEncontrado;
     tipoUsuario = 'doador';
@@ -120,4 +120,3 @@ export default {
   cadastrar,
   login,
 };
-

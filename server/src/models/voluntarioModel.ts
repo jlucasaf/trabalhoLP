@@ -27,7 +27,7 @@ const VoluntarioSchema: Schema = new Schema({
     doacoesEntregues: {type: Number, default: 0}
 });
 
-// hasheando senha
+/** Hashing de senha */
 VoluntarioSchema.pre('save', async function(next) {
   if (this.isModified('senha')) {
     const senhaHasheada = await hash(this.senha as string, 10);

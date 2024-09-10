@@ -1,4 +1,4 @@
-// jest.config.mjs -> configurações do jest
+/** jest.config.mjs -> configurações do jest */
 export default {
   preset: 'ts-jest',
   testEnvironment: 'node',

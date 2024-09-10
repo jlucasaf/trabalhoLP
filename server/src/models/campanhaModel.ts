@@ -25,6 +25,5 @@ const CampanhaSchema: Schema = new Schema({
     
 });
 
-
 const Campanha = mongoose.model<ICampanha>('Campanha', CampanhaSchema);
 export default Campanha;

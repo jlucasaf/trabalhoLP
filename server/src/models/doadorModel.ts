@@ -14,7 +14,6 @@ interface IDoador extends Document {
     doacoesFeitas: number;
 }
 
-// Esquema de usuario define a estrutura do documento MongoDB
 const DoadorSchema: Schema = new Schema({
     nome: {type: String, required: true},
     email: {type: String, required: true, unique: true},
@@ -28,8 +27,7 @@ const DoadorSchema: Schema = new Schema({
     doacoesFeitas: {type: Number, default: 0}
 });
 
-// middleware
-// hashing de senha
+/** Hashing de senha */
 DoadorSchema.pre('save', async function(next) {
   if (this.isModified('senha')) {
     const senhaHasheada = await hash(this.senha as string, 10);
@@ -39,5 +37,4 @@ DoadorSchema.pre('save', async function(next) {
 });
 
 const Doador = mongoose.model<IDoador>('Doador', DoadorSchema);
-
 export default Doador;

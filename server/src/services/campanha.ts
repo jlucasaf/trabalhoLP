@@ -1,4 +1,4 @@
-// services/doacao.ts 
+/** services/doacao.ts */
 
 import mongoose from "mongoose";
 import Campanha from "../models/campanhaModel";
@@ -36,8 +36,6 @@ async function criar(dadosCriacao: any, idUsuario: string): Promise<IResultado> 
     },
   };
 }
-
-
 
 /**
  * Função para listar campanhas recentes para o Doador

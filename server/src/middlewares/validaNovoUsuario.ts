@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { esquemaDoador, esquemaVoluntario } from '../utils/esquemasJoi';
 
-
 const validaNovoUsuario = function (req: Request, res: Response, next: NextFunction) {
 
   const tipoUsuario = req.body.tipo;
@@ -29,4 +28,3 @@ const validaNovoUsuario = function (req: Request, res: Response, next: NextFunct
 };
 
 export default validaNovoUsuario;
-

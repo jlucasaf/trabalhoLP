@@ -39,12 +39,12 @@ afterAll(async () => {
 describe('Doador consegue doar como esperado', () => {
   const doacao = {
     foto: false,
-    // Preencher com dados de doação quando forem definidos
+    /** Preencher com dados de doação quando forem definidos */
   }
 
 
   test('Usuário precisa estar cadastrado para doar', async () => {
-    // Deve ser rejeitado pelo middleware de autenticação
+    /** Deve ser rejeitado pelo middleware de autenticação */
     const response: Response = await supertest(app)
                                 .post(`/api/doar/${idCampanha}`);
     
@@ -53,7 +53,7 @@ describe('Doador consegue doar como esperado', () => {
   });
 
   test('Doador autenticado não consegue doar para campanha não existente', async () => {
-    // Fazendo login 
+    /** Fazendo login */
     const login: Response = await supertest(app)
                               .post('/api/login')
                               .send(credenciaisDoador)
@@ -75,14 +75,14 @@ describe('Doador consegue doar como esperado', () => {
 
   test('Doador autenticado consegue doar para campanha existente e recebe mensagem adequada', async () => {
     const doar: Response = await supertest(app)
-                                  .post(`/api/doar/${idCampanha}`) // id válido
+                                  .post(`/api/doar/${idCampanha}`) /** id válido */
                                   .send(doacao)
                                   .set('Accept', 'application/json')
                                   .set('Authorization', `Bearer ${token}`);
 
-    expect(doar.statusCode).toBe(201); // Recurso criado
+    expect(doar.statusCode).toBe(201); /** Recurso criado */
     expect(doar.body).toHaveProperty('mensagem', 'Doação iniciada com sucesso');
     expect(doar.body).toHaveProperty('dados');
-    expect(doar.body.dados).toHaveProperty('id'); // Usado para gerar qrcode no frontend 
+    expect(doar.body.dados).toHaveProperty('id'); /** Usado para gerar qrcode no frontend */
   });
 });

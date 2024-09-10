@@ -1,9 +1,9 @@
 import app from "../app";
-// Importando funções
+/** Importando funções */
 import supertest, {Response} from "supertest";
 import { conectar, desconectar } from "../config/db";
 import { criarVoluntario, dadosCampanhaValida, criarDoador } from "./fabricas";
-// Models
+/** Models */
 import Doador from "../models/doadorModel";
 import Voluntario from "../models/voluntarioModel";
 import Campanha from "../models/campanhaModel";
@@ -28,7 +28,6 @@ beforeAll(async ()=> {
                               .send({tipo:'doador', dados:doadorValido})
                               .set('Accept', 'application/json');
   tokenDoador = response2.body.dados.token;
-
 });
 
 afterAll(async ()=>{
@@ -43,7 +42,7 @@ describe('Criação de campanha por Voluntário funciona corretamente [POST api/
   test('Usuário precisa estar autenticado para criar uma campanha', async () => {
     const response: Response = await supertest(app)
                                       .post('/api/campanhas')
-    expect(response.statusCode).toBe(401); // Não autorizado
+    expect(response.statusCode).toBe(401); /** Não autorizado */
   });
 
   test('Tentar criar campanha com dados inválidos resulta em fracasso', async () => {
@@ -53,7 +52,7 @@ describe('Criação de campanha por Voluntário funciona corretamente [POST api/
                                       .set('Accept', 'application/json')
                                       .set('authorization', `Bearer ${tokenVoluntario}`);
 
-    expect(response.statusCode).toBe(400); // Bad request
+    expect(response.statusCode).toBe(400); /** Bad request */
   });
 
   test('Tentar criar campanha com dados válidos resulta em sucesso', async () => {
@@ -63,7 +62,7 @@ describe('Criação de campanha por Voluntário funciona corretamente [POST api/
                                       .set('Accept', 'application/json')
                                       .set('authorization', `Bearer ${tokenVoluntario}`);
     
-    expect(response.statusCode).toBe(201); // Resource created
+    expect(response.statusCode).toBe(201); /** Resource created */
     idCampanha = response.body.dados.id;
   });
 });
@@ -84,7 +83,6 @@ describe('Leitura de campanha funciona corretamente [GET api/campanhas]', () => 
         dataFinal: campanhaValida.dataFinal.toISOString(),
       }
     ];
-
     expect(response.body).toHaveProperty('dados', listaEsperada);
   });
 });

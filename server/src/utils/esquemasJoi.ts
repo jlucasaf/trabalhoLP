@@ -59,7 +59,6 @@ const esquemaVoluntario = Joi.object({
   }),
 });
 
-
 const esquemaNovaCampanha = Joi.object({
   titulo: Joi.string().required().messages({
     'any.required': 'O título é obrigatório',
@@ -76,6 +75,5 @@ const esquemaNovaCampanha = Joi.object({
   }),
   ...esquemaLocal 
 });
-
 
 export { esquemaDoador, esquemaVoluntario, esquemaNovaCampanha };

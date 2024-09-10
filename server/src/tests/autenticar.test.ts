@@ -6,7 +6,7 @@ import { segredoToken } from '../config/config';
 const access_token_secret = segredoToken 
 
 describe('Autenticação de usuário funciona corretamente', () => {
-  // Simular requisições HTTP
+  /** Simular requisições HTTP */
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: NextFunction;
@@ -21,9 +21,9 @@ describe('Autenticação de usuário funciona corretamente', () => {
   });
   
   test('Autenticar rejeita requisição sem token', async () => {
-    req.headers = {}; // Sem header de authorization
+    req.headers = {}; /** Sem header de authorization */
     
-    // "Requisição"
+    /** "Requisição" */
     await autenticar(req as Request, res as Response, next);
     
     expect(res.status).toHaveBeenCalledWith(401); // Unauthorized
@@ -32,7 +32,7 @@ describe('Autenticação de usuário funciona corretamente', () => {
   });
 
   test('Autenticar rejeita requisição com token inválido', async () => {
-    // Token com o formato fora do jwt
+    /** Token com o formato fora do jwt */
     req.headers = { authorization: 'Bearer invalid-token' };
     
     await autenticar(req as Request, res as Response, next);
@@ -43,7 +43,7 @@ describe('Autenticação de usuário funciona corretamente', () => {
   });
 
   test('Autenticar aceita requisição com token válido', async () => {
-    // token gerado pelo jwt, logo válido
+    /** token gerado pelo jwt, logo válido */
     const validToken: string = sign({tipo:'doador', 
                                       id:'teste', 
                                       nome:'Nome', 
@@ -54,7 +54,7 @@ describe('Autenticação de usuário funciona corretamente', () => {
     
     await autenticar(req as Request, res as Response, next);
     
-    // Middleware deu continuidade à requisição
+    /** Middleware deu continuidade à requisição */
     expect(next).toHaveBeenCalled();
   });
 });

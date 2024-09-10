@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { esquemaNovaCampanha } from '../utils/esquemasJoi';
 
-
 const validaNovaCampanha = function (req: Request, res: Response, next: NextFunction) {
   const {tipo} = req.usuario!
 
@@ -14,7 +13,6 @@ const validaNovaCampanha = function (req: Request, res: Response, next: NextFunc
   if (!novaCampanha) {
     return res.status(400).json({sucesso: false, mensagem: 'Dados ausentes'});
   }
-
 
   const { error } = esquemaNovaCampanha.validate(novaCampanha, { abortEarly: false });
 

@@ -88,4 +88,3 @@ const ControladoraCampanha = {
 };
 
 export default ControladoraCampanha;
-

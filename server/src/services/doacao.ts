@@ -1,4 +1,4 @@
-// services/doacao.ts 
+/** services/doacao.ts */
 
 interface IResultado {
   sucesso: boolean,
