@@ -9,4 +9,7 @@ doacoesRouter.use(autenticar);
 doacoesRouter.route('/')
   .post([validaNovaDoacao, ControladoraDoacao.criar])
   .get(ControladoraDoacao.listar);
+doacoesRouter.route('/:idDoacao')
+  .patch(ControladoraDoacao.atualizar);
+
 export default doacoesRouter;

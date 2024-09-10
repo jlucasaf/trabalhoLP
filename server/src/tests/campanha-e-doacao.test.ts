@@ -130,7 +130,7 @@ describe('Criação de doação funciona como esperado', () => {
   test('Tentar criar doação com dados válidos resulta em sucesso', async () => {
     const response: Response = await supertest(app)
                                       .post('/api/doacoes')
-                                      .send(dadosDoacaoValida(idCampanha))
+                                      .send(dadosDoacaoValida(idCampanha, false))
                                       .set('Accept', 'application/json')
                                       .set('authorization', `Bearer ${tokenDoador}`);
 
@@ -173,3 +173,18 @@ describe('Acompanhamento de doação funciona corretamente', () => {
   });
 
 });
+
+
+describe('Confirmação de doação funciona corretamente', () => {
+  test('Voluntário consegue confirmar doação que não exige foto', async () => {
+    const response: Response = await supertest(app)
+                                      .patch(`/api/doacoes/${idDoacao}`)
+                                      .send({status: 'concluído'})
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenVoluntario}`);
+
+    expect(response.statusCode).toBe(200); // OK
+    expect(response.body).toHaveProperty('mensagem', 'Recebimento da doação confirmado com sucesso');
+  });
+});
+

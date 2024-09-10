@@ -90,13 +90,10 @@ async function listarPorCampanha(idCampanha: string): Promise<IResultado> {
   const dados = await Promise.all(doacoesPorCampanha.map(async (doacao) => {
     const doador = await Doador.findById(doacao.id_doador);
     return {
-      id: doacao.id.toString(),       
-      idDoador: doacao.id_doador.toString(),
       nomeDoador: doador?.nome || 'Doador não encontrado',
       data: doacao.data.toISOString(),
     };
   }));
-  console.log('doacoes a caminho', dados)
   return { sucesso: true, dados }; 
 }
 
