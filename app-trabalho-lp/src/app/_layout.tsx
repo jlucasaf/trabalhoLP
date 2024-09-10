@@ -29,6 +29,7 @@ export default function RootLayout() {
       <Stack screenOptions={{headerShown: false}}>
         <Stack.Screen name="TelaInicial/index" />
         <Stack.Screen name="Cadastro/index" />
+        <Stack.Screen name="Login/index" />
       </Stack>
   );
 }

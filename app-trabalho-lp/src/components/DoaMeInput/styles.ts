@@ -9,7 +9,7 @@ export const styles = (tipo: DoaMeInputProps["cor"]) => {
       flexDirection: "row",
       alignItems: "center",
       gap: 8,
-      width: "90%",
+      width: "100%",
     },
     borda: {
       width: "100%",
@@ -30,7 +30,7 @@ export const styles = (tipo: DoaMeInputProps["cor"]) => {
       fontSize: 16,
       lineHeight: 18,
       letterSpacing: 0.1,
-      color: retornarTokenDeCorPeloTipo(tipo),
+      color: tema.cores.black[500],
       textAlign: "left",
       width: "100%",
     },

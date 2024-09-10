@@ -26,7 +26,7 @@ export function TelaDeEntrada() {
           <Text onPress={()=> router.navigate("/Cadastro")} style={styles.cadastrarTexto}>Cadastre-se!</Text>
         </View>
         <View style={{width:"85%" }}>
-          <DoaMeBotao style={{width:"100%"}} tipo='branco' titulo='Acessar' />
+          <DoaMeBotao onPress={() => router.navigate("/Login")} style={{width:"100%"}} tipo='branco' titulo='Acessar' />
         </View>
 
       </View>
