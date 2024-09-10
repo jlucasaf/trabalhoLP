@@ -45,11 +45,33 @@ async function criar(req: Request, res: Response) {
  * @param {Response} res - objeto de resposta do Express que deverá
  * ser chamado após o término do processamento da requisição.
  * > cód. 200 caso o status tenha sido atualizado
- * > cód. 304 em caso de não modificação por motivo conhecido
+ * > 304 caso nao tenha sido mudado por motivo desconhecido
  * > cód. 500 por erro desconhecido
  */
 async function atualizar(req: Request, res: Response) {
-  //...
+  const idDoacao = req.params.idDoacao
+
+  try {
+    const sucesso: boolean = await ServicoDoacoes.atualizar(idDoacao, req.body);
+
+    const mensagem = sucesso ? 
+      'Status da doação atualizado' :
+      'Não foi possível atualizar o status da doação'
+
+    const corpoResposta = {
+      sucesso,
+      mensagem 
+    }
+
+    return res.status(sucesso ? 200 : 304).json(corpoResposta);
+
+  } catch (error) {
+    return res.status(500).json({
+      sucesso: false,
+      mensagem: 'Um erro inesperado aconteceu'
+    }) 
+  }
+  
 }
 
 /**
@@ -130,7 +152,7 @@ async function acompanhar(req: Request, res: Response) {
 
   } catch (error) {
     return res.status(500).json({
-      sucesso: false, mensagem: 'Um erro inesperado aconteceu'})
+      sucesso: false, mensagem: 'Um erro inesperado aconteceu'});
   }
 }
 

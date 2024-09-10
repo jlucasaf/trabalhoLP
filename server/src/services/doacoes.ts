@@ -139,11 +139,21 @@ async function listarPorCampanha(idCampanha: string): Promise<IResultado> {
   return { sucesso: true, dados }; 
 }
 
+/**
+ * Atualiza doação
+ */
+async function atualizar(idDoacao: string, dados: any): Promise<boolean> {
+  const doacao = await Doacao.findByIdAndUpdate(idDoacao, dados, {new: true});
+  return doacao?.status === dados.status;
+}
+
+
 const ServicoDoacoes = {
   criar,
   ler,
   listarPorDoador,
-  listarPorCampanha
+  listarPorCampanha,
+  atualizar
 };
 
 export default ServicoDoacoes;

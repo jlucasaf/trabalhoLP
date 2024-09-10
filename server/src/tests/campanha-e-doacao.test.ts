@@ -191,6 +191,17 @@ describe('Acompanhamento de doação funciona corretamente', () => {
 
 
 describe('Confirmação de doação funciona corretamente', () => {
+  test('Doadores não podem atualizar o status da doação', async () => {
+    const response: Response = await supertest(app)
+                                      .patch(`/api/doacoes/${idDoacao}`)
+                                      .send({status: 'concluído'})
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenDoador}`);
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toHaveProperty('mensagem', 'Não autorizado');
+  });
+
   test('Voluntário consegue confirmar doação que não exige foto', async () => {
     const response: Response = await supertest(app)
                                       .patch(`/api/doacoes/${idDoacao}`)
@@ -199,7 +210,7 @@ describe('Confirmação de doação funciona corretamente', () => {
                                       .set('authorization', `Bearer ${tokenVoluntario}`);
 
     expect(response.statusCode).toBe(200); // OK
-    expect(response.body).toHaveProperty('mensagem', 'Recebimento da doação confirmado com sucesso');
+    expect(response.body).toHaveProperty('mensagem', 'Status da doação atualizado');
   });
 });
 
