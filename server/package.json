@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --maxWorkers=1 --verbose",
+    "coverage": "jest --maxWorkers=1 --verbose --coverage",
     "lint": "eslint ./src/**/*.ts",
     "server": "node ./dir/index.js",
     "doc": "doxygen ./Doxyfile"
