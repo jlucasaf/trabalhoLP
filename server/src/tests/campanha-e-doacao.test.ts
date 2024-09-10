@@ -87,4 +87,23 @@ describe('Leitura de campanha funciona corretamente [GET api/campanhas]', () => 
 
     expect(response.body).toHaveProperty('dados', listaEsperada);
   });
+
+  test('Voluntário consegue ver lista de campanhas criadas por ele', async () => {
+    const response: Response = await supertest(app)
+                                      .get('/api/campanhas')
+                                      .set('authorization', `Bearer ${tokenVoluntario}`)
+                                      .set('Accept', 'application/json');
+    expect(response.statusCode).toBe(200);
+    const listaEsperada = [
+      {
+        id: idCampanha,
+        titulo: campanhaValida.titulo,
+        descricao: campanhaValida.descricao,
+        local: campanhaValida.local,
+        dataFinal: campanhaValida.dataFinal.toISOString(),
+      }
+    ];
+
+    expect(response.body).toHaveProperty('dados', listaEsperada);
+  });
 });
