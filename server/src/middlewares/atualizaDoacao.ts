@@ -32,9 +32,9 @@ const atualizaDoacao = async function (req: Request, res: Response, next: NextFu
 
   if (!req.body.status) {
     return res.status(400).json({sucesso: false, 
-      mensagem: 'Dados ausentes'});
+      mensagem: 'Não autorizado'});
   }
-
+  
   try {
     const buscaDoacao = await ServicoDoacoes.ler(req.params.idDoacao);
 
@@ -53,13 +53,14 @@ const atualizaDoacao = async function (req: Request, res: Response, next: NextFu
         mensagem: 'Não autorizado'
       }); 
     }
-  
-    if (dadosDoacao.foto && !req.files) {
+   
+    if (!req.files && dadosDoacao.foto) {
       return res.status(400).json({
         sucesso: false,
         mensagem: 'Foto é exigida'
       })
     }
+
 
     next();
 

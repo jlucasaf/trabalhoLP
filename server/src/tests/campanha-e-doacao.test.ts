@@ -236,28 +236,30 @@ describe('Confirmação de doação funciona corretamente', () => {
     expect(response2.body).toHaveProperty('mensagem', 'Foto é exigida');
   });
 
-  test.skip('Voluntário consegue confirmar doação com foto quando exigido', async () => {
-    const response: Response = await supertest(app)
-                                      .patch(`/api/doacoes/${idDoacao2}`)
-                                      .send({status: 'concluído'})
-                                      .set('Accept', 'application/json')
-                                      .set('authorization', `Bearer ${tokenVoluntario}`)
-                                      .attach('foto', path.resolve(__dirname, 'teste.png'));
-    console.log(path.resolve(__dirname, 'teste.png'))
 
+
+  test('Voluntário consegue confirmar doação com foto quando exigido', async () => {
+    const response = await supertest(app)
+      .patch(`/api/doacoes/${idDoacao2}`)
+      .set('Accept', 'application/json')
+      .set('Authorization', `Bearer ${tokenVoluntario}`)
+      .field('status', 'concluído')
+      .attach('foto', path.resolve(__dirname, 'teste.png'));
+
+    console.log(response.body);
     expect(response.statusCode).toBe(200); // OK
   });
 
-  test.skip('Doador consegue ver a foto que exigiu para a sua doação', async () => {
-    /*
+
+
+  test('Doador consegue ver a foto que exigiu para a sua doação', async () => {
     const response: Response = await supertest(app)
-                                      .get(`/api/doacoes/${idDoacao}`)
+                                      .get(`/api/doacoes/${idDoacao2}`)
                                       .set('Accept', 'application/json')
                                       .set('authorization', `Bearer ${tokenDoador}`);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.dados).toHaveProperty('midiaConfirmacao');
-    */
+    console.log(response.body);
   });
 });
 
