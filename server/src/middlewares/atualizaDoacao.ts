@@ -53,7 +53,14 @@ const atualizaDoacao = async function (req: Request, res: Response, next: NextFu
         mensagem: 'Não autorizado'
       }); 
     }
-   
+  
+    if (dadosDoacao.foto && !req.files) {
+      return res.status(400).json({
+        sucesso: false,
+        mensagem: 'Foto é exigida'
+      })
+    }
+
     next();
 
   } catch (error) {

@@ -4,6 +4,7 @@ import ControladoraDoacao from "../controllers/doacoes";
 import validaNovaDoacao from "../middlewares/validaNovaDoacao";
 import autenticar from "../middlewares/autenticar";
 import atualizaDoacao from "../middlewares/atualizaDoacao";
+import upload from "../config/multerConfig";
 
 const doacoesRouter: Router = express.Router();
 
@@ -15,6 +16,6 @@ doacoesRouter.route('/')
 
 doacoesRouter.route('/:idDoacao')
   .get(ControladoraDoacao.acompanhar)
-  .patch([atualizaDoacao,  ControladoraDoacao.atualizar]);
+  .patch([atualizaDoacao, upload.array('fotos'), ControladoraDoacao.atualizar]);
 
 export default doacoesRouter;
