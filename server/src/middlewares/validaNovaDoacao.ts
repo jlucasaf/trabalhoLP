@@ -2,14 +2,15 @@ import { NextFunction, Request, Response } from 'express';
 import { esquemaNovaDoacao } from '../utils/esquemasJoi';
 
 
-const validaNovaCampanha = function (req: Request, res: Response, next: NextFunction) {
-  const {tipo} = req.usuario!
+const validaNovaDoacao = function (req: Request, res: Response, next: NextFunction) {
 
+  const {tipo} = req.usuario!
   if (tipo != 'doador') {
     return res.status(401).json({sucesso: false, mensagem: 'Recurso não autorizado'});
   }
 
   const dadosNovaDoacao = req.body;
+
 
   if (!dadosNovaDoacao) {
     return res.status(400).json({sucesso: false, mensagem: 'Dados ausentes'});
@@ -30,4 +31,4 @@ const validaNovaCampanha = function (req: Request, res: Response, next: NextFunc
   next();
 };
 
-export default validaNovaCampanha;
+export default validaNovaDoacao;

@@ -2,16 +2,17 @@ import app from "../app";
 // Importando funções
 import supertest, {Response} from "supertest";
 import { conectar, desconectar } from "../config/db";
-import { criarVoluntario, dadosCampanhaValida, criarDoador, criarDoacao } from "./fabricas";
+import { criarVoluntario, dadosCampanhaValida, criarDoador, dadosDoacaoValida } from "./fabricas";
 // Models
 import Doador from "../models/doadorModel";
 import Voluntario from "../models/voluntarioModel";
 import Campanha from "../models/campanhaModel";
-import Doacao from "../models/doacaoModel";
+// import Doacao from "../models/doacaoModel";
 
 let tokenVoluntario: string;
 let tokenDoador: string;
 let idCampanha: string;
+let idDoacao: string;
 const campanhaValida = dadosCampanhaValida();
 const voluntarioValido = criarVoluntario('voluntario1@email.com'); 
 const doadorValido = criarDoador('doador1@email.com'); 
@@ -124,6 +125,52 @@ describe('Criação de doação funciona como esperado', () => {
                                       .set('authorization', `Bearer ${tokenDoador}`);
 
     expect(response.statusCode).toBe(400); // Bad request
+  });
+
+  test('Tentar criar doação com dados válidos resulta em sucesso', async () => {
+    const response: Response = await supertest(app)
+                                      .post('/api/doacoes')
+                                      .send(dadosDoacaoValida(idCampanha))
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenDoador}`);
+
+    expect(response.statusCode).toBe(201); // Resource created
+    expect(response.body).toHaveProperty('dados');
+    idDoacao = response.body.dados;
+  });
+});
+
+describe('Acompanhamento de doação funciona corretamente', () => {
+  test('Voluntário consegue acompanhar doações a caminho de suas campanhas', async () => {
+    const response: Response = await supertest(app)
+                                      .get(`/api/campanhas/${idCampanha}`)
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenDoador}`);
+
+    expect(response.statusCode).toBe(200); // OK
+    expect(response.body).toHaveProperty('dados');
+    expect(response.body.dados).toHaveProperty('doacoesACaminho');
+  });
+
+  test('Doador não consegue acompanhar doação inexistente', async () => {
+    const idNaoDoacao = idCampanha;
+    const response: Response = await supertest(app)
+                                      .get(`/api/doacoes/${idNaoDoacao}`)
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenDoador}`);
+
+    expect(response.statusCode).toBe(404); // Not found
+  });
+
+  test('Doador consegue acompanhar suas doações recentes', async () => {
+    const response: Response = await supertest(app)
+                                      .get(`/api/doacoes`)
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenDoador}`);
+
+    expect(response.statusCode).toBe(200); // OK
+    expect(response.body).toHaveProperty('dados');
+    expect(response.body.dados).toHaveProperty('minhasDoacoes');
   });
 
 });
