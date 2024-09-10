@@ -69,9 +69,9 @@ export const criarDoacao = (idDoador: any, idCampanha: any) => {
   }
 }
 
-export const dadosDoacaoValida = (idCampanha: any) => {
+export const dadosDoacaoValida = (idCampanha: any, foto: boolean) => {
   return {
-    foto: true,
+    foto,
     id_campanha: idCampanha,
   }
 } 

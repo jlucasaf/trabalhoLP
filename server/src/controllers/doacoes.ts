@@ -35,6 +35,25 @@ async function criar(req: Request, res: Response) {
 }
 
 /**
+ * Função que lida com a confirmação da doação por parte do Voluntário
+ * @param {Request} req - objeto de requisição do express
+ * > req.usuario é um voluntario
+ * > req.body.status contém o novo status que deve ser atribuído à 
+ * doação
+ * > req.param.idDoacao é uma doação que deve ser existente e 
+ *   relacionada a uma campanha criada pelo Voluntario
+ * > ... 
+ * @param {Response} res - objeto de resposta do Express que deverá
+ * ser chamado após o término do processamento da requisição.
+ * > cód. 200 caso o status tenha sido atualizado
+ * > cód. 304 em caso de não modificação por motivo conhecido
+ * > cód. 500 por erro desconhecido
+ */
+async function atualizar(req: Request, res: Response) {
+  //...
+}
+
+/**
   * Listagem de doações 
   * @param {Request} req - request do express, contém req.body,
   * e req.usuario
@@ -54,7 +73,7 @@ async function listar(req: Request, res: Response) {
 
     const corpoResposta = {
       sucesso: true,
-      mensagem:  `Listando campanhas: ${resultadoBusca.dados.lenght}`,
+      mensagem:  `Listando doações: ${resultadoBusca.dados.length}`,
       dados: resultadoBusca.dados,
     }
     return res.status(200).json(corpoResposta);
@@ -66,7 +85,8 @@ async function listar(req: Request, res: Response) {
 
 const ControladoraDoacoes = {
   criar,
-  listar
+  listar,
+  atualizar
 }
 
 export default ControladoraDoacoes;
