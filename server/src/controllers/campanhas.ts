@@ -45,30 +45,29 @@ async function criar(req: Request, res: Response) {
  * Função para listar as campanhas
  * @param {Request} req - objeto de requisição do express.
  * req.body não é utilizado, req.user deve conter usuário preenchido
+ * req.usuario está preenchido com usuário Doador ou Voluntario
  * @param {Response} res - resposta do express.
  * O corpo deve conter um objeto que possui as propriedades 
  * {sucesso:boolean, mensagem?:string, dados?:object}
+ *//*
+ * > req.usuario é Doador ou Voluntario válido
+ * > corpo de resposta deve:
+ *  > para Doador: listar qualquer campanha recente
+ *  > para Voluntario: listar as proprias campanhas
  */
 async function listar(req: Request, res: Response) {
   const usuario = req.usuario!;
   
   try {
-    if (usuario.tipo === 'doador') {
-      const resultadoBusca = await ServicoCampanha.listarRecentes();
-      const corpoResposta = {
-        sucesso: true,
-        mensagem: `Listando campanhas recentes: ${resultadoBusca.dados.lenght}`,
-        dados: resultadoBusca.dados, 
-      }
-      return res.status(200).json(corpoResposta);
-    }
-    
-    const resultadoBusca = await ServicoCampanha.listarPorVoluntario(usuario.id);
+    const resultadoBusca =
+      usuario.tipo == 'doador' ?
+        await ServicoCampanha.listarRecentes() :
+        await ServicoCampanha.listarPorVoluntario(usuario.id)
 
     const corpoResposta = {
-      sucesso:true,
+      sucesso: true,
       mensagem: `Listando campanhas: ${resultadoBusca.dados.lenght}`,
-      dados: resultadoBusca.dados,
+      dados: resultadoBusca.dados, 
     }
     return res.status(200).json(corpoResposta);
   } catch (error) {
