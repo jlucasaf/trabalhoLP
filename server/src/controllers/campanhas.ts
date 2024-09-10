@@ -67,7 +67,7 @@ async function listar(req: Request, res: Response) {
 
     const corpoResposta = {
       sucesso: true,
-      mensagem: `Listando campanhas: ${resultadoBusca.dados.lenght}`,
+      mensagem: `Listando campanhas: ${resultadoBusca.dados.length}`,
       dados: resultadoBusca.dados, 
     }
     return res.status(200).json(corpoResposta);

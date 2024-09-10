@@ -1,11 +1,14 @@
+import dotenv from 'dotenv'
+dotenv.config();
+
 import app from './app';
-import { conectar, desconectar } from './config/db';
+import { conectarAtlas, desconectar } from './config/db';
 
 const PORT = 3000;
 
 const startServer = async () => {
   try {
-    await conectar();
+    await conectarAtlas();
 
     app.listen(PORT, () => {
       console.log(`Servidor escutando na porta ${PORT}...`);
