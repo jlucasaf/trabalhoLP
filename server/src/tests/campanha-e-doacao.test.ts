@@ -246,7 +246,6 @@ describe('Confirmação de doação funciona corretamente', () => {
       .field('status', 'concluído')
       .attach('foto', path.resolve(__dirname, 'teste.png'));
 
-    console.log(response.body);
     expect(response.statusCode).toBe(200); // OK
   });
 
@@ -259,7 +258,6 @@ describe('Confirmação de doação funciona corretamente', () => {
                                       .set('authorization', `Bearer ${tokenDoador}`);
 
     expect(response.statusCode).toBe(200);
-    console.log(response.body);
   });
 });
 

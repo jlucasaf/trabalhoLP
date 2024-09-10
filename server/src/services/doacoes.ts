@@ -98,6 +98,7 @@ async function ler(idDoacao: string): Promise<IResultado> {
 
   const dados = {
     foto: doacao.foto,
+    titulo: doacao.titulo,
     localizacao: doacao.local_atual || "Desconhecido",
     campanha: (doacao.id_campanha as any).titulo,
     id_campanha: (doacao.id_campanha as any)._id.toString(),
@@ -131,6 +132,7 @@ async function listarPorDoador(idDoador: string): Promise<IResultado> {
 
   const dados = doacoesPorDoador.map((doacao) => ({
     id: doacao.id,
+    titulo: doacao.titulo,
     data: doacao.data.toISOString(),
     campanha: (doacao.id_campanha as any).titulo,
     status: doacao.status,

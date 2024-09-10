@@ -71,6 +71,7 @@ export const criarDoacao = (idDoador: any, idCampanha: any) => {
 
 export const dadosDoacaoValida = (idCampanha: any, foto: boolean) => {
   return {
+    titulo: 'Nova doação', 
     foto,
     id_campanha: idCampanha,
   }

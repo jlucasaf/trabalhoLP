@@ -77,6 +77,10 @@ const esquemaNovaCampanha = Joi.object({
 });
 
 const esquemaNovaDoacao = Joi.object({
+  titulo: Joi.string().required().messages({
+    'any.required': 'O título é obrigatório',
+    'string.empty': 'O título não pode estar vazio',
+  }),
   foto: Joi.boolean().required().messages({
     'any.required': 'A preferência por foto deve ser informada',
   }),
