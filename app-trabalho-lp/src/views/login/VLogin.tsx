@@ -7,13 +7,15 @@ import { router } from 'expo-router'
 
 
 type ILogin = {
-    usuario: string,
+    
+    email: string,
     senha: string
 }
 
 export default function VLogin() {
     const [dadosLogin, setDadosLogin] = useState<ILogin>({
-        usuario: "",
+        
+        email: "",
         senha:""
     })
 
@@ -34,8 +36,8 @@ export default function VLogin() {
                         cor='branco'
                         placeholder='Email'
                         inputMode='email'
-                        onChangeText={(value) => setDadosLogin({...dadosLogin, usuario: value})}
-                        value={dadosLogin.usuario}
+                        onChangeText={(value) => setDadosLogin({...dadosLogin, email: value})}
+                        value={dadosLogin.email}
                     />
                     <DoaMeInput
                         cor='branco'
@@ -45,10 +47,11 @@ export default function VLogin() {
                         onChangeText={(value) => setDadosLogin({...dadosLogin, senha: value})}
                         value={dadosLogin.senha}
                     />
-                    <Text style={styles.legenda}>Esqueceu a senha?</Text>
+                    <Text style={styles.legenda} onPress={() => router.navigate("/NovaSenhaValidacao")}>Esqueceu sua senha?</Text>
                 </View>
                 <View style={styles.bottomContainer}>
-                    <DoaMeBotao tipo='branco' titulo='Acessar' />
+                    <DoaMeBotao tipo='branco' titulo='Acessar'
+                     onPress={() => router.navigate("/HomePage")} />
                     <View style={styles.increverContainer}>
                         <Text style={styles.legenda}>Não possui uma conta? </Text>
                         <Text style={styles.legenda} onPress={() => router.navigate("/Cadastro/Index")}>Inscreva-se</Text>

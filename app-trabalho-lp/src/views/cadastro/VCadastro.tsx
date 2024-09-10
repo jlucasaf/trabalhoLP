@@ -24,7 +24,8 @@ export default function VCadastro() {
         email: "",
         endereco: "",
         tipoUsuario: "",
-        senha:""
+        senha:"",
+        
     });
     return (
         <View style={styles.container}>
@@ -83,7 +84,7 @@ export default function VCadastro() {
                 <DoaMeBotao
                     tipo="rosa"
                     titulo='Cadastre-se'
-                    onPress={() => {}}
+                    onPress={() => router.navigate("/HomePage")}
                 />
             </View>
         </View>
