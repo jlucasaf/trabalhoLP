@@ -1,20 +1,6 @@
 import Joi from "joi";
 
-const esquemaUsuario = {
-  nome: Joi.string().required().messages({
-    'any.required': 'O nome é obrigatório',
-    'string.empty': 'O nome não pode estar vazio',
-  }),
-  email: Joi.string().email().required().messages({
-    'any.required': 'O email é obrigatório',
-    'string.email': 'O email deve estar no formato válido',
-    'string.empty': 'O email não pode estar vazio',
-  }),
-  senha: Joi.string().min(6).required().messages({
-    'any.required': 'A senha é obrigatória',
-    'string.min': 'A senha deve ter no mínimo 6 caracteres',
-    'string.empty': 'A senha não pode estar vazia',
-  }),
+const esquemaLocal = {
   local: Joi.object({
     cidade: Joi.string().required().messages({
       'any.required': 'A cidade é obrigatória',
@@ -32,6 +18,24 @@ const esquemaUsuario = {
   }).required().messages({
     'any.required': 'O campo local é obrigatório',
   }),
+}
+
+const esquemaUsuario = {
+  nome: Joi.string().required().messages({
+    'any.required': 'O nome é obrigatório',
+    'string.empty': 'O nome não pode estar vazio',
+  }),
+  email: Joi.string().email().required().messages({
+    'any.required': 'O email é obrigatório',
+    'string.email': 'O email deve estar no formato válido',
+    'string.empty': 'O email não pode estar vazio',
+  }),
+  senha: Joi.string().min(6).required().messages({
+    'any.required': 'A senha é obrigatória',
+    'string.min': 'A senha deve ter no mínimo 6 caracteres',
+    'string.empty': 'A senha não pode estar vazia',
+  }),
+  ...esquemaLocal,
 }
 
 const esquemaDoador = Joi.object({
@@ -55,4 +59,23 @@ const esquemaVoluntario = Joi.object({
   }),
 });
 
-export { esquemaDoador, esquemaVoluntario };
+
+const esquemaNovaCampanha = Joi.object({
+  titulo: Joi.string().required().messages({
+    'any.required': 'O título é obrigatório',
+    'string.empty': 'O título não pode estar vazio',
+  }),
+  descricao: Joi.string().required().messages({
+    'any.required': 'A descrição é obrigatória',
+    'string.empty': 'A descrição não pode estar vazia',
+  }),
+  dataFinal: Joi.date().greater(Date.now()).required().messages({
+    'any.required': 'A data de término é obrigatória',
+    'date.base': 'A data de término deve ser uma data válida',
+    'date.greater': 'A data de término deve ser posterior à data de início',
+  }),
+  ...esquemaLocal 
+});
+
+
+export { esquemaDoador, esquemaVoluntario, esquemaNovaCampanha };

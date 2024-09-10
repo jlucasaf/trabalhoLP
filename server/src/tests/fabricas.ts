@@ -41,6 +41,19 @@ export const criarCampanha = (voluntarioId: any) => {
   };
 };
 
+export const dadosCampanhaValida = () => {
+  return {
+    titulo: 'Título',
+    descricao: 'Descrição',
+    local: {
+      cidade: 'Cidade',
+      endereco: 'Endereço',
+      CEP: '29046-095',
+    },
+    dataFinal: new Date('2030-01-01'),
+  }
+}
+
 export const criarDoacao = (idDoador: any, idCampanha: any) => {
   return {
     foto: false,

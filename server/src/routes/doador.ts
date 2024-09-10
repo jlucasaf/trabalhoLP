@@ -1,9 +1,9 @@
 import express, { Router } from "express";
 import ControladoraDoacao from "../controllers/doacao";
-import { authenticate } from "../middlewares/authentication";
+import { autenticar } from "../middlewares/autenticar";
 
 const doadorRouter: Router = express.Router();
 
-doadorRouter.route('/doar/:idCampanha').post([authenticate, ControladoraDoacao.doar]);
+doadorRouter.route('/doar/:idCampanha').post([autenticar, ControladoraDoacao.doar]);
 
 export default doadorRouter;

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { authenticate } from '../middlewares/authentication';
+import { autenticar } from '../middlewares/autenticar';
 import { sign } from 'jsonwebtoken';
 import { segredoToken } from '../config/config';
 
@@ -24,7 +24,7 @@ describe('Autenticação de usuário funciona corretamente', () => {
     req.headers = {}; // Sem header de authorization
     
     // "Requisição"
-    await authenticate(req as Request, res as Response, next);
+    await autenticar(req as Request, res as Response, next);
     
     expect(res.status).toHaveBeenCalledWith(401); // Unauthorized
     expect(res.json).toHaveBeenCalledWith({ sucesso: false, mensagem: 'Usuário não autorizado' }); // Mensagem legível
@@ -35,14 +35,14 @@ describe('Autenticação de usuário funciona corretamente', () => {
     // Token com o formato fora do jwt
     req.headers = { authorization: 'Bearer invalid-token' };
     
-    await authenticate(req as Request, res as Response, next);
+    await autenticar(req as Request, res as Response, next);
     
     expect(res.status).toHaveBeenCalledWith(401);
     expect(res.json).toHaveBeenCalledWith({ sucesso: false, mensagem: 'Token inválido' });
     expect(next).not.toHaveBeenCalled();
   });
 
-  test('Autenticar aceita requisiçaõ com token válido', async () => {
+  test('Autenticar aceita requisição com token válido', async () => {
     // token gerado pelo jwt, logo válido
     const validToken: string = sign({tipo:'doador', 
                                       id:'teste', 
@@ -52,7 +52,7 @@ describe('Autenticação de usuário funciona corretamente', () => {
 
     req.headers = { authorization: `Bearer ${validToken}` };
     
-    await authenticate(req as Request, res as Response, next);
+    await autenticar(req as Request, res as Response, next);
     
     // Middleware deu continuidade à requisição
     expect(next).toHaveBeenCalled();

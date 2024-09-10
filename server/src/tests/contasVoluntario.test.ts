@@ -17,7 +17,7 @@ afterAll(async ()=>{
     
 const voluntarioValido = criarVoluntario('voluntario1@email.com'); 
 
-describe('Criação de voluntários ocorre como esperado', () => {
+describe('Criação de Voluntários funciona corretamente', () => {
   
   test('Tentar criar um voluntário com dados válidos resulta em sucesso', async () => {
     const response: Response = await supertest(app)
@@ -37,8 +37,8 @@ describe('Criação de voluntários ocorre como esperado', () => {
 
 });
 
-describe('Login de voluntários ocorre como esperado', () => {
-  test('Tentar entrar com voluntário existente resulta em resposta adequada', async () => {
+describe('Login de Voluntários funciona corretamente', () => {
+  test('Login com dados corretos resulta em sucesso', async () => {
     const response: Response = await supertest(app)
                                 .post('/api/login')
                                 .send({email: voluntarioValido.email, 
