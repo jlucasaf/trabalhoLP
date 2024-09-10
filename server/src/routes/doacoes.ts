@@ -1,15 +1,20 @@
 import express, { Router } from "express";
 import ControladoraDoacao from "../controllers/doacoes";
+// Middlewares
 import validaNovaDoacao from "../middlewares/validaNovaDoacao";
-import { autenticar } from "../middlewares/autenticar";
+import autenticar from "../middlewares/autenticar";
+import atualizaDoacao from "../middlewares/atualizaDoacao";
 
 const doacoesRouter: Router = express.Router();
 
 doacoesRouter.use(autenticar);
+
 doacoesRouter.route('/')
   .post([validaNovaDoacao, ControladoraDoacao.criar])
   .get(ControladoraDoacao.listar);
+
 doacoesRouter.route('/:idDoacao')
-  .patch(ControladoraDoacao.atualizar);
+  .get(ControladoraDoacao.acompanhar)
+  .patch([atualizaDoacao,  ControladoraDoacao.atualizar]);
 
 export default doacoesRouter;

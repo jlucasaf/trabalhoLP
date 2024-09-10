@@ -9,8 +9,8 @@ interface TokenPayload {
   email: string;
 }
 
-/** Middleware de autenticação */
-export const autenticar = async (req: Request, res: Response, next: NextFunction) => {
+/* Middleware de autenticação */
+const autenticar = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers['authorization'] as string;
   const token = authHeader && authHeader.split(' ')[1]; // Pula o 'Bearer'
 
@@ -33,3 +33,5 @@ export const autenticar = async (req: Request, res: Response, next: NextFunction
     next();
   });
 };
+
+export default autenticar;

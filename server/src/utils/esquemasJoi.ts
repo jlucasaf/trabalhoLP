@@ -76,9 +76,6 @@ const esquemaNovaCampanha = Joi.object({
   ...esquemaLocal 
 });
 
-<<<<<<< HEAD
-export { esquemaDoador, esquemaVoluntario, esquemaNovaCampanha };
-=======
 const esquemaNovaDoacao = Joi.object({
   foto: Joi.boolean().required().messages({
     'any.required': 'A preferência por foto deve ser informada',
@@ -91,4 +88,4 @@ const esquemaNovaDoacao = Joi.object({
 
 
 export { esquemaDoador, esquemaVoluntario, esquemaNovaCampanha, esquemaNovaDoacao };
->>>>>>> a2fae3cc59869a4c7777a4d42a336b2db2a5a142
+

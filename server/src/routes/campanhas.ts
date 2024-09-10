@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { autenticar } from "../middlewares/autenticar";
+import autenticar from "../middlewares/autenticar";
 import ControladoraCampanha from "../controllers/campanhas";
 import validaNovaCampanha from "../middlewares/validaNovaCampanha";
 const campanhasRouter: Router = express.Router();
