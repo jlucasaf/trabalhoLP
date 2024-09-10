@@ -1,3 +1,5 @@
+import { promises as fs } from 'fs';
+import path from 'path';
 // Modelos
 import mongoose from "mongoose";
 import Doacao from "../models/doacaoModel";
@@ -46,6 +48,28 @@ async function criar(conteudo: any, idDoador: string): Promise<IResultado> {
   }
 }
 
+
+/**
+ * Obtém os nomes dos arquivos que correspondem ao ID da doação.
+ *
+ * @param idDoacao - O ID da doação para filtrar os arquivos.
+ * @returns Uma lista de nomes de arquivos que correspondem ao ID da doação.
+ */
+async function obterMidiaConfirmacao(idDoacao: string): Promise<string[]> {
+    const diretorioUploads = path.join(__dirname, '../../uploads');
+
+    try {
+        const arquivos = await fs.readdir(diretorioUploads);
+
+        const arquivosFiltrados = arquivos.filter(arquivo => arquivo.startsWith(idDoacao));
+
+        return arquivosFiltrados;
+    } catch (erro) {
+        console.error('Erro ao ler o diretório:', erro);
+        return [];
+    }
+}
+
 /** Função para ler os dados de uma Doação
  * @param {string} idDoacao - uma string que representa o id da doação
  * @returns {Promise<IResultado>} - caso o id não seja válido, ou 
@@ -79,7 +103,9 @@ async function ler(idDoacao: string): Promise<IResultado> {
     id_campanha: (doacao.id_campanha as any)._id.toString(),
     nome_doador: (doacao.id_doador as any).nome,
     id_doador: (doacao.id_doador as any)._id.toString(),
-    id_voluntario: doacao.id_voluntario.toString()
+    id_voluntario: doacao.id_voluntario.toString(),
+    status: doacao.status,
+    midia_confirmacao: await obterMidiaConfirmacao(idDoacao),
   }
   return {sucesso: true, dados}
 }
@@ -101,12 +127,13 @@ async function listarPorDoador(idDoador: string): Promise<IResultado> {
   const doacoesPorDoador = 
     await Doacao.find({ id_doador: new mongoose.Types.ObjectId(idDoador) })
                 .sort({ _id: -1 })
-                .populate('id_campanha', 'titulo'); // Popula o título da campanha
+                .populate('id_campanha', 'titulo');
 
   const dados = doacoesPorDoador.map((doacao) => ({
     id: doacao.id,
     data: doacao.data.toISOString(),
-    campanha: (doacao.id_campanha as any).titulo, // Adiciona o título da campanha
+    campanha: (doacao.id_campanha as any).titulo,
+    status: doacao.status,
   }));
 
   return { sucesso: true, dados };
@@ -146,7 +173,6 @@ async function atualizar(idDoacao: string, dados: any): Promise<boolean> {
   const doacao = await Doacao.findByIdAndUpdate(idDoacao, dados, {new: true});
   return doacao?.status === dados.status;
 }
-
 
 const ServicoDoacoes = {
   criar,

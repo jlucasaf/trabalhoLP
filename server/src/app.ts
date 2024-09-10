@@ -6,6 +6,7 @@ import campanhasRouter from './routes/campanhas';
 const app: Express = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', contasRouter);
 
