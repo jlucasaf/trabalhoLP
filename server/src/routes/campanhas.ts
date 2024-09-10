@@ -11,6 +11,6 @@ campanhasRouter.route('/')
   .get(ControladoraCampanha.listar);
 
 campanhasRouter.route('/:idCampanha')
-  .post(ControladoraCampanha.acompanhar);
+  .get(ControladoraCampanha.acompanhar);
 
 export default campanhasRouter;

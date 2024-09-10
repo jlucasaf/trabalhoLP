@@ -6,6 +6,7 @@ import { autenticar } from "../middlewares/autenticar";
 const doacoesRouter: Router = express.Router();
 
 doacoesRouter.use(autenticar);
-doacoesRouter.route('/').post([validaNovaDoacao, ControladoraDoacao.criar]);
-
+doacoesRouter.route('/')
+  .post([validaNovaDoacao, ControladoraDoacao.criar])
+  .get(ControladoraDoacao.listar);
 export default doacoesRouter;

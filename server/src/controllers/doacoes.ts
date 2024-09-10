@@ -34,8 +34,39 @@ async function criar(req: Request, res: Response) {
   }
 }
 
+/**
+  * Listagem de doações 
+  * @param {Request} req - request do express, contém req.body,
+  * e req.usuario
+  * @param {Response} res - chamado após o resultado da operação.
+  * deve retornar no body, dados que consistem numa lista de suas
+  * doacoes recentes.
+  */
+async function listar(req: Request, res: Response) {
+  if (req.usuario!.tipo != 'doador') {
+    return res.status(401).json({sucesso: false, mensagem: 'Não autorizado'});
+  }
+
+  const idDoador = req.usuario!.id;
+
+  try {
+    const resultadoBusca = await ServicoDoacoes.listarPorDoador(idDoador);
+
+    const corpoResposta = {
+      sucesso: true,
+      mensagem:  `Listando campanhas: ${resultadoBusca.dados.lenght}`,
+      dados: resultadoBusca.dados,
+    }
+    return res.status(200).json(corpoResposta);
+  } catch (error) {
+    return res.status(200).json({sucesso: false,
+      mensagem: 'Um erro inesperado aconteceu ao tentear listar as doações recentes'});
+  }
+}
+
 const ControladoraDoacoes = {
   criar,
+  listar
 }
 
 export default ControladoraDoacoes;

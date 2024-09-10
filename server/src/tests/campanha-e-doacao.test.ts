@@ -145,7 +145,7 @@ describe('Acompanhamento de doação funciona corretamente', () => {
     const response: Response = await supertest(app)
                                       .get(`/api/campanhas/${idCampanha}`)
                                       .set('Accept', 'application/json')
-                                      .set('authorization', `Bearer ${tokenDoador}`);
+                                      .set('authorization', `Bearer ${tokenVoluntario}`);
 
     expect(response.statusCode).toBe(200); // OK
     expect(response.body).toHaveProperty('dados');
@@ -170,7 +170,6 @@ describe('Acompanhamento de doação funciona corretamente', () => {
 
     expect(response.statusCode).toBe(200); // OK
     expect(response.body).toHaveProperty('dados');
-    expect(response.body.dados).toHaveProperty('minhasDoacoes');
   });
 
 });

@@ -2,6 +2,7 @@
 
 import mongoose from "mongoose";
 import Campanha from "../models/campanhaModel";
+import Voluntario from "../models/voluntarioModel";
 
 interface IResultado {
   sucesso: boolean,
@@ -88,10 +89,35 @@ async function listarPorVoluntario(idVoluntario: string): Promise<IResultado> {
   return { sucesso: true, dados }; 
 }
 
+/**
+ * Função que lê uma campanha
+ * @param {string} idCampanha - id da campanha, é um id mongodb válido
+ * @returns {Promise<IResultado>} resultado da busca
+ * @throws erro - erro em caso de exceção inesperada (erro interno do servidor)
+ */
+async function ler(idCampanha: string): Promise<IResultado> {
+  const campanha = await Campanha.findById(idCampanha);
+
+  if (!campanha) return {sucesso: false, mensagem: 'Campanha não encontrada'}
+
+  return {
+    sucesso: true,
+    dados: {
+      id: campanha.id,
+      id_voluntario: campanha.id_voluntario.toString(),
+      voluntario: (await Voluntario.findById(campanha.id_voluntario))?.nome,
+      titulo: campanha.titulo,
+      descricao: campanha.descricao,
+      local: campanha.local,
+    }
+  }
+} 
+
 const ServicoCampanha = {
   criar,
   listarRecentes,
   listarPorVoluntario,
+  ler,
 }
 
 export default ServicoCampanha

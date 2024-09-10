@@ -2,6 +2,7 @@
 import mongoose from "mongoose";
 import Doacao from "../models/doacaoModel";
 import Campanha from "../models/campanhaModel";
+import Doador from "../models/doadorModel";
 
 interface IResultado {
   sucesso: boolean,
@@ -10,7 +11,7 @@ interface IResultado {
 }
 
 /**
-* Método para criar uma nova doação.
+* Função para criar uma nova doação.
 * @param {any} conteudo - objeto que contém todas as informações
 * necessárias para criar uma nova Doacao, já nos seus respectivos
 * formatos validados.
@@ -45,8 +46,65 @@ async function criar(conteudo: any, idDoador: string): Promise<IResultado> {
   }
 }
 
+/** Função para listar doações criadas pelo Doador
+ * @param {string} idDoador - uma string que é um id mongodb válido
+ * @returns {Promise<IResultado>} - em dados, contém uma 
+ * lista de campanhas criadas pelo usuário, ordenadas 
+ * decrescentemente por id.
+ * As informações de cada item da lista são id, titulo, descricao,
+ * local, data
+ * @throws erro - erro em caso de exceção inesperada (erro interno do servidor)
+ *//*
+ * > idDoador é um id válido mongodb, e certamente pertence à um Voluntario
+ */
+async function listarPorDoador(idDoador: string): Promise<IResultado> {
+  const doacoesPorDoador = 
+    await Doacao.find({id_doador: new mongoose.Types.ObjectId(idDoador)})
+                                               .sort({_id: -1});
+    
+  const dados = doacoesPorDoador.map((doacao) => ({
+    id: doacao.id,
+    local: doacao.local,
+    data: doacao.data.toISOString(),
+  }));
+
+  return { sucesso: true, dados }; 
+}
+
+/** Função para listar doações a caminho de uma campanha
+ * @param {string} idCampanha - uma string que é um id mongodb válido
+ * @returns {Promise<IResultado>} - em dados, contém uma 
+ * lista de campanhas criadas pelo usuário, ordenadas 
+ * decrescentemente por id.
+ * As informações de cada item da lista são id, titulo, descricao,
+ * local, data
+ * @throws erro - erro em caso de exceção inesperada (erro interno do servidor)
+ *//*
+ * > idDoador é um id válido mongodb, e certamente pertence à um Voluntario
+ */
+async function listarPorCampanha(idCampanha: string): Promise<IResultado> {
+  const doacoesPorCampanha = 
+    await Doacao.find({ id_campanha: new mongoose.Types.ObjectId(idCampanha) })
+                .sort({ _id: -1 });
+
+  const dados = await Promise.all(doacoesPorCampanha.map(async (doacao) => {
+    const doador = await Doador.findById(doacao.id_doador);
+    return {
+      id: doacao.id.toString(),       
+      idDoador: doacao.id_doador.toString(),
+      nomeDoador: doador?.nome || 'Doador não encontrado',
+      data: doacao.data.toISOString(),
+    };
+  }));
+  console.log('doacoes a caminho', dados)
+  return { sucesso: true, dados }; 
+}
+
+
 const ServicoDoacoes = {
   criar,
+  listarPorDoador,
+  listarPorCampanha
 };
 
 export default ServicoDoacoes;
