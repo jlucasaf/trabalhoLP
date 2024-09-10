@@ -7,6 +7,7 @@ import Doador from "../models/doadorModel";
 interface IResultado {
   sucesso: boolean,
   mensagem?: string,
+  codHttp?: number,
   dados?: any,
 }
 
@@ -28,7 +29,6 @@ async function criar(conteudo: any, idDoador: string): Promise<IResultado> {
 
   const novaDoacao = new Doacao({
     foto,
-    local: campanha?.local,
     data: Date.now(),
     id_doador: new mongoose.Types.ObjectId(idDoador),
     id_voluntario: campanha?.id_voluntario,
@@ -46,6 +46,46 @@ async function criar(conteudo: any, idDoador: string): Promise<IResultado> {
   }
 }
 
+/** Função para ler os dados de uma Doação
+ * @param {string} idDoacao - uma string que representa o id da doação
+ * @returns {Promise<IResultado>} - caso o id não seja válido, ou 
+ * a doação não existir, irá retornar sucesso: false, caso contrário
+ * 'dados' conterá todos os dados pertinentes para a doação:
+ * foto, local, nomeCampanha, nomeDoador, idCampanha
+ * @throws erro - erro em caso de exceção inesperada (erro interno do servidor)
+ *//*
+ * > não é garantido que idDoador seja um id mondogb válido
+ */
+async function ler(idDoacao: string): Promise<IResultado> {
+  // verificando se é id válido
+  if (!mongoose.Types.ObjectId.isValid(idDoacao)) {
+    console.log(idDoacao);
+    return {sucesso: false, mensagem: 'Id inválido', codHttp: 400}
+  }
+
+  const doacao = await Doacao.findById(idDoacao)
+    .populate('id_campanha', 'titulo')
+    .populate('id_doador', 'nome')
+    .exec();
+
+  if (!doacao) return {sucesso: false, 
+    mensagem: 'Doação não encontrada', 
+    codHttp: 404}
+
+  const dados = {
+    foto: doacao.foto,
+    localizacao: doacao.local_atual || "Desconhecido",
+    campanha: (doacao.id_campanha as any).titulo,
+    id_campanha: (doacao.id_campanha as any)._id.toString(),
+    nome_doador: (doacao.id_doador as any).nome,
+    id_doador: (doacao.id_doador as any)._id.toString(),
+    id_voluntario: doacao.id_voluntario.toString()
+  }
+  return {sucesso: true, dados}
+}
+
+
+
 /** Função para listar doações criadas pelo Doador
  * @param {string} idDoador - uma string que é um id mongodb válido
  * @returns {Promise<IResultado>} - em dados, contém uma 
@@ -59,17 +99,19 @@ async function criar(conteudo: any, idDoador: string): Promise<IResultado> {
  */
 async function listarPorDoador(idDoador: string): Promise<IResultado> {
   const doacoesPorDoador = 
-    await Doacao.find({id_doador: new mongoose.Types.ObjectId(idDoador)})
-                                               .sort({_id: -1});
-    
+    await Doacao.find({ id_doador: new mongoose.Types.ObjectId(idDoador) })
+                .sort({ _id: -1 })
+                .populate('id_campanha', 'titulo'); // Popula o título da campanha
+
   const dados = doacoesPorDoador.map((doacao) => ({
     id: doacao.id,
-    local: doacao.local,
     data: doacao.data.toISOString(),
+    campanha: (doacao.id_campanha as any).titulo, // Adiciona o título da campanha
   }));
 
-  return { sucesso: true, dados }; 
+  return { sucesso: true, dados };
 }
+
 
 /** Função para listar doações a caminho de uma campanha
  * @param {string} idCampanha - uma string que é um id mongodb válido
@@ -97,9 +139,9 @@ async function listarPorCampanha(idCampanha: string): Promise<IResultado> {
   return { sucesso: true, dados }; 
 }
 
-
 const ServicoDoacoes = {
   criar,
+  ler,
   listarPorDoador,
   listarPorCampanha
 };
