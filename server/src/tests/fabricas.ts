@@ -68,3 +68,10 @@ export const criarDoacao = (idDoador: any, idCampanha: any) => {
     status: 'em andamento'
   }
 }
+
+export const dadosDoacaoValida = (idCampanha: any) => {
+  return {
+    foto: true,
+    id_campanha: idCampanha,
+  }
+} 

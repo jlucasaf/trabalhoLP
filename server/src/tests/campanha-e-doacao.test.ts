@@ -2,11 +2,12 @@ import app from "../app";
 // Importando funções
 import supertest, {Response} from "supertest";
 import { conectar, desconectar } from "../config/db";
-import { criarVoluntario, dadosCampanhaValida, criarDoador } from "./fabricas";
+import { criarVoluntario, dadosCampanhaValida, criarDoador, criarDoacao } from "./fabricas";
 // Models
 import Doador from "../models/doadorModel";
 import Voluntario from "../models/voluntarioModel";
 import Campanha from "../models/campanhaModel";
+import Doacao from "../models/doacaoModel";
 
 let tokenVoluntario: string;
 let tokenDoador: string;
@@ -28,7 +29,6 @@ beforeAll(async ()=> {
                               .send({tipo:'doador', dados:doadorValido})
                               .set('Accept', 'application/json');
   tokenDoador = response2.body.dados.token;
-
 });
 
 afterAll(async ()=>{
@@ -107,4 +107,23 @@ describe('Leitura de campanha funciona corretamente [GET api/campanhas]', () => 
 
     expect(response.body).toHaveProperty('dados', listaEsperada);
   });
+});
+
+describe('Criação de doação funciona como esperado', () => {
+  test('Usuário precisa estar autenticado para criar uma doação', async () => {
+    const response: Response = await supertest(app)
+                                      .post('/api/doacoes')
+    expect(response.statusCode).toBe(401); // Não autorizado
+  });
+
+  test('Tentar criar doação com dados inválidos resulta em fracasso', async () => {
+    const response: Response = await supertest(app)
+                                      .post('/api/doacoes')
+                                      .send({})
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenDoador}`);
+
+    expect(response.statusCode).toBe(400); // Bad request
+  });
+
 });

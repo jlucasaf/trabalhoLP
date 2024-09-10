@@ -77,5 +77,15 @@ const esquemaNovaCampanha = Joi.object({
   ...esquemaLocal 
 });
 
+const esquemaNovaDoacao = Joi.object({
+  foto: Joi.boolean().required().messages({
+    'any.required': 'A preferência por foto deve ser informada',
+  }),
+  id_campanha: Joi.string().required().messages({
+    'any.required': 'O id da campanha de destino é obrigatório',
+    'string.empty': 'O id da campanah de destino não pode estar vazio',
+  }),
+})
 
-export { esquemaDoador, esquemaVoluntario, esquemaNovaCampanha };
+
+export { esquemaDoador, esquemaVoluntario, esquemaNovaCampanha, esquemaNovaDoacao };
