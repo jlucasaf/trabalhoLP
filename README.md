@@ -19,6 +19,15 @@
   - [Doxygen](https://www.doxygen.nl/)
   - [Node.js](https://nodejs.org/en)
 
+  ### Bibliotecas:
+  - [Express](https://expressjs.com/pt-br/)
+  - [Bcryptjs](https://expressjs.com/pt-br/)
+  - [Multer](https://github.com/expressjs/multer)
+  - [Jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
+  - [Supertest](https://www.npmjs.com/package/supertest)
+  - [Joi](https://joi.dev/)
+  - [Mongoose](https://mongoosejs.com/)
+
 ## Por onde começar?
 
   1. Clonar repositório
@@ -39,7 +48,7 @@
     $ npm run server
   ```
 
-  - Outras informações:
+### Outras informações:
 
   1. Executar testes
   ```bash
