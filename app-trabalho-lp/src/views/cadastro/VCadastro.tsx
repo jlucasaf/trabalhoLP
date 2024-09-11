@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { styles } from './styles';
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import { router } from 'expo-router';
 import DoaMeBotao from '@/components/DoaMeBotao';
 import DoaMeInput from '@/components/DoaMeInput';
 import { formatarDocumento, formatarNome } from '@/utils/formatadores';
+import { cadastro } from '@/api/usuario';
 
 type IDadosCadastroPassageiro = {
     cpfOuCnpj: string,
@@ -25,8 +26,37 @@ export default function VCadastro() {
         endereco: "",
         tipoUsuario: "",
         senha:"",
-        
     });
+
+    const handleCadastrar = async () => {
+        try {
+            // Determinando o tipo e formatando o cpfOuCnpj corretamente
+            const tipo = dadosCadastro.tipoUsuario === 'doador' ? 'doador' : 'voluntario';
+            const cpfOucnpj = tipo === 'doador' ? { CPF: dadosCadastro.cpfOuCnpj } : { CNPJ: dadosCadastro.cpfOuCnpj };
+
+            const resultadoLogin = await cadastro({
+                tipo,
+                dados: {
+                    nome: dadosCadastro.nome,
+                    email: dadosCadastro.email,
+                    senha: dadosCadastro.senha,
+                    ...cpfOucnpj,
+                    local: dadosCadastro.endereco,
+                }
+            });
+
+            const mensagem: string = resultadoLogin.mensagem;
+            Alert.alert(mensagem);
+  
+            if (resultadoLogin.sucesso) {
+                router.navigate("/HomePage");
+            }
+
+        } catch (error) {
+            Alert.alert("Erro ao tentar cadastrar.");
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.voltarBotaoContainer}>
@@ -84,7 +114,7 @@ export default function VCadastro() {
                 <DoaMeBotao
                     tipo="rosa"
                     titulo='Cadastre-se'
-                    onPress={() => router.navigate("/HomePage")}
+                    onPress={() => handleCadastrar()}
                 />
             </View>
         </View>
