@@ -1,0 +1,56 @@
+Projeto: Aplicativo de doações - DoaMe
+
+Descrição:
+  DoaMe é um aplicativo que busca proporcionar aos seus usuários:
+  - Cadastrar-se no sistema com nome, e-mail e senha;
+  - Uma vez cadastrado como doador, fazer uma doação para uma campanha em aberto, podendo escolher recebimento de fotografia ao final ou não, e receber um Qr code para que possa acompanhar a localização da doação;
+  - Uma vez cadastrado com voluntário, criar uma campanha com título, descrição e localização e enviar fotos ao doador ao final da entrega.
+  
+Tecnologias utilizadas:
+  - React Native
+  - Expo
+  - MongoDB Atlas
+  - ESLint
+  - Doxygen
+  - Node.js
+
+Bibliotecas:
+  - Express
+  - Bcryptjs
+  - Multer
+  - Jsonwebtoken
+  - Supertest
+  - Joi
+  - Mongoose
+
+
+1. Clonar repositório
+    git clone https://github.com/jlucasaf/trabalhoLP.git
+
+2. Entrar no terminal do projeto
+    cd trabalhoLP
+    cd server
+
+3. Instalar dependências
+    npm install
+
+4. Compilar
+    npm run build
+
+5. Executar servidor
+    npm run server
+
+Arquivos:
+  - app-trabalho-lp/: front-end
+  - docs/: pasta gerada a partir do Doxygen
+  - diagramas/: diagramas de casos de uso, atividades e classes
+  - relatorios/: relatorios individuais constando as tarefas de cada participante do grupo
+  - server/: configuração dos verificadores de teste e de código, makefile, arquivos .json e pastas do back-end
+    - coverage/: pasta criada a partir do verificador de cobertura
+    - node_modules/: dependencias
+    - src/: arquivos do código fonte do back-end
+  - Doxyfile: arquivo de documentação do Doxyfile
+  - leiame.txt: esse arquivo, explica  como o programa deverá ser compilado, como poderá ser executado e quais são os arquivos nele e o que cada um contem
+  - README.md: arquivo que explica detalhadamente como funciona o programa
+  - LICENSE: licença MIT usada no projeto
+  -

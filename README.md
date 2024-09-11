@@ -62,6 +62,10 @@
   ```bash
     $ npm run lint
   ```
+  3. Compilar
+  ```bash
+    $ npm run build
+  ```
 
 ## Licença:
   Esse projeto possui uma licença MIT. Veja [LISCENSE](https://github.com/jlucasaf/trabalhoLP/blob/master/LICENSE) para mais detalhes.
