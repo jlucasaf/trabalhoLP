@@ -23,10 +23,10 @@ export function TelaDeEntrada() {
       <View style={styles.rodape}>
         <View style={styles.cadastrarTextoContainer}>
           <Text style={styles.cadastrarTexto}>Novo por aqui? </Text>
-          <Text onPress={()=> router.navigate("/Cadastro/Index")} style={styles.cadastrarTexto}>Cadastre-se!</Text>
+          <Text onPress={()=> router.navigate("/Cadastro")} style={styles.cadastrarTexto}>Cadastre-se!</Text>
         </View>
         <View style={{width:"85%" }}>
-          <DoaMeBotao onPress={() => router.navigate("/Login/Index")} style={{width:"100%"}} tipo='branco' titulo='Acessar' />
+          <DoaMeBotao onPress={() => router.navigate("/Login")} style={{width:"100%"}} tipo='branco' titulo='Acessar' />
         </View>
 
       </View>

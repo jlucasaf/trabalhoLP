@@ -54,7 +54,7 @@ export default function VLogin() {
                      onPress={() => router.navigate("/HomePage")} />
                     <View style={styles.increverContainer}>
                         <Text style={styles.legenda}>Não possui uma conta? </Text>
-                        <Text style={styles.legenda} onPress={() => router.navigate("/Cadastro/Index")}>Inscreva-se</Text>
+                        <Text style={styles.legenda} onPress={() => router.navigate("/Cadastro")}>Inscreva-se</Text>
                     </View>
                 </View>
 

@@ -23,7 +23,7 @@ export default function VNovaSenhaValidacao() {
     return (
         <View style={styles.container}>
             <View style={styles.voltarBotaoContainer}>
-                <Pressable onPress={() => router.navigate('/Login/Index')}>
+                <Pressable onPress={() => router.navigate('/Login')}>
                     <FontAwesome name='chevron-left' size={24} color={tema.cores.rosa[500]} />
                 </Pressable>
             </View>
