@@ -32,6 +32,7 @@ async function criar(conteudo: any, idDoador: string): Promise<IResultado> {
   const novaDoacao = new Doacao({
     foto,
     data: Date.now(),
+    titulo: conteudo.titulo || "Nova doação",
     id_doador: new mongoose.Types.ObjectId(idDoador),
     id_voluntario: campanha?.id_voluntario,
     id_campanha: campanha?._id,
