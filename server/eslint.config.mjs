@@ -1,4 +1,4 @@
-// eslint.config.mjs -> configuração do ESLint
+/** eslint.config.mjs -> configuração do ESLint */
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 

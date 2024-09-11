@@ -3,11 +3,7 @@ import mongoose, {Schema, Document} from 'mongoose';
 interface ICampanha extends Document {
     titulo: string;
     descricao: string;
-    local: {
-        cidade: string;
-        endereco: string;
-        CEP: string;
-    };
+    local: string;
     dataFinal: Date;
     id_voluntario: mongoose.Schema.Types.ObjectId;
 }
@@ -15,16 +11,11 @@ interface ICampanha extends Document {
 const CampanhaSchema: Schema = new Schema({
     titulo: {type: String, required: true, unique: true},
     descricao: {type: String, required: true},
-    local: {
-        cidade: {type: String, required: true},
-        endereco: {type: String, required: true},
-        CEP: {type: String, required: true},
-    },
+    local: {type: String}, 
     dataFinal: {type: Date,},
     id_voluntario: {type: mongoose.Schema.Types.ObjectId, ref: 'Voluntario', required: true},
     
 });
-
 
 const Campanha = mongoose.model<ICampanha>('Campanha', CampanhaSchema);
 export default Campanha;

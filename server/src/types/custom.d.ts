@@ -6,6 +6,8 @@ declare namespace Express {
       nome: string;
       email: string;
     };
+    file?: Multer.File;
+    files?: Multer.File[];
   }
 }
 
