@@ -53,4 +53,3 @@ Arquivos:
   - leiame.txt: esse arquivo, explica  como o programa deverá ser compilado, como poderá ser executado e quais são os arquivos nele e o que cada um contem
   - README.md: arquivo que explica detalhadamente como funciona o programa
   - LICENSE: licença MIT usada no projeto
-  -
