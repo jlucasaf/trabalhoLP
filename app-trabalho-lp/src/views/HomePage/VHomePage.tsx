@@ -17,7 +17,7 @@ type Doacao = {
   imagem: string;   
   qrCode: string;   
   status: string;   
-  dataEntrega?: string; 
+  dataFinal?: string; 
 };
 
 export default function VHomePage() {
@@ -103,7 +103,7 @@ export default function VHomePage() {
                 
                 {/* Mostrar data de entrega se o status for "Entregue" */}
                 {selectedDoacao.status === 'Entregue' && (
-                  <Text style={styles.modalItem}><Text style={styles.modalLabel}>Data de Entrega:</Text> {selectedDoacao.dataEntrega}</Text>
+                  <Text style={styles.modalItem}><Text style={styles.modalLabel}>Data de Entrega:</Text> {selectedDoacao.dataFinal}</Text>
                 )}
 
                 {/* Exibição de imagens com base no status */}
