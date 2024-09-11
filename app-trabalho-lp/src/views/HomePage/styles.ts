@@ -15,6 +15,13 @@ export const styles = StyleSheet.create({
     color: tema.cores.rosa[500],
     fontWeight: 'bold',
   },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: tema.cores.rosa[500],
+    marginBottom: 10,
+    marginTop: 20,
+  },
   itemContainer: {
     padding: 16,
     borderBottomWidth: 1,
@@ -30,6 +37,21 @@ export const styles = StyleSheet.create({
   itemVoluntario: {
     fontSize: 14,
     color: tema.cores.cinza[500],
+  },
+  itemCampanhaEndereco: {
+    fontSize: 14,
+    color: tema.cores.cinza[500],
+  },
+  itemDescricao: {
+    fontSize: 14,
+    color: tema.cores.cinza[500],
+    marginTop: 5,
+  },
+  itemData: {
+    fontSize: 14,
+    fontStyle: 'italic',
+    color: tema.cores.cinza[500],
+    marginTop: 5,
   },
   filterInput: {
     borderWidth: 1,
@@ -83,3 +105,4 @@ export const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
+

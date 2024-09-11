@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, FlatList, Modal, Pressable, Image, ScrollView, TextInput, Alert, Animated } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
@@ -20,12 +19,21 @@ type Doacao = {
   dataFinal?: string; 
 };
 
+type Campanha = {
+  id: string,
+  titulo: string,
+  descricao: string,
+  local: string,
+  voluntario: string,
+  dataFinal: string,
+}
+
 export default function VHomePage() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDoacao, setSelectedDoacao] = useState<Doacao | null>(null);
   const [filter, setFilter] = useState(''); // Estado para o filtro
   const [doacoes, setDoacoes] = useState<Doacao[]>([]); // Atualize o estado para armazenar doações reais
-  const [searchVisible, setSearchVisible] = useState(false);
+  const [campanhasList, setCampanhasList] = useState<Campanha[]>([]); // Estado para campanhas
   const inputWidth = useRef(new Animated.Value(0)).current; // Valor inicial do campo de filtro
   
   const abrirModal = (doacao: Doacao) => {
@@ -38,7 +46,7 @@ export default function VHomePage() {
     setSelectedDoacao(null);
   };
 
-  const renderItem = ({ item }: { item: Doacao }) => (
+  const renderItemDoacao = ({ item }: { item: Doacao }) => (
     <Pressable onPress={() => abrirModal(item)} style={styles.itemContainer}>
       <Text style={styles.itemNome}>{item.nomeDoacao}</Text>
       <Text style={styles.itemEndereco}>{item.endereco}</Text>
@@ -46,10 +54,25 @@ export default function VHomePage() {
     </Pressable>
   );
 
-  // Função para filtrar as doações com base no valor do filtro
+  const renderItemCampanha = ({ item }: { item: Campanha }) => (
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemNome}>{item.titulo}</Text>
+      <Text style={styles.itemDescricao}>{item.descricao}</Text>
+      <Text style={styles.itemCampanhaEndereco}>{item.local}</Text>
+      <Text style={styles.itemVoluntario}>{item.voluntario}</Text>
+      <Text style={styles.itemData}>Data final: {item.dataFinal}</Text>
+      
+      {/* Botão de Doar associado à campanha */}
+      <DoaMeBotao
+        tipo="rosa"
+        titulo="Doar"
+        onPress={() => router.push({ pathname: "/NovaDoacao/Index", params: { idCampanha: item.id } })}
+      />
+    </View>
+  );
+
   const filtradas = doacoes.filter(doacao => 
     doacao.nomeDoacao.toLowerCase().includes(filter.toLowerCase()) ||
-    doacao.endereco.toLowerCase().includes(filter.toLowerCase()) ||
     doacao.voluntario.toLowerCase().includes(filter.toLowerCase())
   );
 
@@ -60,6 +83,7 @@ export default function VHomePage() {
       console.log("Campanhas:", resultadoCampanhas);
       console.log("Doacoes:", resultadoDoacoes);
       setDoacoes(resultadoDoacoes);
+      setCampanhasList(resultadoCampanhas); // Atualiza o estado das campanhas
     } catch (error) {
       Alert.alert("Erro ao tentar entrar na página inicial.");
     }
@@ -74,6 +98,7 @@ export default function VHomePage() {
       <View style={styles.tituloContainer}>
         <Text style={styles.titulo}>DoaMe</Text>
       </View>
+      
       {/* Campo de filtro */}
       <TextInput
         style={styles.filterInput}
@@ -81,32 +106,39 @@ export default function VHomePage() {
         value={filter}
         onChangeText={setFilter}
       />
-      {/* Lista de itens filtrada */}
+
+      {/* Título da lista de doações */}
+      <Text style={styles.sectionTitle}>Doações Recentes</Text>
       <FlatList
         data={filtradas}
-        renderItem={renderItem}
+        renderItem={renderItemDoacao}
         keyExtractor={(item) => item.id}
       />
 
-      {/* Modal de exibição */}
+      {/* Título da lista de campanhas */}
+      <Text style={styles.sectionTitle}>Campanhas</Text>
+      <FlatList
+        data={campanhasList}
+        renderItem={renderItemCampanha}
+        keyExtractor={(item) => item.id}
+      />
+
+      {/* Modal de exibição das doações */}
       <Modal visible={modalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             {selectedDoacao && (
               <>
-                {/* Informações detalhadas */}
                 <Text style={styles.modalTitulo}>Informações da Doação</Text>
                 <Text style={styles.modalItem}><Text style={styles.modalLabel}>Nome:</Text> {selectedDoacao.nomeDoacao}</Text>
                 <Text style={styles.modalItem}><Text style={styles.modalLabel}>Endereço:</Text> {selectedDoacao.endereco}</Text>
                 <Text style={styles.modalItem}><Text style={styles.modalLabel}>Voluntário:</Text> {selectedDoacao.voluntario}</Text>
                 <Text style={styles.modalItem}><Text style={styles.modalLabel}>Status:</Text> {selectedDoacao.status}</Text>
                 
-                {/* Mostrar data de entrega se o status for "Entregue" */}
                 {selectedDoacao.status === 'Entregue' && (
                   <Text style={styles.modalItem}><Text style={styles.modalLabel}>Data de Entrega:</Text> {selectedDoacao.dataFinal}</Text>
                 )}
 
-                {/* Exibição de imagens com base no status */}
                 <ScrollView horizontal pagingEnabled style={styles.scrollView}>
                   {selectedDoacao.status === 'Entregue' && (
                     <Image source={{ uri: selectedDoacao.imagem }} style={styles.itemImage} />
@@ -121,15 +153,6 @@ export default function VHomePage() {
           </View>
         </View>
       </Modal>
-
-      {/* Botão de nova doação */}
-      <View style={styles.botaoContainer}>
-        <DoaMeBotao
-          tipo="rosa"
-          titulo="Doe aqui!"
-          onPress={() => router.navigate("/NovaDoacao/Index")}
-        />
-      </View>
     </View>
   );
 }
