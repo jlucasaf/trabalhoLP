@@ -1,5 +1,6 @@
 import app from "../app";
 /** Importando funções */
+import path from 'path'
 import supertest, {Response} from "supertest";
 import { conectar, desconectar } from "../config/db";
 import { criarVoluntario, dadosCampanhaValida, criarDoador, dadosDoacaoValida } from "./fabricas";
@@ -13,6 +14,8 @@ let tokenVoluntario: string;
 let tokenDoador: string;
 let idCampanha: string;
 let idDoacao: string;
+let idDoacao2: string;
+
 const campanhaValida = dadosCampanhaValida();
 const voluntarioValido = criarVoluntario('voluntario1@email.com'); 
 const doadorValido = criarDoador('doador1@email.com'); 
@@ -211,6 +214,52 @@ describe('Confirmação de doação funciona corretamente', () => {
 
     expect(response.statusCode).toBe(200); // OK
     expect(response.body).toHaveProperty('mensagem', 'Status da doação atualizado');
+  });
+
+  test('Voluntário não consegue confirmar doação se não tiver foto quando exigido', async () => {
+    const response1: Response = await supertest(app)
+                                      .post('/api/doacoes')
+                                      .send(dadosDoacaoValida(idCampanha, true))
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenDoador}`);
+    expect(response1.statusCode).toBe(201); // OK
+    expect(response1.body).toHaveProperty('dados');
+    idDoacao2 = response1.body.dados.id;
+
+    const response2: Response = await supertest(app)
+                                      .patch(`/api/doacoes/${idDoacao2}`)
+                                      .send({status: 'concluído'})
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenVoluntario}`);
+
+    expect(response2.statusCode).toBe(400); // Bad request
+    expect(response2.body).toHaveProperty('mensagem', 'Foto é exigida');
+  });
+
+
+
+  test('Voluntário consegue confirmar doação com foto quando exigido', async () => {
+    const response = await supertest(app)
+      .patch(`/api/doacoes/${idDoacao2}`)
+      .set('Accept', 'application/json')
+      .set('Authorization', `Bearer ${tokenVoluntario}`)
+      .field('status', 'concluído')
+      .attach('foto', path.resolve(__dirname, 'teste.png'));
+
+    console.log(response.body);
+    expect(response.statusCode).toBe(200); // OK
+  });
+
+
+
+  test('Doador consegue ver a foto que exigiu para a sua doação', async () => {
+    const response: Response = await supertest(app)
+                                      .get(`/api/doacoes/${idDoacao2}`)
+                                      .set('Accept', 'application/json')
+                                      .set('authorization', `Bearer ${tokenDoador}`);
+
+    expect(response.statusCode).toBe(200);
+    console.log(response.body);
   });
 });
 
