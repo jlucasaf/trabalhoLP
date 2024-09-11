@@ -20,12 +20,12 @@ type Doacao = {
 };
 
 type Campanha = {
-  id: string,
-  titulo: string,
-  descricao: string,
-  local: string,
-  voluntario: string,
-  dataFinal: string,
+  id: string;
+  titulo: string;
+  descricao: string;
+  local: string;
+  voluntario: string;
+  dataFinal: string;
 }
 
 export default function VHomePage() {
@@ -66,7 +66,8 @@ export default function VHomePage() {
       <DoaMeBotao
         tipo="rosa"
         titulo="Doar"
-        onPress={() => router.push({ pathname: "/NovaDoacao/Index", params: { idCampanha: item.id } })}
+        onPress={() => router.push({ pathname: "/NovaDoacao/Index", params: { idCampanha: item.id,
+          nomeCampanha: item.titulo, nomeLocal: item.local, nomeVoluntario: item.voluntario} })}
       />
     </View>
   );

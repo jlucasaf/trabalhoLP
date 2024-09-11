@@ -1,37 +1,61 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { styles } from './styles';
 import { FontAwesome } from '@expo/vector-icons';
 import { tema } from '@/theme';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import DoaMeBotao from '@/components/DoaMeBotao';
 import DoaMeInput from '@/components/DoaMeInput';
-import { formatarDocumento, formatarNome } from '@/utils/formatadores';
+import { doar } from '@/api/doacoes';
 
 type IDadosNovaDoacao = {
   nomeProduto: string;
-  cidade: string;
-  endereco: string;
-  cep: string;
-  nomeVoluntario: string;
-  fotoObrigatoria: boolean;  // Nova propriedade para checkbox
+  fotoObrigatoria: boolean;
 };
 
 export default function VNovaDoacao() {
+  const { idCampanha, nomeCampanha, nomeLocal, nomeVoluntario } = useLocalSearchParams();
+
+  // Verifica se o valor é string[] e trata adequadamente
+  const campanhaNome = Array.isArray(nomeCampanha) ? nomeCampanha[0] : nomeCampanha;
+  const localNome = Array.isArray(nomeLocal) ? nomeLocal[0] : nomeLocal;
+  const voluntarioNome = Array.isArray(nomeVoluntario) ? nomeVoluntario[0] : nomeVoluntario;
+
   const [dadosNovaDoacao, setDadosNovaDoacao] = useState<IDadosNovaDoacao>({
     nomeProduto: '',
-    cidade: '',
-    endereco: '',
-    cep: '',
-    nomeVoluntario: '',
-    fotoObrigatoria: false,  // Inicialmente falso
+    fotoObrigatoria: false,
   });
 
   const toggleCheckbox = () => {
     setDadosNovaDoacao((prevState) => ({
       ...prevState,
-      fotoObrigatoria: !prevState.fotoObrigatoria,  // Alterna o estado da checkbox
+      fotoObrigatoria: !prevState.fotoObrigatoria,
     }));
+  };
+
+  const handleDoar = async () => {
+    try {
+      const resultadoDoacao = await doar({
+        foto: dadosNovaDoacao.fotoObrigatoria,
+        titulo: dadosNovaDoacao.nomeProduto,
+        id_campanha: idCampanha as string,
+      });
+      const mensagem: string = resultadoDoacao.mensagem;
+      Alert.alert(mensagem);
+      if (resultadoDoacao.sucesso) {
+        router.push({
+          pathname: "/Qrcode",
+          params: {
+            idDoacao: resultadoDoacao.dados?.id,
+            titulo: dadosNovaDoacao.nomeProduto,
+            campanha: campanhaNome,
+            voluntario: voluntarioNome,
+          },
+        });
+      }
+    } catch (error) {
+      Alert.alert("Erro ao tentar doar.");
+    }
   };
 
   return (
@@ -43,49 +67,39 @@ export default function VNovaDoacao() {
       </View>
 
       <View style={styles.tituloContainer}>
-        <View></View>
         <Text style={styles.titulo}>Nova doação</Text>
-        <View></View>
       </View>
 
       <View style={styles.dadosUsuarioContainer}>
         <DoaMeInput
-          placeholder="Nome do produto"
+          placeholder="Nome do Produto"
           inputMode="text"
           onChangeText={(value) => setDadosNovaDoacao({ ...dadosNovaDoacao, nomeProduto: value })}
           value={dadosNovaDoacao.nomeProduto}
           cor="preto"
         />
         <DoaMeInput
-          placeholder="Cidade"
+          placeholder={campanhaNome}
           inputMode="text"
-          onChangeText={(value) => setDadosNovaDoacao({ ...dadosNovaDoacao, cidade: value })}
-          value={dadosNovaDoacao.cidade}
+          value={campanhaNome}
+          editable={false}
           cor="preto"
         />
         <DoaMeInput
-          placeholder="Endereço"
+          placeholder={localNome}
           inputMode="text"
-          onChangeText={(value) => setDadosNovaDoacao({ ...dadosNovaDoacao, endereco: value })}
-          value={dadosNovaDoacao.endereco}
+          value={localNome}
+          editable={false}
           cor="preto"
         />
         <DoaMeInput
-          placeholder="CEP"
+          placeholder={voluntarioNome}
           inputMode="text"
-          onChangeText={(value) => setDadosNovaDoacao({ ...dadosNovaDoacao, cep: value })}
-          value={dadosNovaDoacao.cep}
-          cor="preto"
-        />
-        <DoaMeInput
-          placeholder="Destinatário"
-          inputMode="text"
-          onChangeText={(value) => setDadosNovaDoacao({ ...dadosNovaDoacao, nomeVoluntario: value })}
-          value={dadosNovaDoacao.nomeVoluntario}
+          value={voluntarioNome}
+          editable={false}
           cor="preto"
         />
 
-        {/* Seção com checkbox */}
         <View style={styles.checkboxContainer}>
           <Pressable onPress={toggleCheckbox} style={styles.checkbox}>
             {dadosNovaDoacao.fotoObrigatoria && (
@@ -97,12 +111,9 @@ export default function VNovaDoacao() {
       </View>
 
       <View style={styles.botaoRecuperarSenhaContainer}>
-        <DoaMeBotao
-          tipo="rosa"
-          titulo="Concluir"
-          onPress={() => router.navigate('/Qrcode')}
-        />
+        <DoaMeBotao tipo="rosa" titulo="Concluir" onPress={handleDoar} />
       </View>
     </View>
   );
 }
+

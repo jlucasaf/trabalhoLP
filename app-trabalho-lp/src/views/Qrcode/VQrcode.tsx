@@ -4,7 +4,7 @@ import { styles } from './styles';
 import QRCode from 'react-native-qrcode-svg'; // Importa o componente QRCode
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Importa ícones
 import { FontAwesome } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { tema } from '@/theme';
 
 type ILogin = {
@@ -28,6 +28,9 @@ export default function QrCode() {
         await Clipboard.setString('URL do QR Code ou dados relevantes');
     };
 
+    const {idDoacao, titulo, campanha, voluntario} = useLocalSearchParams();
+
+
     return (
 
 
@@ -44,9 +47,9 @@ export default function QrCode() {
             {/* Área do QR Code */}
             <View style={styles.areaQrcodeContainer}>
                 <Text style={styles.qrText}>Seu pacote está pronto para ser doado!</Text>
-                <Text style={styles.produtoNome}>{nomeDoacao}</Text>
+                <Text style={styles.produtoNome}>{titulo}</Text>
                 <QRCode
-                    value="Dados da nova doação" 
+                    value={idDoacao as string} 
                     size={200}
                     color="black"
                     backgroundColor="white"
