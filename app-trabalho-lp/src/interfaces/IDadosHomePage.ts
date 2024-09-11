@@ -1,6 +1,6 @@
 import { IApiResponse } from "./IApiResponse";
 
-interface ICampanhInfo {
+interface ICampanhaInfo {
     id: string,
     titulo: string,
     descricao: string,
@@ -9,6 +9,18 @@ interface ICampanhInfo {
     dataFinal: string,
 }
 
+interface IDoacaoInfo {
+  id: string,
+  local: string,
+  data: string,
+  campanha: string,
+  status: string,
+}
+
 export interface IListaCampanhas extends IApiResponse {
-    dados: ICampanhInfo[]
+    dados: ICampanhaInfo[]
+}
+
+export interface IListaDoacoes extends IApiResponse {
+    dados: IDoacaoInfo[]
 }

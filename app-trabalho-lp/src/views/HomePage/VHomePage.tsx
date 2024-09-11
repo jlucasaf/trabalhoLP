@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Modal, Pressable, Image, ScrollView, TextInput, Alert } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, FlatList, Modal, Pressable, Image, ScrollView, TextInput, Alert, Animated } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { styles } from './styles';
 import { tema } from '@/theme';
 import { router } from 'expo-router';
 import DoaMeBotao from '@/components/DoaMeBotao';
-import { campanhas } from '@/api/home';
+import { campanhas, doacoesDoador } from '@/api/home';
 
 // Tipos dos itens da lista
 type Doacao = {
@@ -64,7 +64,11 @@ export default function VHomePage() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDoacao, setSelectedDoacao] = useState<Doacao | null>(null);
   const [filter, setFilter] = useState(''); // Estado para o filtro
-
+  const [searchVisible, setSearchVisible] = useState(false);
+  const inputWidth = useRef(new Animated.Value(0)).current; // Valor inicial do campo de filtro
+  inputWidth  
+  // Variável para identificar se é a tela de doador ou voluntário (por exemplo, pode vir de uma prop ou estado global)
+  const [isVoluntario, setIsVoluntario] = useState(true); // Alterar para false se for a tela de doador
   const abrirModal = (doacao: Doacao) => {
     setSelectedDoacao(doacao);
     setModalVisible(true);
@@ -93,7 +97,9 @@ export default function VHomePage() {
   const handleAcessar = async () => {
       try {
           const resultadoCampanhas = await campanhas();
-          console.log(resultadoCampanhas);
+          const resultadoDoacoes = await doacoesDoador();
+          console.log("Campanhas:", resultadoCampanhas);
+          console.log("Doacoes:", resultadoDoacoes);
         } catch (error) {
             Alert.alert("Erro ao tentar entrar na página inicial.");
         }
