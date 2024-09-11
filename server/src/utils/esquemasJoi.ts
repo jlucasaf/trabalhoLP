@@ -1,23 +1,11 @@
 import Joi from "joi";
 
 const esquemaLocal = {
-  local: Joi.object({
-    cidade: Joi.string().required().messages({
-      'any.required': 'A cidade é obrigatória',
-      'string.empty': 'A cidade não pode estar vazia',
-    }),
-    endereco: Joi.string().required().messages({
-      'any.required': 'O endereço é obrigatório',
-      'string.empty': 'O endereço não pode estar vazio',
-    }),
-    CEP: Joi.string().pattern(/^\d{5}-\d{3}$/).required().messages({
-      'any.required': 'O CEP é obrigatório',
-      'string.pattern.base': 'O CEP deve estar no formato 00000-000',
-      'string.empty': 'O CEP não pode estar vazio',
-    }),
-  }).required().messages({
+  local: Joi.string().required().messages({
     'any.required': 'O campo local é obrigatório',
+    'string.empty': 'O endereço não pode estar vazio',
   }),
+
 }
 
 const esquemaUsuario = {

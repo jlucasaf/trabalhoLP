@@ -6,11 +6,7 @@ interface IDoador extends Document {
     email: string;
     senha: string;
     CPF: string;
-    local: {
-        cidade: string;
-        endereco: string;
-        CEP: string;
-    };
+    local: string;
     doacoesFeitas: number;
 }
 
@@ -19,11 +15,7 @@ const DoadorSchema: Schema = new Schema({
     email: {type: String, required: true, unique: true},
     senha: {type: String, required: true},
     CPF: {type: String, required: true, unique: true},
-    local: {
-        cidade: {type: String, required: true},
-        endereco: {type: String, required: true},
-        CEP: {type: String, required: true},
-    },
+    local: {type: String}, 
     doacoesFeitas: {type: Number, default: 0}
 });
 

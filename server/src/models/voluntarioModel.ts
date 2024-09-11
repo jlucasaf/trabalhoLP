@@ -6,11 +6,7 @@ interface IVoluntario extends Document {
     email: string;
     senha: string;
     CNPJ: string;
-    local: {
-        cidade: string;
-        endereco: string;
-        CEP: string;
-    };
+    local: string;
     doacoesEntregues: number;
 }
 
@@ -19,11 +15,7 @@ const VoluntarioSchema: Schema = new Schema({
     email: {type: String, required: true, unique: true},
     senha: {type: String, required: true},
     CNPJ: {type: String, required: true, unique: true},
-    local: {
-        cidade: {type: String, required: true},
-        endereco: {type: String, required: true},
-        CEP: {type: String, required: true},
-    },
+    local: {type: String}, 
     doacoesEntregues: {type: Number, default: 0}
 });
 

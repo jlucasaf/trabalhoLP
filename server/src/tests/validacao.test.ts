@@ -44,11 +44,7 @@ describe('Dados de doador são corretamente validados', () => {
       email: 'formatoinv',
       senha: 'a1',
       CPF: '12345',
-      local: {
-        cidade: '',
-        endereco: '',
-        CEP: 'aa'
-      }
+      local: 'sss',
     }
 
     validaNovoUsuario(req as Request, res as Response, next);
@@ -64,9 +60,6 @@ describe('Dados de doador são corretamente validados', () => {
         'O email deve estar no formato válido',
         'A senha deve ter no mínimo 6 caracteres',
         'O CPF deve estar no formato 000.000.000-00',
-        'A cidade não pode estar vazia',
-        'O endereço não pode estar vazio',
-        'O CEP deve estar no formato 00000-000'
       ])
     })); 
   });
