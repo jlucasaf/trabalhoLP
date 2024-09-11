@@ -1,5 +1,9 @@
 export interface ILoginResponse {
-    token: string;
+    sucesso: boolean;
+    mensagem: string;
+    dados?: {
+      token: string;
+    }
 }
 
 export interface ILoginUsuario {

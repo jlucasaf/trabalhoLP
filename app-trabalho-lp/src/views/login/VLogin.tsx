@@ -14,14 +14,18 @@ export default function VLogin() {
         senha:""
     })
 
-   const handleAcessar = async () => {
-    try {
-        const token = await login(dadosLogin);
-        Alert.alert('Login bem-sucedido!', `Token recebido: ${token}`);
+    const handleAcessar = async () => {
+        try {
+            const resultadoLogin = await login(dadosLogin);
+            const mensagem: string = resultadoLogin.mensagem;
+            Alert.alert(mensagem);
+            if (resultadoLogin.sucesso) {
+                router.navigate("/HomePage")
+            }
         
-    } catch (error) {
-        Alert.alert("Erro ao tentar logar.");
-    }
+        } catch (error) {
+            Alert.alert("Erro ao tentar logar.");
+        }
     }
 
     return (
