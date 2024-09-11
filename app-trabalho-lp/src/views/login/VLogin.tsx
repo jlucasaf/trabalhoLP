@@ -1,23 +1,28 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { styles } from './styles'
 import DoaMeInput from '@/components/DoaMeInput'
 import DoaMeBotao from '@/components/DoaMeBotao'
 import { router } from 'expo-router'
-
-
-type ILogin = {
-    
-    email: string,
-    senha: string
-}
+import { login } from '@/api/usuario'
+import { ILoginUsuario } from '@/interfaces/ILoginUsuario'
 
 export default function VLogin() {
-    const [dadosLogin, setDadosLogin] = useState<ILogin>({
+    const [dadosLogin, setDadosLogin] = useState<ILoginUsuario>({
         
         email: "",
         senha:""
     })
+
+   const handleAcessar = async () => {
+    try {
+        const token = await login(dadosLogin);
+        Alert.alert('Login bem-sucedido!', `Token recebido: ${token}`);
+        
+    } catch (error) {
+        Alert.alert("Erro ao tentar logar.");
+    }
+    }
 
     return (
         <View style={styles.container}>
@@ -51,7 +56,7 @@ export default function VLogin() {
                 </View>
                 <View style={styles.bottomContainer}>
                     <DoaMeBotao tipo='branco' titulo='Acessar'
-                     onPress={() => router.navigate("/HomePage")} />
+                     onPress={handleAcessar} />
                     <View style={styles.increverContainer}>
                         <Text style={styles.legenda}>Não possui uma conta? </Text>
                         <Text style={styles.legenda} onPress={() => router.navigate("/Cadastro")}>Inscreva-se</Text>

@@ -6,7 +6,7 @@
     "build": "tsc",
     "test": "jest --maxWorkers=1",
     "lint": "eslint ./src/**/*.ts",
-    "server": "node ./dir/index.js"
+    "server": "node ./dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -37,7 +37,7 @@
     "mongodb-memory-server": "^10.0.0",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
-    "typescript": "^5.5.4",
+    "typescript": "^5.6.2",
     "typescript-eslint": "^8.4.0"
   }
 }

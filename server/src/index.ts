@@ -1,3 +1,4 @@
+import "dotenv/config"
 import app from './app';
 import { conectar, desconectar } from './config/db';
 

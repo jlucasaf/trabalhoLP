@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const dbPath = "mongodb://localhost:27017/trabalhodb";
+const dbPath = process.env.MONGO_ATLAS_URI || "mongodb://localhost:27017/trabalhodb";
 
 export const conectar = async () => {
   try {
