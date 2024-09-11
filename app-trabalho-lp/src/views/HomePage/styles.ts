@@ -8,12 +8,39 @@ export const styles = StyleSheet.create({
   },
   tituloContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
+    marginTop: 50,
   },
   titulo: {
-    fontSize: 32,
+    fontSize: 50,
     color: tema.cores.rosa[500],
     fontWeight: 'bold',
+  },
+  searchContainer: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    marginLeft: 5,
+    marginEnd: 5,
+    marginBottom: 15,
+    
+  },
+  searchIcon: {
+    position: 'absolute',
+    alignContent: 'flex-end',
+  },
+  filterInputContainer: {
+    overflow: 'hidden', 
+    height: 40,
+    borderRadius: 5,
+    flex: 1,
+  },
+  filterInput: {
+    borderWidth: 1,
+    borderColor: tema.cores.cinza[500],
+    borderRadius: 5,
+    padding: 10,
+    width: '95%',
+    
   },
   itemContainer: {
     padding: 16,
@@ -30,13 +57,6 @@ export const styles = StyleSheet.create({
   itemVoluntario: {
     fontSize: 14,
     color: tema.cores.cinza[500],
-  },
-  filterInput: {
-    borderWidth: 1,
-    borderColor: tema.cores.cinza[500],
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 20,
   },
   modalContainer: {
     flex: 1,
