@@ -1,11 +1,21 @@
-// src/interfaces/ICadastroUsuario.ts
-export interface ICadastroUsuario {
-    nome: string;
-    email: string;
-    senha: string;
+
+import { IApiResponse } from "./IApiResponse";
+
+export interface ICadastroResponse extends IApiResponse {
+    dados?: {
+      token: string;
+      usuario?: any;
+    }
 }
 
-export interface ICadastroResponse {
-    success: boolean;
-    message: string;
+export interface IDadosCadastroPassageiro {
+    tipo: string,
+    dados: {
+      nome: string;
+      email: string;
+      senha: string;
+      CPF?: string;
+      CNPJ?: string;
+      local: string;
+  }
 }

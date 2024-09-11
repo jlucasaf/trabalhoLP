@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { styles } from './styles';
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,8 +7,8 @@ import { router } from 'expo-router';
 import DoaMeBotao from '@/components/DoaMeBotao';
 import DoaMeInput from '@/components/DoaMeInput';
 import { formatarDocumento, formatarNome } from '@/utils/formatadores';
-import { cadastrar } from '../../api/cadastro'; // Caminho ajustado
-import { ICadastroUsuario } from '../../interfaces/ICadastroUsuario'; // Caminho ajustado
+import { cadastro } from '@/api/usuario';
+
 
 type IDadosCadastroPassageiro = {
     cpfOuCnpj: string,
@@ -29,23 +29,33 @@ export default function VCadastro() {
         senha:"",
     });
 
-    const handleSubmit = async () => {
+    const handleCadastrar = async () => {
         try {
-            const cadastroData: ICadastroUsuario = {
-                nome: dadosCadastro.nome,
-                email: dadosCadastro.email,
-                senha: dadosCadastro.senha
-            };
+            const tipo = dadosCadastro.tipoUsuario === 'Doador' ? 'doador' : 'voluntario';
+            const cpfOucnpj = tipo === 'doador' ? { CPF: dadosCadastro.cpfOuCnpj } : { CNPJ: dadosCadastro.cpfOuCnpj };
 
-            const result = await cadastrar(cadastroData);
-            console.log('Cadastro bem-sucedido:', result);
-            alert('Cadastro realizado com sucesso!');
-            router.navigate("/HomePage");
+            const resultadoCadastro = await cadastro({
+                tipo,
+                dados: {
+                    nome: dadosCadastro.nome,
+                    email: dadosCadastro.email,
+                    senha: dadosCadastro.senha,
+                    ...cpfOucnpj,
+                    local: dadosCadastro.endereco,
+                }
+            });
+
+            const mensagem: string = resultadoCadastro.mensagem;
+            Alert.alert(mensagem);
+  
+            if (resultadoCadastro.sucesso) {
+                router.navigate("/HomePage");
+            }
+
         } catch (error) {
-            console.error('Erro ao cadastrar:', error);
-            alert('Erro ao realizar cadastro.');
+            Alert.alert("Erro ao tentar cadastrar.");
         }
-    };
+    }
 
     return (
         <View style={styles.container}>
@@ -103,7 +113,7 @@ export default function VCadastro() {
                 <DoaMeBotao
                     tipo="rosa"
                     titulo='Cadastre-se'
-                    onPress={handleSubmit} // Chama a função handleSubmit no clique
+                    onPress={() => handleCadastrar()}
                 />
             </View>
         </View>
