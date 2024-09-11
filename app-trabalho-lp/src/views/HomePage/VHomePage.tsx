@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, FlatList, Modal, Pressable, Image, ScrollView, TextInput, Alert, Animated } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
@@ -19,56 +20,14 @@ type Doacao = {
   dataEntrega?: string; 
 };
 
-const doacoes: Doacao[] = [
-  {
-    id: '1',
-    nomeDoacao: 'Item 1',
-    endereco: 'Rua A',
-    voluntario: 'Instituição A',
-    imagem: 'https://via.placeholder.com/150',
-    qrCode: 'https://via.placeholder.com/150',
-    status: 'Entregue',
-    dataEntrega: '10/09/2024'
-  },
-  {
-    id: '2',
-    nomeDoacao: 'Item 2',
-    endereco: 'Rua B',
-    voluntario: 'Instituição B',
-    imagem: 'https://via.placeholder.com/150',
-    qrCode: 'https://via.placeholder.com/150',
-    status: 'Em transporte'
-  },
-  {
-    id: '3',
-    nomeDoacao: 'Camiseta',
-    endereco: 'Rua B',
-    voluntario: 'Instituição B',
-    imagem: 'https://via.placeholder.com/150',
-    qrCode: 'https://via.placeholder.com/150',
-    status: 'Em transporte'
-  },
-  {
-    id: '4',
-    nomeDoacao: 'Camiseta',
-    endereco: 'Rua C',
-    voluntario: 'Instituição C',
-    imagem: 'https://via.placeholder.com/150',
-    qrCode: 'https://via.placeholder.com/150',
-    status: 'Em transporte'
-  }
- 
-];
-
 export default function VHomePage() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDoacao, setSelectedDoacao] = useState<Doacao | null>(null);
   const [filter, setFilter] = useState(''); // Estado para o filtro
+  const [doacoes, setDoacoes] = useState<Doacao[]>([]); // Atualize o estado para armazenar doações reais
   const [searchVisible, setSearchVisible] = useState(false);
   const inputWidth = useRef(new Animated.Value(0)).current; // Valor inicial do campo de filtro
-  inputWidth  
-  // Variável para identificar se é a tela de doador ou voluntário (por exemplo, pode vir de uma prop ou estado global)
-  const [isVoluntario, setIsVoluntario] = useState(true); // Alterar para false se for a tela de doador
+  
   const abrirModal = (doacao: Doacao) => {
     setSelectedDoacao(doacao);
     setModalVisible(true);
@@ -95,15 +54,16 @@ export default function VHomePage() {
   );
 
   const handleAcessar = async () => {
-      try {
-          const resultadoCampanhas = await campanhas();
-          const resultadoDoacoes = await doacoesDoador();
-          console.log("Campanhas:", resultadoCampanhas);
-          console.log("Doacoes:", resultadoDoacoes);
-        } catch (error) {
-            Alert.alert("Erro ao tentar entrar na página inicial.");
-        }
+    try {
+      const resultadoCampanhas = await campanhas();
+      const resultadoDoacoes = await doacoesDoador();
+      console.log("Campanhas:", resultadoCampanhas);
+      console.log("Doacoes:", resultadoDoacoes);
+      setDoacoes(resultadoDoacoes);
+    } catch (error) {
+      Alert.alert("Erro ao tentar entrar na página inicial.");
     }
+  };
 
   useEffect(() => {
     handleAcessar();
@@ -173,3 +133,4 @@ export default function VHomePage() {
     </View>
   );
 }
+

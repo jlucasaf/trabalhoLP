@@ -258,6 +258,7 @@ describe('Confirmação de doação funciona corretamente', () => {
                                       .set('authorization', `Bearer ${tokenDoador}`);
 
     expect(response.statusCode).toBe(200);
+    console.log(response.body)
   });
 });
 

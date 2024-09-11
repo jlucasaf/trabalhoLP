@@ -11,6 +11,7 @@ interface ICampanhaInfo {
 
 interface IDoacaoInfo {
   id: string,
+  titulo: string,
   local: string,
   data: string,
   campanha: string,

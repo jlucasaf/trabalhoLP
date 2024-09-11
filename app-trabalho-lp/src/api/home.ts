@@ -14,7 +14,7 @@ export const campanhas = async () => {
       return [];
     }
 
-    return dados;
+    return dados
   } catch (error) {
     console.error('Erro ao obter campanhas:', error);
     throw error;
@@ -32,9 +32,19 @@ export const doacoesDoador = async () => {
       return [];
     }
 
-    return dados;
+    return dados.map(doacaoInfo => ({
+        id: doacaoInfo.id,
+        nomeDoacao: doacaoInfo.titulo,  
+        endereco: doacaoInfo.local,     
+        voluntario: doacaoInfo.campanha,              
+        imagem: '',                   
+        qrCode: '',
+        status: doacaoInfo.status,
+        dataEntrega: doacaoInfo.data
+    }));
+
   } catch (error) {
-    console.error('Erro ao obter campanhas:', error);
+    console.error('Erro ao obter doações:', error);
     throw error;
   }
 };
