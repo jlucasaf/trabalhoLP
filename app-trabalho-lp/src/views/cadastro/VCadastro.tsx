@@ -30,11 +30,10 @@ export default function VCadastro() {
 
     const handleCadastrar = async () => {
         try {
-            // Determinando o tipo e formatando o cpfOuCnpj corretamente
-            const tipo = dadosCadastro.tipoUsuario === 'doador' ? 'doador' : 'voluntario';
+            const tipo = dadosCadastro.tipoUsuario === 'Doador' ? 'doador' : 'voluntario';
             const cpfOucnpj = tipo === 'doador' ? { CPF: dadosCadastro.cpfOuCnpj } : { CNPJ: dadosCadastro.cpfOuCnpj };
 
-            const resultadoLogin = await cadastro({
+            const resultadoCadastro = await cadastro({
                 tipo,
                 dados: {
                     nome: dadosCadastro.nome,
@@ -45,10 +44,10 @@ export default function VCadastro() {
                 }
             });
 
-            const mensagem: string = resultadoLogin.mensagem;
+            const mensagem: string = resultadoCadastro.mensagem;
             Alert.alert(mensagem);
   
-            if (resultadoLogin.sucesso) {
+            if (resultadoCadastro.sucesso) {
                 router.navigate("/HomePage");
             }
 
