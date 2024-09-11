@@ -9,19 +9,19 @@ import DoaMeBotao from '@/components/DoaMeBotao';
 // Tipos dos itens da lista
 type Doacao = {
   id: string;
-  nome: string;
+  nomeDoacao: string;
   endereco: string;
   voluntario: string;
-  imagem: string;   // Imagem da entrega
-  qrCode: string;   // Imagem do QR code
-  status: string;   // "Em transporte" ou "Entregue"
-  dataEntrega?: string; // Data da entrega, presente apenas se "Entregue"
+  imagem: string;   
+  qrCode: string;   
+  status: string;   
+  dataEntrega?: string; 
 };
 
 const doacoes: Doacao[] = [
   {
     id: '1',
-    nome: 'Item 1',
+    nomeDoacao: 'Item 1',
     endereco: 'Rua A',
     voluntario: 'Instituição A',
     imagem: 'https://via.placeholder.com/150',
@@ -31,7 +31,7 @@ const doacoes: Doacao[] = [
   },
   {
     id: '2',
-    nome: 'Item 2',
+    nomeDoacao: 'Item 2',
     endereco: 'Rua B',
     voluntario: 'Instituição B',
     imagem: 'https://via.placeholder.com/150',
@@ -40,9 +40,18 @@ const doacoes: Doacao[] = [
   },
   {
     id: '3',
-    nome: 'Camiseta',
+    nomeDoacao: 'Camiseta',
     endereco: 'Rua B',
     voluntario: 'Instituição B',
+    imagem: 'https://via.placeholder.com/150',
+    qrCode: 'https://via.placeholder.com/150',
+    status: 'Em transporte'
+  },
+  {
+    id: '4',
+    nomeDoacao: 'Camiseta',
+    endereco: 'Rua C',
+    voluntario: 'Instituição C',
     imagem: 'https://via.placeholder.com/150',
     qrCode: 'https://via.placeholder.com/150',
     status: 'Em transporte'
@@ -67,7 +76,7 @@ export default function VHomePage() {
 
   const renderItem = ({ item }: { item: Doacao }) => (
     <Pressable onPress={() => abrirModal(item)} style={styles.itemContainer}>
-      <Text style={styles.itemNome}>{item.nome}</Text>
+      <Text style={styles.itemNome}>{item.nomeDoacao}</Text>
       <Text style={styles.itemEndereco}>{item.endereco}</Text>
       <Text style={styles.itemVoluntario}>{item.voluntario}</Text>
     </Pressable>
@@ -75,7 +84,7 @@ export default function VHomePage() {
 
   // Função para filtrar as doações com base no valor do filtro
   const filtradas = doacoes.filter(doacao => 
-    doacao.nome.toLowerCase().includes(filter.toLowerCase()) ||
+    doacao.nomeDoacao.toLowerCase().includes(filter.toLowerCase()) ||
     doacao.endereco.toLowerCase().includes(filter.toLowerCase()) ||
     doacao.voluntario.toLowerCase().includes(filter.toLowerCase())
   );
@@ -107,7 +116,7 @@ export default function VHomePage() {
               <>
                 {/* Informações detalhadas */}
                 <Text style={styles.modalTitulo}>Informações da Doação</Text>
-                <Text style={styles.modalItem}><Text style={styles.modalLabel}>Nome:</Text> {selectedDoacao.nome}</Text>
+                <Text style={styles.modalItem}><Text style={styles.modalLabel}>Nome:</Text> {selectedDoacao.nomeDoacao}</Text>
                 <Text style={styles.modalItem}><Text style={styles.modalLabel}>Endereço:</Text> {selectedDoacao.endereco}</Text>
                 <Text style={styles.modalItem}><Text style={styles.modalLabel}>Voluntário:</Text> {selectedDoacao.voluntario}</Text>
                 <Text style={styles.modalItem}><Text style={styles.modalLabel}>Status:</Text> {selectedDoacao.status}</Text>
