@@ -13,7 +13,7 @@ interface IDoacao extends Document {
 
 const DoacaoSchema: Schema = new Schema({
     foto: {type: Boolean, required: true, default: false},
-    titulo: {type: String, default: 'Nova doação'},
+    titulo: {type: String},
     data: {type: Date, required: true},
     id_doador: {type: mongoose.Schema.Types.ObjectId, ref: 'Doador', required: true},
     id_voluntario: {type: mongoose.Schema.Types.ObjectId, ref: 'Voluntario', required: true},
