@@ -7,6 +7,8 @@ import { router } from 'expo-router';
 import DoaMeBotao from '@/components/DoaMeBotao';
 import DoaMeInput from '@/components/DoaMeInput';
 import { formatarDocumento, formatarNome } from '@/utils/formatadores';
+import { cadastrar } from '../../api/cadastro'; // Caminho ajustado
+import { ICadastroUsuario } from '../../interfaces/ICadastroUsuario'; // Caminho ajustado
 
 type IDadosCadastroPassageiro = {
     cpfOuCnpj: string,
@@ -25,8 +27,26 @@ export default function VCadastro() {
         endereco: "",
         tipoUsuario: "",
         senha:"",
-        
     });
+
+    const handleSubmit = async () => {
+        try {
+            const cadastroData: ICadastroUsuario = {
+                nome: dadosCadastro.nome,
+                email: dadosCadastro.email,
+                senha: dadosCadastro.senha
+            };
+
+            const result = await cadastrar(cadastroData);
+            console.log('Cadastro bem-sucedido:', result);
+            alert('Cadastro realizado com sucesso!');
+            router.navigate("/HomePage");
+        } catch (error) {
+            console.error('Erro ao cadastrar:', error);
+            alert('Erro ao realizar cadastro.');
+        }
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.voltarBotaoContainer}>
@@ -77,14 +97,13 @@ export default function VCadastro() {
                     onChangeText={(value) => setDadosCadastro({ ...dadosCadastro, cpfOuCnpj: formatarDocumento(value) })}
                     value={dadosCadastro.cpfOuCnpj}
                     cor="preto" />
-
             </View>
 
             <View style={styles.botaoCadastrarContainer}>
                 <DoaMeBotao
                     tipo="rosa"
                     titulo='Cadastre-se'
-                    onPress={() => router.navigate("/HomePage")}
+                    onPress={handleSubmit} // Chama a função handleSubmit no clique
                 />
             </View>
         </View>
