@@ -9,8 +9,10 @@ export const styles = StyleSheet.create({
     backgroundColor: tema.cores.rosa[500],
   },
   voltarBotaoContainer: {
-    marginBottom: 90,
-    alignSelf: 'flex-start', 
+    position: 'relative',
+    top: 60,
+    left: 10,
+    zIndex: 10
   },
   imagemTituloContainer: {
     flexDirection: "row",
@@ -38,13 +40,14 @@ export const styles = StyleSheet.create({
     padding: 24,
     justifyContent: "center", 
     alignItems: "center", 
-    marginTop: -10,
+    
   },
   qrText: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 30,
     textAlign: 'center',
+    height: 50,
   },
   produtoNome: {
     fontSize: 16,
@@ -55,7 +58,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%', 
-    marginTop: 20,
+    marginTop: 50,
   },
   iconButton: {
     alignItems: 'center',

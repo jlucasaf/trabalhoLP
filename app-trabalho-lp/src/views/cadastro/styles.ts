@@ -36,7 +36,23 @@ export const styles = StyleSheet.create({
   botaoCadastrarContainer:{
     marginTop: 40,
     width: "100%",
-    
-    
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderWidth: 2,
+    borderColor: tema.cores.rosa[500],
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  checkboxLabel: {
+    fontSize: 16,
+    color: 'black'
   }
 });

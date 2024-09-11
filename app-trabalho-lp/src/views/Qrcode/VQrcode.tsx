@@ -32,6 +32,11 @@ export default function QrCode() {
 
 
         <View style={styles.container}>
+            <View style={styles.voltarBotaoContainer}>
+                <Pressable onPress={() => router.navigate('/NovaDoacao/Index')}>
+                    <FontAwesome name='chevron-left' size={24} color={tema.cores.white} />
+                </Pressable>
+            </View>
             <View style={styles.imagemTituloContainer}>
                 <Image
                     source={require("@/assets/logo/logo_png.png")}

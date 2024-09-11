@@ -14,7 +14,8 @@ type IDadosCadastroPassageiro = {
     nome: string,
     tipoUsuario: string,
     email: string,
-    senha: string
+    senha: string,
+    usuarioVoluntario: boolean  // Adicionamos o campo usuarioVoluntario
 }
 
 export default function VCadastro() {
@@ -24,20 +25,28 @@ export default function VCadastro() {
         email: "",
         endereco: "",
         tipoUsuario: "",
-        senha:"",
-        
+        senha: "",
+        usuarioVoluntario: false,  // Estado inicial do checkbox (não voluntário)
     });
+
+    // Função para alternar o checkbox
+    const toggleCheckbox = () => {
+        setDadosCadastro((prevState) => ({
+            ...prevState,
+            usuarioVoluntario: !prevState.usuarioVoluntario,  // Inverte o estado
+            tipoUsuario: prevState.usuarioVoluntario ? "" : "Voluntário"  // Define tipoUsuario se marcado
+        }));
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.voltarBotaoContainer}>
-                <Pressable onPress={() => router.back()}>
+                <Pressable onPress={() => router.navigate('/Login/Index')}>
                     <FontAwesome name='chevron-left' size={24} color={tema.cores.rosa[500]} />
                 </Pressable>
             </View>
             <View style={styles.tituloContainer}>
-                <View></View>
                 <Text style={styles.titulo}>Cadastre-se</Text>
-                <View></View>
             </View>
             <View style={styles.dadosUsuarioContainer}>
                 <DoaMeInput
@@ -52,32 +61,39 @@ export default function VCadastro() {
                     inputMode="email"
                     onChangeText={(value) => setDadosCadastro({ ...dadosCadastro, email: value })}
                     value={dadosCadastro.email}
-                    cor="preto" />
+                    cor="preto"
+                />
                 <DoaMeInput
                     placeholder="Senha"
                     inputMode="text"
                     onChangeText={(value) => setDadosCadastro({ ...dadosCadastro, senha: value })}
                     value={dadosCadastro.senha}
-                    cor="preto" />
+                    cor="preto"
+                />
                 <DoaMeInput
                     placeholder="Endereço"
                     inputMode="text"
                     onChangeText={(value) => setDadosCadastro({ ...dadosCadastro, endereco: value })}
                     value={dadosCadastro.endereco}
-                    cor="preto" />
-                <DoaMeInput
-                    placeholder="Tipo de usuário"
-                    inputMode="text"
-                    onChangeText={(value) => setDadosCadastro({ ...dadosCadastro, tipoUsuario: formatarNome(value) })}
-                    value={dadosCadastro.tipoUsuario}
-                    cor="preto" />
+                    cor="preto"
+                />
                 <DoaMeInput
                     placeholder="CPF/CNPJ"
                     inputMode="text"
                     onChangeText={(value) => setDadosCadastro({ ...dadosCadastro, cpfOuCnpj: formatarDocumento(value) })}
                     value={dadosCadastro.cpfOuCnpj}
-                    cor="preto" />
+                    cor="preto"
+                />
 
+                {/* Checkbox para Usuário Voluntário */}
+                <View style={styles.checkboxContainer}>
+                    <Pressable onPress={toggleCheckbox} style={styles.checkbox}>
+                        {dadosCadastro.usuarioVoluntario && (
+                            <FontAwesome name="check" size={16} color={tema.cores.rosa[500]} />
+                        )}
+                    </Pressable>
+                    <Text style={styles.checkboxLabel}>Usuário voluntário?</Text>
+                </View>
             </View>
 
             <View style={styles.botaoCadastrarContainer}>
