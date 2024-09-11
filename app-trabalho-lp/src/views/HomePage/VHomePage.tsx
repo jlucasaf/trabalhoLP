@@ -10,30 +10,30 @@ import { campanhas, doacoesDoador } from '@/api/home';
 // Tipos dos itens da lista
 type Doacao = {
   id: string;
-  nomeDoacao: string;
-  endereco: string;
+  titulo: string;
+  local: string;
   voluntario: string;
   imagem: string;   
   qrCode: string;   
   status: string;   
-  dataEntrega?: string; 
+  dataFinal?: string; 
 };
 
 const doacoes: Doacao[] = [
   {
     id: '1',
-    nomeDoacao: 'Item 1',
-    endereco: 'Rua A',
+    titulo: 'Item 1',
+    local: 'Rua A',
     voluntario: 'Instituição A',
     imagem: 'https://via.placeholder.com/150',
     qrCode: 'https://via.placeholder.com/150',
     status: 'Entregue',
-    dataEntrega: '10/09/2024'
+    dataFinal: '10/09/2024'
   },
   {
     id: '2',
-    nomeDoacao: 'Item 2',
-    endereco: 'Rua B',
+    titulo: 'Item 2',
+    local: 'Rua B',
     voluntario: 'Instituição B',
     imagem: 'https://via.placeholder.com/150',
     qrCode: 'https://via.placeholder.com/150',
@@ -41,8 +41,8 @@ const doacoes: Doacao[] = [
   },
   {
     id: '3',
-    nomeDoacao: 'Camiseta',
-    endereco: 'Rua B',
+    titulo: 'Camiseta',
+    local: 'Rua B',
     voluntario: 'Instituição B',
     imagem: 'https://via.placeholder.com/150',
     qrCode: 'https://via.placeholder.com/150',
@@ -50,8 +50,8 @@ const doacoes: Doacao[] = [
   },
   {
     id: '4',
-    nomeDoacao: 'Camiseta',
-    endereco: 'Rua C',
+    titulo: 'Camiseta',
+    local: 'Rua C',
     voluntario: 'Instituição C',
     imagem: 'https://via.placeholder.com/150',
     qrCode: 'https://via.placeholder.com/150',
@@ -81,16 +81,16 @@ export default function VHomePage() {
 
   const renderItem = ({ item }: { item: Doacao }) => (
     <Pressable onPress={() => abrirModal(item)} style={styles.itemContainer}>
-      <Text style={styles.itemNome}>{item.nomeDoacao}</Text>
-      <Text style={styles.itemEndereco}>{item.endereco}</Text>
+      <Text style={styles.itemNome}>{item.titulo}</Text>
+      <Text style={styles.itemEndereco}>{item.local}</Text>
       <Text style={styles.itemVoluntario}>{item.voluntario}</Text>
     </Pressable>
   );
 
   // Função para filtrar as doações com base no valor do filtro
   const filtradas = doacoes.filter(doacao => 
-    doacao.nomeDoacao.toLowerCase().includes(filter.toLowerCase()) ||
-    doacao.endereco.toLowerCase().includes(filter.toLowerCase()) ||
+    doacao.titulo.toLowerCase().includes(filter.toLowerCase()) ||
+    doacao.local.toLowerCase().includes(filter.toLowerCase()) ||
     doacao.voluntario.toLowerCase().includes(filter.toLowerCase())
   );
 
@@ -136,14 +136,14 @@ export default function VHomePage() {
               <>
                 {/* Informações detalhadas */}
                 <Text style={styles.modalTitulo}>Informações da Doação</Text>
-                <Text style={styles.modalItem}><Text style={styles.modalLabel}>Nome:</Text> {selectedDoacao.nomeDoacao}</Text>
-                <Text style={styles.modalItem}><Text style={styles.modalLabel}>Endereço:</Text> {selectedDoacao.endereco}</Text>
+                <Text style={styles.modalItem}><Text style={styles.modalLabel}>Nome:</Text> {selectedDoacao.titulo}</Text>
+                <Text style={styles.modalItem}><Text style={styles.modalLabel}>Endereço:</Text> {selectedDoacao.local}</Text>
                 <Text style={styles.modalItem}><Text style={styles.modalLabel}>Voluntário:</Text> {selectedDoacao.voluntario}</Text>
                 <Text style={styles.modalItem}><Text style={styles.modalLabel}>Status:</Text> {selectedDoacao.status}</Text>
                 
                 {/* Mostrar data de entrega se o status for "Entregue" */}
                 {selectedDoacao.status === 'Entregue' && (
-                  <Text style={styles.modalItem}><Text style={styles.modalLabel}>Data de Entrega:</Text> {selectedDoacao.dataEntrega}</Text>
+                  <Text style={styles.modalItem}><Text style={styles.modalLabel}>Data de Entrega:</Text> {selectedDoacao.dataFinal}</Text>
                 )}
 
                 {/* Exibição de imagens com base no status */}
