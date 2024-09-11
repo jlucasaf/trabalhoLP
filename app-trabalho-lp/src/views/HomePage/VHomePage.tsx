@@ -55,6 +55,9 @@ export default function VHomePage() {
   const [searchVisible, setSearchVisible] = useState(false);
   const inputWidth = useRef(new Animated.Value(0)).current; // Valor inicial do campo de filtro
 
+  // Variável para identificar se é a tela de doador ou voluntário (por exemplo, pode vir de uma prop ou estado global)
+  const [isVoluntario, setIsVoluntario] = useState(true); // Alterar para false se for a tela de doador
+
   const abrirModal = (doacao: Doacao) => {
     setSelectedDoacao(doacao);
     setModalVisible(true);
@@ -75,6 +78,17 @@ export default function VHomePage() {
     }).start();
   };
 
+  // Filtrando as doações de acordo com o tipo de usuário
+  const filtradas = doacoes.filter((doacao) => {
+    if (isVoluntario) {
+      // Se for voluntário, retorna todas as doações que têm "voluntário"
+      return doacao.voluntario.toLowerCase().includes(filter.toLowerCase());
+    } else {
+      // Se for doador, filtra por outros critérios
+      return doacao.nomeDoacao.toLowerCase().includes(filter.toLowerCase()) || doacao.endereco.toLowerCase().includes(filter.toLowerCase());
+    }
+  });
+
   const renderItem = ({ item }: { item: Doacao }) => (
     <Pressable onPress={() => abrirModal(item)} style={styles.itemContainer}>
       <Text style={styles.itemNome}>{item.nomeDoacao}</Text>
@@ -83,36 +97,27 @@ export default function VHomePage() {
     </Pressable>
   );
 
-  const filtradas = doacoes.filter((doacao) =>
-    doacao.nomeDoacao.toLowerCase().includes(filter.toLowerCase()) ||
-    doacao.endereco.toLowerCase().includes(filter.toLowerCase()) ||
-    doacao.voluntario.toLowerCase().includes(filter.toLowerCase())
-  );
-
   return (
     <View style={styles.container}>
-      
       <View style={styles.tituloContainer}>
         <Text style={styles.titulo}>DoaMe</Text>
       </View>
       
-        <View style={styles.searchContainer}>
-          <Pressable onPress={toggleSearch}>
-            <FontAwesome name="search" size={24} color={tema.cores.rosa[500]} />
-          </Pressable>
-          <Animated.View style={[styles.filterInputContainer, { width: inputWidth }]}>
-            {searchVisible && (
-              <TextInput
-                style={styles.filterInput}
-                placeholder="Filtrar doações..."
-                value={filter}
-                onChangeText={setFilter}
-              />
-            )}
-          </Animated.View>
-        </View>
-
-
+      <View style={styles.searchContainer}>
+        <Pressable onPress={toggleSearch}>
+          <FontAwesome name="search" size={24} color={tema.cores.rosa[500]} />
+        </Pressable>
+        <Animated.View style={[styles.filterInputContainer, { width: inputWidth }]}>
+          {searchVisible && (
+            <TextInput
+              style={styles.filterInput}
+              placeholder="Filtrar doações..."
+              value={filter}
+              onChangeText={setFilter}
+            />
+          )}
+        </Animated.View>
+      </View>
 
       <FlatList
         data={filtradas}
@@ -123,7 +128,7 @@ export default function VHomePage() {
       <Modal visible={modalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            {selectedDoacao && (
+            {selectedDoacao && isVoluntario ? ( // Se for voluntário, exibe a modal com os detalhes
               <>
                 <Text style={styles.modalTitulo}>Informações da Doação</Text>
                 <Text style={styles.modalItem}><Text style={styles.modalLabel}>Nome:</Text> {selectedDoacao.nomeDoacao}</Text>
@@ -142,6 +147,8 @@ export default function VHomePage() {
                   <Image source={{ uri: selectedDoacao.qrCode }} style={styles.qrCodeImage} />
                 </ScrollView>
               </>
+            ) : ( // Se for doador, modal vazia
+              <Text style={styles.modalTitulo}>Modal Vazia para Doador</Text>
             )}
             <Pressable onPress={fecharModal} style={styles.modalCloseButton}>
               <FontAwesome name="times" size={24} color={tema.cores.rosa[500]} />
