@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, Modal, Pressable, Image, ScrollView, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, Modal, Pressable, Image, ScrollView, TextInput, Alert } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { styles } from './styles';
 import { tema } from '@/theme';
 import { router } from 'expo-router';
 import DoaMeBotao from '@/components/DoaMeBotao';
+import { campanhas } from '@/api/home';
 
 // Tipos dos itens da lista
 type Doacao = {
@@ -88,6 +89,19 @@ export default function VHomePage() {
     doacao.endereco.toLowerCase().includes(filter.toLowerCase()) ||
     doacao.voluntario.toLowerCase().includes(filter.toLowerCase())
   );
+
+  const handleAcessar = async () => {
+      try {
+          const resultadoCampanhas = await campanhas();
+          console.log(resultadoCampanhas);
+        } catch (error) {
+            Alert.alert("Erro ao tentar entrar na página inicial.");
+        }
+    }
+
+  useEffect(() => {
+    handleAcessar();
+  }, []);
 
   return (
     <View style={styles.container}>

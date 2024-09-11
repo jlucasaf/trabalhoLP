@@ -1,6 +1,6 @@
-export interface ILoginResponse {
-    sucesso: boolean;
-    mensagem: string;
+import { IApiResponse } from "./IApiResponse";
+
+export interface ILoginResponse extends IApiResponse {
     dados?: {
       token: string;
     }
