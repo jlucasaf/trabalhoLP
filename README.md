@@ -18,6 +18,7 @@
   - [ESLint](https://eslint.org/)
   - [Doxygen](https://www.doxygen.nl/)
   - [Node.js](https://nodejs.org/en)
+  - [Graphviz](https://graphviz.org/)
 
   ### Bibliotecas:
   - [Express](https://expressjs.com/pt-br/)
@@ -61,6 +62,10 @@
   3. Verificar padrão de código
   ```bash
     $ npm run lint
+  ```
+  3. Compilar
+  ```bash
+    $ npm run build
   ```
 
 ## Licença:
