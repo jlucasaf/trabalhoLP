@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src= ""/>
+    <img src= ".\app-trabalho-lp\src\assets\logo\logo_png.png"/>
     <p>Aplicativo de doações - DoaMe</p>
 </h1>
 
@@ -63,7 +63,7 @@
   ```bash
     $ npm run lint
   ```
-  3. Compilar
+  4. Compilar
   ```bash
     $ npm run build
   ```
