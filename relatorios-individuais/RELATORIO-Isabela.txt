@@ -2,114 +2,117 @@
 matrícula: 231013636
 Aplicativo DoaMe
 
+	DATA: 26/08
+	HORAS TRABALHADAS: 4:42
+	TIPO DE TAREFA: estudar aulas e laboratórios relacionados
+	DESCRIÇÃO DA TAREFA REALIZADA: Aprendizado e configurações iniciais necessárias para o desenvolvimento do projeto. Entender as tecnologias, tais qual a linguagem, que eu não tinha qualquer conhecimento prévil, diferentes programas etc
 
+	DATA:28/08
+	HORAS TRABALHADAS: 4:7
+	TIPO DE TAREFA: estudar aulas e laboratórios relacionados
+	DESCRIÇÃO DA TAREFA REALIZADA: Continuando aprendizado e configurações. Pesquisando mais sobre a linguagem, os programase data modeling, entendendo o funcionamento do GITHUB, além de instalar e configurar parte das ferramentas que serão usadas.
 
+	DATA:29/08
+	HORAS TRABALHADAS: 2:48
+	TIPO DE TAREFA: estudar aulas e laboratórios relacionados
+	DESCRIÇÃO DA TAREFA REALIZADA: Aulas sobre o backend, mais especificamente o banco de dados
+	
+	DATA:31/08
+	HORAS TRABALHADAS: 8:30
+	TIPO DE TAREFA: especificar os módulos
+	DESCRIÇÃO DA TAREFA REALIZADA: Iniciando os models
+	
+	DATA:02/09
+	HORAS TRABALHADAS: 8:18
+	TIPO DE TAREFA: codificar módulo
+	DESCRIÇÃO DA TAREFA REALIZADA: Criação dos modelos baseado nas historietas feitas inicialmente
+	
+	DATA:02/09
+	HORAS TRABALHADAS: 8:18
+	TIPO DE TAREFA: Rodar o verificador estático e retirar warnings
+	DESCRIÇÃO DA TAREFA REALIZADA: Verificação do código e correção conforme apontado
+	
+	DATA:04/09
+	HORAS TRABALHADAS: 5:10
+	TIPO DE TAREFA: revisar especificações
+	DESCRIÇÃO DA TAREFA REALIZADA: Rever o que é preciso ser feito, o que está sendo feito e o que já foi feito
+	
+	DATA:04/09
+	HORAS TRABALHADAS: 5:10
+	TIPO DE TAREFA: codificar módulo
+	DESCRIÇÃO DA TAREFA REALIZADA: Edição de modelos iniciais, de forma a se encaixar melhor no objetivo
+	
+	DATA:04/09
+	HORAS TRABALHADAS: 5:10
+	TIPO DE TAREFA: Rodar o verificador estático e retirar warnings
+	DESCRIÇÃO DA TAREFA REALIZADA: Verificação do código e correção conforme apontado
+	
+	DATA:05/09
+	HORAS TRABALHADAS: 4:03
+	TIPO DE TAREFA: revisar especificações
+	DESCRIÇÃO DA TAREFA REALIZADA: Rever o que é preciso ser feito, o que está sendo feito e o que já foi feito, adicionando detalhes não notados ou incluidos antes
+	
+	DATA:05/09
+	HORAS TRABALHADAS: 4:03
+	TIPO DE TAREFA: Rodar o verificador estático e retirar warnings
+	DESCRIÇÃO DA TAREFA REALIZADA: Verificação do código e correção conforme apontado
+	
+	DATA:05/09
+	HORAS TRABALHADAS: 4:03
+	TIPO DE TAREFA: codificar módulo
+	DESCRIÇÃO DA TAREFA REALIZADA: Edição de modelos iniciais, de forma a se encaixar melhor no objetivo
 
-DATA
-	HORAS TRABALHADAS
-	TIPO DE TAREFA
-	DESCRIÇÃO DA TAREFA REALIZADA
-	26/08
-	4:42
-	estudar aulas e laboratórios relacionados
-	Aprendizado e configurações iniciais necessárias para o desenvolvimento do projeto. Entender as tecnologias, tais qual a linguagem, que eu não tinha qualquer conhecimento prévil, diferentes programas etc
-	28/08
-	4:7
-	estudar aulas e laboratórios relacionados
-	 Continuando aprendizado e configurações. Pesquisando mais sobre a linguagem, os programase data modeling, entendendo o funcionamento do GITHUB, além de instalar e configurar parte das ferramentas que serão usadas.
+	DATA:06/09
+	HORAS TRABALHADAS: 2:23
+	TIPO DE TAREFA:revisar especificações
+	DESCRIÇÃO DA TAREFA REALIZADA: Revisão de especificações e anotação de detalhes a serem feitos
 
+	DATA:07/09
+	HORAS TRABALHADAS: 4:30
+	TIPO DE TAREFA: revisar especificações
+	DESCRIÇÃO DA TAREFA REALIZADA: Revisão de especificações, atualização dos checklists e criação de arquivos como o makefile e configurção do Swagger
 
-	29/08
-	2:48
-	estudar aulas e laboratórios relacionados
-	Aulas sobre o backend, mais especificamente o banco de dados
-	31/08
-	8:30
-	especificar os módulos
-	Iniciando os models
-	02/09
-	8:18
-	codificar módulo
-	Criação dos modelos baseado nas historietas feitas inicialmente
-	02/09
-	8:18
-	Rodar o verificador estático e retirar warnings
-	Verificação do código e correção conforme apontado
-	04/09
-	5:10
-	revisar especificações
-	Rever o que é preciso ser feito, o que está sendo feito e o que já foi feito
-	04/09
-	5:10
-	codificar módulo
-	Edição de modelos iniciais, de forma a se encaixar melhor no objetivo
-	04/09
-	5:10
-	Rodar o verificador estático e retirar warnings
-	Verificação do código e correção conforme apontado
-	05/09
-	4:03
-	revisar especificações
-	Rever o que é preciso ser feito, o que está sendo feito e o que já foi feito, adicionando detalhes não notados ou incluidos antes
-	05/09
+	DATA:07/09
+	HORAS TRABALHADAS: 4:30
+	TIPO DE TAREFA: estudar aulas e laboratórios relacionados
+	DESCRIÇÃO DA TAREFA REALIZADA: Revisão conteúdos necessários para ajustes no código
 
+	DATA:08/09
+	HORAS TRABALHADAS: 9:51 h
+	TIPO DE TAREFA: fazer diagramas
+	DESCRIÇÃO DA TAREFA REALIZADA: Craição de diagramas (Casos de Uso, Atividades - Doador, Atividades - Voluntário e início de Classes)
 
-	4:03
-	Rodar o verificador estático e retirar warnings
-	Verificação do código e correção conforme apontado
-	05/09
+	DATA:08/09
+	HORAS TRABALHADAS: 9:51 h
+	TIPO DE TAREFA: estudar aulas e laboratórios relacionados
+	DESCRIÇÃO DA TAREFA REALIZADA: Revisão dos conteúdos de diagramas e pesquisa de exemplos para criar diagramas de forma a melhos representar os atores e seus relacionamentos, no caso do diagrama de caso de uso, e o fluxo de atividade dos principais atores
 
+	DATA:09/09
+	HORAS TRABALHADAS: 7:02 h
+	TIPO DE TAREFA: fazer diagramas
+	DESCRIÇÃO DA TAREFA REALIZADA: Edições no diagrama de classes
 
-	4:03
-	codificar módulo
-	Edição de modelos iniciais, de forma a se encaixar melhor no objetivo
-	06/09
-	2:23
-	revisar especificações
-	Revisão de especificações e anotação de detalhes a serem feitos
+	DATA:09/09
+	HORAS TRABALHADAS: 7:02 h
+	TIPO DE TAREFA: revisar projetos
+	DESCRIÇÃO DA TAREFA REALIZADA: Edição de modelos, edição do makefile e outros arquivos, configurações do Swagger
+	
+	DATA:10/09
+	HORAS TRABALHADAS: 8:27
+	TIPO DE TAREFA: documentar com Doxygen
+	DESCRIÇÃO DA TAREFA REALIZADA: Configurações do doxygen, retirando as configurações anteriores do swagger
 
+	DATA:10/09
+	HORAS TRABALHADAS: 8:27
+	TIPO DE TAREFA: Rodar o verificador estático e retirar warnings
+	DESCRIÇÃO DA TAREFA REALIZADA: Revisão de todo o backend para que os arquivos estivessem no modelo certo
 
-	07/09
-	4:30
-	revisar especificações
-	Revisão de especificações, atualização dos checklists e criação de arquivos como o makefile e configurção do Swagger
-	07/09
-	4:30
-	estudar aulas e laboratórios relacionados
-	Revisão conteúdos necessários para ajustes no código
+	DATA:10/09
+	HORAS TRABALHADAS: 8:27
+	TIPO DE TAREFA: fazer diagramas
+	DESCRIÇÃO DA TAREFA REALIZADA: Finalização do diagrama de classes
 
-
-	08/09
-	9:51 h
-	fazer diagramas
-	Craição de diagramas (Casos de Uso, Atividades - Doador, Atividades - Voluntário e início de Classes)
-	08/09
-	9:51 h
-	estudar aulas e laboratórios relacionados
-	Revisão dos conteúdos de diagramas e pesquisa de exemplos para criar diagramas de forma a melhos representar os atores e seus relacionamentos, no caso do diagrama de caso de uso, e o fluxo de atividade dos principais atores
-	09/09
-	7:02 h
-	fazer diagramas
-	Edições no diagrama de classes
-
-
-	09/09
-	7:02 h
-	revisar projetos
-	Edição de modelos, edição do makefile e outros arquivos, configurações do Swagger
-	10/09
-	8:27
-	documentar com Doxygen
-	Configurações do doxygen, retirando as configurações anteriores do swagger
-	10/09
-	8:27
-	Rodar o verificador estático e retirar warnings
-	Revisão de todo o backend para que os arquivos estivessem no modelo certo
-	10/09
-	8:27
-	fazer diagramas
-	Finalização do diagrama de classes
-	10/09
-	8:27
-	Revisar especificações
-	Criação do README.md e leiame.txt
+	DATA:10/09
+	HORAS TRABALHADAS: 8:27
+	TIPO DE TAREFA: Revisar especificações
+	DESCRIÇÃO DA TAREFA REALIZADA: Criação do README.md e leiame.txt
