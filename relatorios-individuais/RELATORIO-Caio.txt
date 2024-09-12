@@ -1,0 +1,35 @@
+.
+ Data: 07/09
+ Horas Trabalhadas: ~3
+ Tipo Tarefa: Prototipação da primeiras telas no figma (Bem-vindo, Login, Nova senha e cadastro)
+ Descrição da Tarefa Realizada: Prototipação da primeiras telas do figma
+.
+ Data: 08/09
+ Horas Trabalhadas: ~1
+ Tipo Tarefa: Prototipação tela no figma (QrCode/Nova doação)
+  Descrição da Tarefa Realizada: Prototipação das telas de QrCode e doação
+.
+Data: 09/09
+ Horas Trabalhadas: ~1
+ Tipo Tarefa: Prototipação das modais da Home Page e criação de rotas de tela no frontend 
+  Descrição da Tarefa Realizada: Prototipação das modais e arquivos de rotas de tela na pasta views e app
+.
+
+Data: 09/09
+ Horas Trabalhadas: ~3
+ Tipo Tarefa: Criação das telas de formulário
+ Descrição da Tarefa Realizada: Ajustes em algumas telas (Cadastro) para facilitar a integração, 
+ frontend da tela de Recuperação de senha, nova senha e nova doação
+.
+
+Data: 10/09
+ Horas Trabalhadas: ~5
+ Tipo Tarefa: Criação da tela home e Qr code
+ Descrição da Tarefa Realizada: frontend com validações de modais, filtros de pesquisa de doação
+.
+
+Data: 11/09
+ Horas Trabalhadas: ~1
+ Tipo Tarefa: ajustes finais no frontend das telas
+  Descrição da Tarefa Realizada: ajustes finais em componentes das telas e alguns estilos
+.
