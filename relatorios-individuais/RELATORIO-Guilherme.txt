@@ -1,0 +1,61 @@
+.
+ Data: 03/09
+ Horas Trabalhadas: ~0.5
+ Tipo Tarefa: gerenciar construção de software, especificar módulos
+ Descrição da Tarefa Realizada: configuração incial do servidor,
+  instalação de dependências e criaçaõ de primeiras subpastas
+  e arquivos de código referentes aos módulos
+.
+ Data: 03/09
+ Horas Trabalhadas: ~1
+ Tipo Tarefa: redigir casos de teste, revisar casos de teste, codificar módulo, realizar os testes
+ Descrição da Tarefa Realizada: por meio do desenvolvimento orientado a testes, testar e codificar
+    as funções referentes à validaçaõ de dados do usuário por parte do servidor e implementar um 
+    middleware de autenticação para acesso à rotas protegidas
+. 
+ Data: 03/09
+ Horas Trabalhadas: ~2
+ Tipo Tarefa: redigir casos de teste, revisar casos de teste, codificar módulo, realizar os testes
+ Descrição da Tarefa Realizada: por meio do desenvolvimento orientado a testes, testar e codificar
+    as funções relacionadas ao serviço de contas, sendo cadastro e login de usuários, geração
+    de tokens
+. 
+ Data 07/09
+ Horas Trabalhadas: 2.9
+ Tipo Tarefa: redigir casos de teste, revisar casos de teste, codificar módulo, 
+              realizar os testes, revisar especificações, documentar com Doxygen
+ Descrição da Tarefa Realizada: devido a mudança nas especificações (mudança nos modelos de usuário)
+   - codificar e testar middleware de validação de dados de usuário para o Doador
+   - codificar, testar e documentar (comentários doxygen) a classe de controladora de contas para
+     para o cadastro de doador
+. 
+ Data 07/09
+ Horas Trabalhadas: 2.1
+ Tipo Tarefa: redigir casos de teste, revisar casos de teste, codificar módulo, 
+              realizar os testes, revisar especificações, documentar com Doxygen, revisar código do módulo
+ Descrição da Tarefa Realizada: completar controladoras de criação de contas e login de usuário, modificar
+    código das controladoras para evitar repetições, modificar testes pare refletir mudança nos parâmetros
+    das funções
+. 
+ Data 09/09
+ Horas Trabalhadas: 1.7
+ Tipo Tarefa: revisar casos de teste, revisar código do módulo, codificar módulo, 
+ Descrição da Tarefa Realizada: recodificar as controladoras, separando parte da lógica
+    de negócios em módulos de serviços, mantendo comportamento nos testes com adaptações.
+. 
+ Data 10/09
+ Horas Trabalhadas: 5.5
+ Tipo Tarefa: revisar casos de teste, revisar código do módulo, codificar módulo, 
+              documentar com Doxygen, realizar os testes
+ Descrição da Tarefa Realizada: usando desenvolvimento orientado a testes, codificar
+              e testar os módulos relacionados a de campanhas e doações
+              (voluntário cria campanha, doador cria doação para campanha, listagem
+               de doações recentes, listagem de campanhas recentes)
+.
+ Data 11/09
+ Horas Trabalhadas: 3.5
+ Tipo Tarefa: revisar casos de teste, revisar código do módulo, codificar módulo, 
+              realizar os testes
+ Descrição da Tarefa Realizada: codificando integração do backend com o frontend
+              por meio de funções que realizam requisições à api. Ajuste de módulos
+              e testes para atender necessidades. 

@@ -40,6 +40,15 @@ Bibliotecas:
 5. Executar servidor
     npm run server
 
+6. Testes automatizados do servidor (server/)
+    npm test
+
+6. Testes automatizados do servidor (server/)
+    npm run coverage
+
+7. Para gerar documentação (no diretório em que está Doxyfile)
+    doxygen Doxyfile # Documentação gerada em pasta 'docs'
+    
 Arquivos:
   - app-trabalho-lp/: front-end
   - docs/: pasta gerada a partir do Doxygen
