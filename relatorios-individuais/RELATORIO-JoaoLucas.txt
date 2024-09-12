@@ -1,0 +1,45 @@
+João Lucas Araújo França - 19/0015187
+DoaMe
+
+
+.
+ Data: 28/08
+ Horas Trabalhadas: 1h
+ Tipo Tarefa: Estudar e laboratórios relacionados
+ Descrição da Tarefa Realizada: Reunião para mostrar a linguagem a ser utilizada, cursos indicados e 
+ definir primeiras tarefas de cada
+.
+ Data: 28/08
+ Horas Trabalhadas: 0.5
+ Tipo Tarefa: gerenciar a construção de software
+ Descrição da Tarefa Realizada: Criação de projeto no github, adição dos contribuidores e inicialização
+ básica do projeto
+. 
+ Data: 03/09
+ Horas Trabalhadas: 6
+ Tipo Tarefa: gerenciar a construção do software, projetar, revisar código, laboratório
+ Descrição da Tarefa Realizada: Foi feito code review dos primeiros commits, gerenciamento das tarefas a serem
+ realizadas, ensinar boas práticas de programação
+. 
+ Data 07/09
+ Horas Trabalhadas: 6
+ Tipo Tarefa: projetar, codificar modulo, laboratório
+ Descrição da Tarefa Realizada: Foi desenvolvido em XP com outros integrantes do grupo como desenvolver as telas
+ no react-native mostrando os passos a serem seguidos e as boas práticas e mostrando a estrutura de pastas a ser 
+ seguida
+. 
+
+ Data 10/09
+ Horas Trabalhadas: 3.5
+ Tipo Tarefa: revisar casos de teste, revisar código do módulo, codificar módulo, 
+              realizar os testes, gerenciamento de software
+ Descrição da Tarefa Realizada: Codificação da integração do front com back mostrando os passos a serem seguidos e
+ como deve ser feita a integração seguindo as boas práticas de programação
+
+.
+ Data 11/09
+ Horas Trabalhadas: 1h
+ Tipo Tarefa: revisar casos de teste, revisar código do módulo
+              realizar os testes, gerenciamento de software
+ Descrição da Tarefa Realizada: Revisao final do software do que estava pronto
+.
