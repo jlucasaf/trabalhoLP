@@ -1,0 +1,40 @@
+﻿Data
+	Horas trabalhadas
+	Tipo tarefa
+	Descrição da Tarefa Realizada
+	18/06
+	1
+	Especificar os módulos  
+	Participei da reunião e escolhi e votei em algumas especificações que usamos no projeto. 
+	18/06
+	1
+	Especificar as funções
+	Participei da reunião e escolhi uma área que eu tinha interesse em trabalhar. 
+	19/06
+	2
+	Estudar aulas e laboratórios relacionados
+	Estudei, nesse dia, os slides da aula e materiais online sobre Scrum, Kanban e dicas de como criar softwares, além de revisar as especificações do projeto discutidas em grupo.
+	23/06
+	4
+	projetar 
+	Comecei a fazer as telas no Figma.
+	25/06
+	4
+	Revisar especificações  
+	Revisei a documentação do TypeScript para entender como fazer o componente do front em questão.
+	28/06
+	6
+	Codificar módulo
+	Entrei em ligação com um colega de classe para terminar as telas.
+	30/06
+	3
+	Estudar aulas e laboratórios relacionados
+	Estudei como integrar o frontend ao backend utilizando as ferramentas escolhidas.
+	04/07
+	6
+	Codificar módulo
+	Ajudei a integrar as telas ao backend.
+	10/07
+	4
+	Gerenciar a construção do software 
+	Acompanhei o grupo nas últimas preparações do projeto.
