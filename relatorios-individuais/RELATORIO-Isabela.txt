@@ -1,0 +1,115 @@
+﻿Isabela Soares Furlan
+matrícula: 231013636
+Aplicativo DoaMe
+
+
+
+
+DATA
+	HORAS TRABALHADAS
+	TIPO DE TAREFA
+	DESCRIÇÃO DA TAREFA REALIZADA
+	26/08
+	4:42
+	estudar aulas e laboratórios relacionados
+	Aprendizado e configurações iniciais necessárias para o desenvolvimento do projeto. Entender as tecnologias, tais qual a linguagem, que eu não tinha qualquer conhecimento prévil, diferentes programas etc
+	28/08
+	4:7
+	estudar aulas e laboratórios relacionados
+	 Continuando aprendizado e configurações. Pesquisando mais sobre a linguagem, os programase data modeling, entendendo o funcionamento do GITHUB, além de instalar e configurar parte das ferramentas que serão usadas.
+
+
+	29/08
+	2:48
+	estudar aulas e laboratórios relacionados
+	Aulas sobre o backend, mais especificamente o banco de dados
+	31/08
+	8:30
+	especificar os módulos
+	Iniciando os models
+	02/09
+	8:18
+	codificar módulo
+	Criação dos modelos baseado nas historietas feitas inicialmente
+	02/09
+	8:18
+	Rodar o verificador estático e retirar warnings
+	Verificação do código e correção conforme apontado
+	04/09
+	5:10
+	revisar especificações
+	Rever o que é preciso ser feito, o que está sendo feito e o que já foi feito
+	04/09
+	5:10
+	codificar módulo
+	Edição de modelos iniciais, de forma a se encaixar melhor no objetivo
+	04/09
+	5:10
+	Rodar o verificador estático e retirar warnings
+	Verificação do código e correção conforme apontado
+	05/09
+	4:03
+	revisar especificações
+	Rever o que é preciso ser feito, o que está sendo feito e o que já foi feito, adicionando detalhes não notados ou incluidos antes
+	05/09
+
+
+	4:03
+	Rodar o verificador estático e retirar warnings
+	Verificação do código e correção conforme apontado
+	05/09
+
+
+	4:03
+	codificar módulo
+	Edição de modelos iniciais, de forma a se encaixar melhor no objetivo
+	06/09
+	2:23
+	revisar especificações
+	Revisão de especificações e anotação de detalhes a serem feitos
+
+
+	07/09
+	4:30
+	revisar especificações
+	Revisão de especificações, atualização dos checklists e criação de arquivos como o makefile e configurção do Swagger
+	07/09
+	4:30
+	estudar aulas e laboratórios relacionados
+	Revisão conteúdos necessários para ajustes no código
+
+
+	08/09
+	9:51 h
+	fazer diagramas
+	Craição de diagramas (Casos de Uso, Atividades - Doador, Atividades - Voluntário e início de Classes)
+	08/09
+	9:51 h
+	estudar aulas e laboratórios relacionados
+	Revisão dos conteúdos de diagramas e pesquisa de exemplos para criar diagramas de forma a melhos representar os atores e seus relacionamentos, no caso do diagrama de caso de uso, e o fluxo de atividade dos principais atores
+	09/09
+	7:02 h
+	fazer diagramas
+	Edições no diagrama de classes
+
+
+	09/09
+	7:02 h
+	revisar projetos
+	Edição de modelos, edição do makefile e outros arquivos, configurações do Swagger
+	10/09
+	8:27
+	documentar com Doxygen
+	Configurações do doxygen, retirando as configurações anteriores do swagger
+	10/09
+	8:27
+	Rodar o verificador estático e retirar warnings
+	Revisão de todo o backend para que os arquivos estivessem no modelo certo
+	10/09
+	8:27
+	fazer diagramas
+	Finalização do diagrama de classes
+	10/09
+	8:27
+	Revisar especificações
+	Criação do README.md e leiame.txt
